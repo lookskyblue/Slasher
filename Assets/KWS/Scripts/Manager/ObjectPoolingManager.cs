@@ -54,7 +54,7 @@ public class ObjectPoolingManager : MonoBehaviour
         {
             object_pooling_dic.Add(object_infos[i].key, object_infos[i].queue);
             object_dic.Add(object_infos[i].key, object_infos[i].prefab);
-            Debug.Log("추가된 키: " + object_infos[i].key);
+
             Initialize(object_infos[i]);
         }
     }

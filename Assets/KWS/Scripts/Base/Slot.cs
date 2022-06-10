@@ -129,6 +129,13 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     public virtual void OnBeginDrag(PointerEventData event_data)
     {
         if (item == null) return;
+        
+        if (is_dragging == false && event_data.button == PointerEventData.InputButton.Right)
+        {
+            drag_and_drop_container.item = null;
+
+            return;
+        }
 
         drag_and_drop_container.item = item;
         drag_and_drop_container.item_image.sprite = item_image.sprite;
@@ -138,6 +145,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         drag_and_drop_container.is_mount = Is_Mount;
 
         is_dragging = true;
+
+        Debug.Log("Begin");
     }
 
     public virtual void OnDrag(PointerEventData event_data)
@@ -145,6 +154,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         if (is_dragging == false) return;
 
         drag_and_drop_container.transform.position = event_data.position;
+        Debug.Log("Drag");
+
     }
     public virtual void OnEndDrag(PointerEventData event_data)
     {
@@ -177,6 +188,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                     if (item_mount_state_text != null)
                         item_mount_state_text.gameObject.SetActive(false);
                 }
+
+                Debug.Log("End Drag1");
             }
 
             else
@@ -184,6 +197,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                 RemoveSlotUI();
                 Is_Mount = false;
                 Slot_Num = drag_and_drop_container.slot_num;
+             
+                Debug.Log("End Drag2");
             }
         }
 
@@ -193,8 +208,9 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         drag_and_drop_container.item_image.sprite = null;
         drag_and_drop_container.item_image.gameObject.SetActive(false);
         drag_and_drop_container.slot_num = -1;
-        //drag_and_drop_container.potion_slot_num = -1;
         drag_and_drop_container.is_mount = false;
+
+        Debug.Log("End Drag3");
     }
     public virtual void OnDrop(PointerEventData event_data) // 드랍 오브젝트의 앤드 드래그 이벤트 보다 드롭 오브젝트에서 드롭 이벤트가 먼저 발생함.
     {
@@ -229,6 +245,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                 if (item_mount_state_text != null)
                     item_mount_state_text.gameObject.SetActive(false);
             }
+
+            Debug.Log("End Drop1");
         }
 
         else
@@ -237,6 +255,10 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
             drag_and_drop_container.item_image.sprite = null;
             drag_and_drop_container.is_mount = false;
             drag_and_drop_container.slot_num = -1;
+            
+            Debug.Log("End Drop2");
         }
+
+        Debug.Log("End Drop3");
     }
 }

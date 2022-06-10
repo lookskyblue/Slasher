@@ -150,8 +150,6 @@ public class InventoryManager : MonoBehaviour
         int slot_num = equipment_slot.Slot_Num;
         equipment_slot.RemoveSlotUI();
 
-        Debug.Log("4.1: 장비창의 장착 해제 아이템 번호: " + slot_num);
-
         OnChangedMountState(slot_num);
     }
     public void UnmountItem(int potion_slot_idx) // 중요
