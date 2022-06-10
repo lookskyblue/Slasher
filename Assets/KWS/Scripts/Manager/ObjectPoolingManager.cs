@@ -17,6 +17,14 @@ public class ObjectPoolingManager : MonoBehaviour
     public ObjectInfo[] object_infos;
     private Dictionary<string, Queue<GameObject>> object_pooling_dic = new Dictionary<string, Queue<GameObject>>();
     private Dictionary<string, GameObject> object_dic = new Dictionary<string, GameObject>();
+    
+    [SerializeField]
+    private Transform player_transform;
+
+    public Transform Player_Transform
+    {
+        get { return player_transform; }
+    }
 
     private static ObjectPoolingManager instance = null;
     public static ObjectPoolingManager Instance
@@ -46,7 +54,7 @@ public class ObjectPoolingManager : MonoBehaviour
         {
             object_pooling_dic.Add(object_infos[i].key, object_infos[i].queue);
             object_dic.Add(object_infos[i].key, object_infos[i].prefab);
-            
+            Debug.Log("추가된 키: " + object_infos[i].key);
             Initialize(object_infos[i]);
         }
     }
@@ -73,10 +81,16 @@ public class ObjectPoolingManager : MonoBehaviour
             InitDamageTextTransform(ref text);
         }
     }
-
     public GameObject GetObjectFromPoolingQueue(string key)
     {
-        GameObject obj;
+        GameObject obj = null;
+
+        if(object_pooling_dic.ContainsKey(key) == false)
+        {
+            Debug.LogError("Object pooling key is not found.");
+
+            return null;
+        }
 
         if (object_pooling_dic[key].Count > 0)
         {
@@ -102,4 +116,6 @@ public class ObjectPoolingManager : MonoBehaviour
         text.transform.localRotation = prefab.transform.rotation;
         text.transform.localScale = prefab.transform.localScale;
     }
+
+    public MonoBehaviour BorrowMono() { return this; }
 }

@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        
         //player = CreatePlayer();
         SetPlayerToSpawnPoint();
         DontDestroyOnLoad(player);

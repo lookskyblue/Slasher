@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,8 @@ public class Item
     public int str;
     public int def;
     public int hp_recovery_amount;
-    
+    public string effect_pooling_key;
+
     private UnitStats unit_stats;
     public UnitStats Unit_Stats
     {
@@ -47,8 +49,47 @@ public class Item
         Debug.Log("È¸º¹·®: " + hp_recovery_amount);
 
         unit_stats.AcceptUsedPotion(hp_recovery_amount);
-        
+
+        ActiveOnUsingPotionEffect();
+
         return DecreaseItemCnt();
+    }
+
+    void ActiveOnUsingPotionEffect()
+    {
+        if (string.IsNullOrEmpty(effect_pooling_key) == true)
+        {
+            Debug.LogError("Pooling key is not found");
+
+            return;
+        }
+
+        MonoBehaviour temp_mono = ObjectPoolingManager.Instance.BorrowMono();
+        temp_mono.StartCoroutine(ShowUsingPotionEffect(effect_pooling_key));
+    }
+
+    IEnumerator ShowUsingPotionEffect(string key)
+    {
+        GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue(effect_pooling_key);
+        
+        if (obj != null)
+        {
+            ParticleSystem using_potion_particle = obj.GetComponent<ParticleSystem>();
+
+            using_potion_particle.Play();
+
+            float total_time = 0f;
+
+            while(total_time <= 1f)
+            {
+                using_potion_particle.transform.position = ObjectPoolingManager.Instance.Player_Transform.position;
+                total_time += Time.deltaTime;
+                
+                yield return null;
+            }
+
+            ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue(key, obj);
+        }
     }
 
     public Item DeepCopy()
@@ -63,6 +104,7 @@ public class Item
         new_copy.str = this.str;
         new_copy.def = this.def;
         new_copy.hp_recovery_amount = this.hp_recovery_amount;
+        new_copy.effect_pooling_key = this.effect_pooling_key;
 
         return new_copy;
     }

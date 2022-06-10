@@ -61,8 +61,6 @@ public class PlayerMovement : MonoBehaviour
             //player_attack.InitAttackAnimation();
             player_animator.SetBool("is_walk", is_move);
 
-            Debug.Log("·± Ãë¼Ò");
-
             if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("Run") == true &&
                 player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.05f)
                 ;//    player_animator.SetBool("is_walk", is_move);

@@ -21,6 +21,7 @@ MonoBehaviour:
     str: 5
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_01
     item_image: {fileID: 21300000, guid: f9cdd1844b02d4c81989b265d121a78a, type: 3}
@@ -29,6 +30,7 @@ MonoBehaviour:
     str: 10
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_03
     item_image: {fileID: 21300000, guid: bb71197c3cd5f4dc09e7b129399d0048, type: 3}
@@ -37,6 +39,7 @@ MonoBehaviour:
     str: 20
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_13
     item_image: {fileID: 21300000, guid: 69a11d8cb1f7e46718b2f15d0878ae0e, type: 3}
@@ -45,6 +48,7 @@ MonoBehaviour:
     str: 30
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_17
     item_image: {fileID: 21300000, guid: 01c22b6d497e0484db647e3d384dfe67, type: 3}
@@ -53,6 +57,7 @@ MonoBehaviour:
     str: 50
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_16
     item_image: {fileID: 21300000, guid: fcd3983f703124c5f9580c4d3b5a5823, type: 3}
@@ -61,6 +66,7 @@ MonoBehaviour:
     str: 70
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 0
     item_name: SM_Wep_Sword_15
     item_image: {fileID: 21300000, guid: 920510d3994f1469f8f88fd76b9f7277, type: 3}
@@ -69,6 +75,7 @@ MonoBehaviour:
     str: 100
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_06
     item_image: {fileID: 21300000, guid: 85ecb2f1dc34e22468a7dc7ac5d23071, type: 3}
@@ -77,6 +84,7 @@ MonoBehaviour:
     str: 0
     def: 5
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_05
     item_image: {fileID: 21300000, guid: 7ac296aa739462b4a874bf49cb637f2c, type: 3}
@@ -85,6 +93,7 @@ MonoBehaviour:
     str: 0
     def: 10
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_09
     item_image: {fileID: 21300000, guid: e03eed09328f2413d8a7cf2a8e5d1b94, type: 3}
@@ -93,6 +102,7 @@ MonoBehaviour:
     str: 0
     def: 20
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_04
     item_image: {fileID: 21300000, guid: 6007e256ee90b4b0b92980878208f788, type: 3}
@@ -101,6 +111,7 @@ MonoBehaviour:
     str: 0
     def: 30
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_01
     item_image: {fileID: 21300000, guid: 93b24a9c34e5343cfa78e20fb833609a, type: 3}
@@ -109,6 +120,7 @@ MonoBehaviour:
     str: 0
     def: 50
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 1
     item_name: SM_Wep_Shield_03
     item_image: {fileID: 21300000, guid: 5ae8790598aa50a41a56581f5331198e, type: 3}
@@ -117,6 +129,7 @@ MonoBehaviour:
     str: 0
     def: 70
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 3
     item_name: HpPortion1
     item_image: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
@@ -125,6 +138,7 @@ MonoBehaviour:
     str: 0
     def: 0
     hp_recovery_amount: 50
+    effect_pooling_key: HpPotion1
   - item_type: 3
     item_name: MpPortion1
     item_image: {fileID: 21300000, guid: b7f77607c82ea4142a2070c0e37e1756, type: 3}
@@ -133,6 +147,7 @@ MonoBehaviour:
     str: 0
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
   - item_type: 3
     item_name: MpPortion2
     item_image: {fileID: 21300000, guid: 2d7d9ae02b7159843ac7d5ead0f8b89a, type: 3}
@@ -141,3 +156,4 @@ MonoBehaviour:
     str: 0
     def: 0
     hp_recovery_amount: 0
+    effect_pooling_key: 
