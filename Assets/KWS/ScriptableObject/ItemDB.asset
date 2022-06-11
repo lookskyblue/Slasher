@@ -152,4 +152,4 @@ MonoBehaviour:
     def: 0
     hp_recovery_amount: 50
     effect_pooling_key: HpPotion1
-    cool_time: 2.5
+    cool_time: 6
