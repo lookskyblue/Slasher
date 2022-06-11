@@ -91,19 +91,19 @@ public class Unit : MonoBehaviour
     IEnumerator ShowDamageText(float damage)
     {
         //Text text = ObjectPoolingManager.GetDamageText();
-        GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("Damage");
-        Text text = obj.GetComponent<Text>();
+        GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("DamageCanvas");
+        Text text = obj.transform.GetChild(0).GetComponent<Text>();
 
         int i_damage = (int)damage;
 
         text.text = i_damage.ToString();
-        text.transform.SetParent(unit_canvas.transform);
+        obj.transform.SetParent(transform);
 
-        ObjectPoolingManager.Instance.InitDamageTextTransform(ref text);
+        ObjectPoolingManager.Instance.InitDamageTextTransform(ref obj);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
-        ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("Damage", obj);
+        ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("DamageCanvas", obj);
     }
 
     IEnumerator ActiveHitEffect()

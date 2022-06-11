@@ -77,8 +77,7 @@ public class ObjectPoolingManager : MonoBehaviour
 
         if (key.CompareTo("Damage") == 0)
         {
-            Text text = obj.GetComponent<Text>();
-            InitDamageTextTransform(ref text);
+            InitDamageTextTransform(ref obj);
         }
     }
     public GameObject GetObjectFromPoolingQueue(string key)
@@ -108,12 +107,12 @@ public class ObjectPoolingManager : MonoBehaviour
         return obj;
     }
 
-    public void InitDamageTextTransform(ref Text text)
+    public void InitDamageTextTransform(ref GameObject obj)
     {
-        GameObject prefab = object_dic["Damage"];
+        GameObject prefab = object_dic["DamageCanvas"];
 
-        text.transform.localPosition = prefab.transform.position;
-        text.transform.localRotation = prefab.transform.rotation;
-        text.transform.localScale = prefab.transform.localScale;
+        obj.transform.localPosition = prefab.transform.position;
+        obj.transform.localRotation = prefab.transform.rotation;
+        obj.transform.localScale = prefab.transform.localScale;
     }
 }
