@@ -42,6 +42,12 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
         Vector3[] corners = new Vector3[4];
         rect_transform.GetWorldCorners(corners);
+        
+        //for(int i = 0; i < corners.Length; i++)
+        //{
+        //    Debug.Log("i: " + i + ", " + corners[i]);
+        //}
+
         Rect rect = new Rect(0, 0, Screen.width, Screen.height);
 
         int visible_corners_cnt = 0;

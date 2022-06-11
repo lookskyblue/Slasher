@@ -13,6 +13,8 @@ public class InventoryUI : MonoBehaviour
     private Transform slot_holder;
     [SerializeField]
     private InventorySlot[] slots;
+    [SerializeField]
+    private GameObject item_info_ui;
     private void Awake()
     {
         if(instance == null)
@@ -44,6 +46,9 @@ public class InventoryUI : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.I))
         {
             inventory_panel.SetActive(!inventory_panel.activeSelf);
+
+            if (inventory_panel.activeSelf == false)
+                item_info_ui.SetActive(false);
         }
     }
 

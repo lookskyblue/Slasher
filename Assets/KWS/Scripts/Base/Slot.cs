@@ -18,6 +18,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     protected Text item_cnt_text;
     [SerializeField]
     protected Text item_mount_state_text;
+    [SerializeField]
+    protected InteractionUIEvent interaction_ui_event;
 
     private int slot_num;
     public int Slot_Num
@@ -106,11 +108,13 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
 
     public virtual void OnPointerEnter(PointerEventData event_data)
     {
-        Debug.Log("마우스 들어옴");
+        if (item == null) return;
+
+        interaction_ui_event.Show_Item_Info_UI(item, GetComponent<RectTransform>().position);
     }
     public virtual void OnPointerExit(PointerEventData event_data)
     {
-        Debug.Log("마우스 나감");
+        interaction_ui_event.Hide_Item_Info_UI();
     }
 
     protected void UnmountItem(ItemType item_type) // 중요
@@ -137,12 +141,14 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
 
     public virtual void OnBeginDrag(PointerEventData event_data)
     {
-        if (item == null) return;
+        Debug.Log("Begin0");
+
+        if (item == null) { Debug.Log("Begin1"); return; }
         
         if (is_dragging == false && event_data.button == PointerEventData.InputButton.Right)
         {
             drag_and_drop_container.item = null;
-
+            Debug.Log("Begin2");
             return;
         }
 
@@ -155,7 +161,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
 
         is_dragging = true;
 
-        Debug.Log("Begin");
+        Debug.Log("Begin3");
     }
 
     public virtual void OnDrag(PointerEventData event_data)
