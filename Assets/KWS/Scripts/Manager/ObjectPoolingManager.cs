@@ -116,6 +116,4 @@ public class ObjectPoolingManager : MonoBehaviour
         text.transform.localRotation = prefab.transform.rotation;
         text.transform.localScale = prefab.transform.localScale;
     }
-
-    public MonoBehaviour BorrowMono() { return this; }
 }
