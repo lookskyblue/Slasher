@@ -13,6 +13,7 @@ public class InteractionSlotEvent : ScriptableObject
     private Action<int> unmount_sword;
     private Action<int> unmount_shield;
     private Action<KeyCode> unmount_potion;
+    private Action<float> show_cool_time_ui;
     public Action<string, int> Mount_Shield
     {
         get { return mount_shield; }
@@ -45,5 +46,10 @@ public class InteractionSlotEvent : ScriptableObject
     {
         get { return unmount_potion; }
         set { unmount_potion = value; }
+    }
+    public Action<float> ShowCoolTimeUI
+    {
+        get { return show_cool_time_ui; }
+        set { show_cool_time_ui = value; }
     }
 }

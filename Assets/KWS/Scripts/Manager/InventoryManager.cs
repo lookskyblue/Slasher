@@ -106,7 +106,7 @@ public class InventoryManager : MonoBehaviour
                 if (items[i].item_name.Equals(item.item_name) == true &&
                     items[i].is_stackable == true) // 같은 아이템
                 {
-                    items[i].item_cnt++;
+                    items[i].item_cnt += item.item_cnt;
 
                     OnChangedItemCnt.Invoke(item.item_name);
                     return true;

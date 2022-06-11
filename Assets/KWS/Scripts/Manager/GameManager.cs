@@ -56,4 +56,6 @@ public class GameManager : MonoBehaviour
         player.transform.GetChild(0).rotation = player_spawn_position.transform.rotation;
         player.transform.GetChild(1).rotation = player.transform.GetChild(0).rotation;
     }
+
+    public MonoBehaviour BorrowMono() { return this; }
 }

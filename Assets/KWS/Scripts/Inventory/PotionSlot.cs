@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
 public class PotionSlot : Slot
 {
     [SerializeField]
@@ -20,6 +20,8 @@ public class PotionSlot : Slot
 
     [SerializeField]
     private UnitStats unit_stats;
+    [SerializeField]
+    private Image cool_time_ui;
     private void Start()
     {
         default_color = new Color32(255, 255, 255, 255);
@@ -31,6 +33,7 @@ public class PotionSlot : Slot
         base.RemoveSlotUI();
         //item_image.gameObject.SetActive(true); // 이유?
         item_cnt_text.gameObject.SetActive(false);
+        cool_time_ui.gameObject.SetActive(false);
 
         SetDefaultColor();
 
@@ -44,18 +47,39 @@ public class PotionSlot : Slot
         Is_Mount = true;
 
         SetNormalColor();
+        StartCoroutine(UpdateCoolTimeUI());
 
         item.Unit_Stats = unit_stats;
-
         interaction_slot_event.Mount_Potion.Invoke(key_code, ItemUse);
     }
 
     void ItemUse()
     {
-        if(item.Use() != 0)
+        if (item.Use() == 0) return; // 아이템 사용
+
+        StartCoroutine(UpdateCoolTimeUI());
+        UpdateItemCnt(item.item_cnt);
+        InventoryManager.instance.ReportChangedItemCntToInventorySlot(item.item_name);
+    }
+
+    IEnumerator UpdateCoolTimeUI()
+    {
+        if (item.Is_Cool_Time == true)
         {
-            UpdateItemCnt(item.item_cnt);
-            InventoryManager.instance.ReportChangedItemCntToInventorySlot(item.item_name);
+            cool_time_ui.gameObject.SetActive(true);
+
+            float remaining_cool_time = item.Remaining_Cool_Time;
+            float max_cool_time = item.cool_time;
+
+            while(remaining_cool_time < max_cool_time)
+            {
+                remaining_cool_time += Time.deltaTime;
+                cool_time_ui.fillAmount = 1 - remaining_cool_time / max_cool_time;
+
+                yield return null;
+            }
+
+            cool_time_ui.gameObject.SetActive(false);
         }
     }
 

@@ -23,12 +23,21 @@ public class Item
     public int def;
     public int hp_recovery_amount;
     public string effect_pooling_key;
+    public float cool_time;
 
+    private bool is_cool_time = false;
+    public bool Is_Cool_Time { get { return is_cool_time; } }
     private UnitStats unit_stats;
     public UnitStats Unit_Stats
     {
         get { return unit_stats; }
         set { unit_stats = value; }
+    }
+
+    private float remaining_cool_time;
+    public float Remaining_Cool_Time
+    {
+        get { return remaining_cool_time; }
     }
     public int Use()
     {
@@ -46,6 +55,15 @@ public class Item
             return 0;
         }
 
+        if (is_cool_time == true)
+        {
+            Debug.Log("In cool time");
+
+            return 0;
+        }
+
+        DoCoolTime();
+
         Debug.Log("È¸º¹·®: " + hp_recovery_amount);
 
         unit_stats.AcceptUsedPotion(hp_recovery_amount);
@@ -53,6 +71,29 @@ public class Item
         ActiveOnUsingPotionEffect();
 
         return DecreaseItemCnt();
+    }
+
+    void DoCoolTime()
+    {
+        MonoBehaviour mono = GameManager.instance.BorrowMono();
+
+        mono.StartCoroutine(ActiveCoolTime());
+    }
+
+    IEnumerator ActiveCoolTime()
+    {
+        is_cool_time = true;
+
+        remaining_cool_time = 0f;
+
+        while(remaining_cool_time < cool_time)
+        {
+            remaining_cool_time += Time.deltaTime;
+
+            yield return null;
+        }
+     
+        is_cool_time = false;
     }
 
     void ActiveOnUsingPotionEffect()
@@ -64,7 +105,7 @@ public class Item
             return;
         }
 
-        MonoBehaviour temp_mono = ObjectPoolingManager.Instance.BorrowMono();
+        MonoBehaviour temp_mono = GameManager.instance.BorrowMono();
         temp_mono.StartCoroutine(ShowUsingPotionEffect(effect_pooling_key));
     }
 
@@ -91,7 +132,6 @@ public class Item
             ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue(key, obj);
         }
     }
-
     public Item DeepCopy()
     {
         Item new_copy = new Item();
@@ -105,6 +145,8 @@ public class Item
         new_copy.def = this.def;
         new_copy.hp_recovery_amount = this.hp_recovery_amount;
         new_copy.effect_pooling_key = this.effect_pooling_key;
+        new_copy.cool_time = this.cool_time;
+        new_copy.is_cool_time = this.is_cool_time;
 
         return new_copy;
     }
