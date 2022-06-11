@@ -12,6 +12,8 @@ public class PlayerAttack : MonoBehaviour
     private float last_clicked_time = 0f;
     private float max_combo_delay = 1;
     private PlayerMovement player_movement;
+    [SerializeField]
+    private UIActiveGetKeyInput ui_active_get_key_input;
     private void Awake()
     {
         player_animator = GetComponent<Animator>();
@@ -43,6 +45,8 @@ public class PlayerAttack : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition);
+
             Attack();
         }
     }
@@ -54,13 +58,6 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
-        if (InventoryUI.instance.IsActiveInventoryUI() == true)
-        {
-            // 인벤토리 영역 밖을 클릭했다면 인벤토리를 닫아.
-            InventoryUI.instance.CheckClickOutOfInventory(Input.mousePosition);
-            return;
-        }
-
         last_clicked_time = Time.time;
         attack_click_cnt++;
 

@@ -34,24 +34,7 @@ public class InventoryUI : MonoBehaviour
         InventoryManager.instance.OnRemovedItem += OnRemovedItem;
 
         slots = slot_holder.GetComponentsInChildren<InventorySlot>();
-        inventory_panel.SetActive(false);
     }
-    private void Update()
-    {
-        GetToggleInventoryUI();
-    }
-
-    void GetToggleInventoryUI()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            inventory_panel.SetActive(!inventory_panel.activeSelf);
-
-            if (inventory_panel.activeSelf == false)
-                item_info_ui.SetActive(false);
-        }
-    }
-
     void OnSlotCntChange(int value)
     {
         for(int i  = 0; i < slots.Length; i++)
@@ -107,24 +90,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-
     public bool IsActiveInventoryUI() { return inventory_panel.activeSelf; }
-
-    public void CheckClickOutOfInventory(Vector3 mouse_pos) // 매개변수는 Input.mousePosition임
-    {
-        //RectTransform inventory_rect = inventory_panel.GetComponent<RectTransform>();
-        //
-        //if (RectTransformUtility.RectangleContainsScreenPoint(inventory_rect, mouse_pos) == false)
-        //    inventory_panel.SetActive(false);
-
-        RectTransform inventory_rect = inventory_panel.GetComponent<RectTransform>();
-
-        if (inventory_rect.rect.Contains(inventory_rect.InverseTransformPoint(mouse_pos)) == false)
-        {
-            inventory_panel.SetActive(false);
-        }
-    }
-
     void OnRemovedItem(int slot_num)
     {
         for (int i = 0; i < slots.Length; i++)

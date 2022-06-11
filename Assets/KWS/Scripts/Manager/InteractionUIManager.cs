@@ -39,8 +39,6 @@ public class InteractionUIManager : MonoBehaviour
         interaction_event.Show_Acquired_Item_UI = PopUpAcquiredItemUI;
         interaction_event.Show_Item_Info_UI = ShowItemInfoUI;
         interaction_event.Hide_Item_Info_UI = HideItemInfoUI;
-
-        HideItemInfoUI();
     }
     private void PopUpFieldItemGetTextUI(bool value)
     {

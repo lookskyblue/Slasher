@@ -10,24 +10,6 @@ public class FollowingCamera : MonoBehaviour
     [SerializeField]
     private Transform anchor_transform; // 카메라의 기준점
 
-    private bool is_mouse_left_button_down = false;
-
-    private void Update()
-    {
-        GetRotateInput();
-    }
-
-    void GetRotateInput()
-    {
-        if (Input.GetMouseButtonDown(0) == false)
-        {
-            is_mouse_left_button_down = false;
-            return;
-        }
-
-        is_mouse_left_button_down = true;
-    }
-
     private void FixedUpdate()
     {
         RotateCamera();

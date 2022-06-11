@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3abb7e08f020024cba88814ec51c654, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
+  level: 1
+  maxiam_hp: 5000
+  maxiam_str: 1000
+  maxiam_def: 1000
   default_hp: 200
   default_str: 20
   default_def: 5
   total_hp: 200
-  total_str: 40
-  total_def: 20
+  total_str: 20
+  total_def: 5

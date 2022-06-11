@@ -7,6 +7,15 @@ using UnityEngine;
 
 public class UnitStats : ScriptableObject
 {
+    private Action on_level_up;
+    public Action On_Level_Up
+    {
+        get { return on_level_up; }
+        set { on_level_up = value; }
+    }
+
+    [SerializeField]
+    private int level;
     [SerializeField]
     private int maxiam_hp = 5000;
     [SerializeField]
@@ -14,7 +23,6 @@ public class UnitStats : ScriptableObject
     [SerializeField]
     private int maxiam_def = 1000;
 
-    [SerializeField]
     private Action<int> accept_changed_hp;
 
     [SerializeField]
@@ -38,7 +46,6 @@ public class UnitStats : ScriptableObject
     public int Default_Hp { get { return default_hp; } }
     public int Default_Str { get { return default_str; } }
     public int Default_Def { get { return default_def; } }
-
     public int Total_Hp 
     {
         get { return total_hp; }
@@ -74,6 +81,18 @@ public class UnitStats : ScriptableObject
         {
             accept_changed_hp = value;
         }
+    }
+
+    public int GetLevel { get { return level; } }
+    public int LevelUp 
+    {
+        set 
+        {
+            if (30 <= level) return;
+
+            level = value;
+            On_Level_Up.Invoke();
+        } 
     }
 
     public void SetValidHpRange(ref float hp)
