@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHandler, IEndDragHandler, IDropHandler
+public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     protected DragAndDropContainer drag_and_drop_container;
@@ -102,6 +102,15 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                     break;
                 }
         }
+    }
+
+    public virtual void OnPointerEnter(PointerEventData event_data)
+    {
+        Debug.Log("마우스 들어옴");
+    }
+    public virtual void OnPointerExit(PointerEventData event_data)
+    {
+        Debug.Log("마우스 나감");
     }
 
     protected void UnmountItem(ItemType item_type) // 중요
