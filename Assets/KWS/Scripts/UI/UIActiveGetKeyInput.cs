@@ -19,25 +19,32 @@ public class UIActiveGetKeyInput : MonoBehaviour
         ActiveOffAllToggleObj();
     }
 
-    void ActiveOffAllToggleObj()
+    public bool ActiveOffAllToggleObj()
     {
+        int active_off_cnt = 0;
+
         for (int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == true) active_off_cnt++;
             ui_toggle_key_with_obj[i].ui_toggle_obj.SetActive(false);
             CheckHaveInfoUI(i);
         }
+
+        return 0 < active_off_cnt;
     }
-    public void CheckClickOutOfUIs(Vector3 mouse_pos)
+    public bool CheckClickOutOfUIs(Vector3 mouse_pos)
     {
         for(int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == false) continue;
+
             RectTransform rect_transform = ui_toggle_key_with_obj[i].ui_toggle_obj.transform.GetChild(0).GetComponent<RectTransform>();
 
             if (rect_transform.rect.Contains(rect_transform.InverseTransformPoint(mouse_pos)) == true)
-                return;
+                return false;
         }
 
-        ActiveOffAllToggleObj();
+        return true;
     }
     private void Update()
     {
@@ -63,6 +70,16 @@ public class UIActiveGetKeyInput : MonoBehaviour
         {
             ui_toggle_key_with_obj[idx].ui_info_obj.SetActive(false);
         }
+    }
+
+    public bool IsActivedUI()
+    {
+        for(int i = 0; i < ui_toggle_key_with_obj.Length; i++)
+        {
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == true) return true;
+        }
+
+        return false;
     }
 }
 

@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
     private int attack_click_cnt = 0;
     
     private float last_clicked_time = 0f;
-    private float max_combo_delay = 1;
+    private float max_combo_delay = 0.5f;
     private PlayerMovement player_movement;
     [SerializeField]
     private UIActiveGetKeyInput ui_active_get_key_input;
@@ -45,8 +45,20 @@ public class PlayerAttack : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition);
+            if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false)
+            {
+                return; // UI클릭
+            }
+            else // UI 밖 클릭
+            {
+                //1. UI가 하나라도 켜져있을 경우 UI다 끄고 리턴.
+                if (ui_active_get_key_input.ActiveOffAllToggleObj() == true)
+                {
+                    return;
+                }
+            }
 
+            //2. UI가 아무것도 안 켜져있을 경우 어택.
             Attack();
         }
     }
@@ -69,13 +81,17 @@ public class PlayerAttack : MonoBehaviour
 
         attack_click_cnt = Mathf.Clamp(attack_click_cnt, 0, 2);
 
-        if(attack_click_cnt >= 2 && player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0"))
+        if (attack_click_cnt >= 2)
         {
-            player_movement.CheckTurnTiming();
-            //player_animator.SetInteger("attack_phase", 0);
-            player_animator.SetInteger("attack_phase", 2);
+            if (player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0"))
+            {
+                player_animator.SetInteger("attack_phase", 2);
+                player_movement.CheckTurnTiming();
+                attack_click_cnt = 0;
+            }
 
-            attack_click_cnt = 0;
+            else if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == false)
+                attack_click_cnt = 0;
         }
     }
 

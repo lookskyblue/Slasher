@@ -16,8 +16,9 @@ public struct SkillInfo
     public int limit_point;
     public int mp_cost;
     public float cool_time;
-    public string key;
-
+    public string animation_key;
+    public string particle_key;
+    public GameObject hit_area;
 }
 public class SkillBookManager : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class SkillBookManager : MonoBehaviour
     [SerializeField]
     private UnitStats player_stats;
     [SerializeField]
-    private KeyCode skill_book_toggle_key_code;
+    private SkillDragAndDropContainer skill_drag_and_drop_container;
 
     private void Awake()
     {
@@ -49,6 +50,8 @@ public class SkillBookManager : MonoBehaviour
         {
             GameObject skill_obj = Instantiate(skill_prefab, skill_scroll_view_content.transform);
 
+            skill_obj.GetComponent<SkillBookSlot>().Init(skill_info_list[i], skill_drag_and_drop_container);
+            
             Transform skill_obj_background = skill_obj.transform.GetChild(0);
 
             skill_obj_background.GetChild(0).GetComponent<Image>().sprite = skill_info_list[i].icon;
@@ -81,14 +84,6 @@ public class SkillBookManager : MonoBehaviour
             CheckSkillMaster(i);
         }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(skill_book_toggle_key_code))
-        {
-            gameObject.SetActive(!gameObject.activeSelf);
-        }
-    }
-
     void PushSkillUpgradBtn(BaseEventData event_data, int idx)
     {
         if (skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(3).GetComponent<Button>().interactable == false) return;

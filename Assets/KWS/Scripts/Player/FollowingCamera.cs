@@ -10,6 +10,8 @@ public class FollowingCamera : MonoBehaviour
     [SerializeField]
     private Transform anchor_transform; // 카메라의 기준점
 
+    [SerializeField]
+    private UIActiveGetKeyInput ui_active_get_key_input;
     private void FixedUpdate()
     {
         RotateCamera();
@@ -26,7 +28,8 @@ public class FollowingCamera : MonoBehaviour
     }
     void RotateCamera()
     {
-        if (InventoryUI.instance.IsActiveInventoryUI() == true) return;
+        //if (InventoryUI.instance.IsActiveInventoryUI() == true) return;
+        if (ui_active_get_key_input.IsActivedUI() == true) return;
 
         Vector2 mouse_input = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector3 cam_angle = anchor_transform.rotation.eulerAngles;
