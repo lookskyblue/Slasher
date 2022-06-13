@@ -18,7 +18,9 @@ public class SkillInfo
     public float cool_time;
     public string animation_key;
     public string particle_key;
-    public GameObject hit_area;
+    public float during_particle_time;
+    public float damage_ratio;
+    public Collider hit_area;
 
     public override string ToString()
     {

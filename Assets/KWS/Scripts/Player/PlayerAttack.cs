@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour
     private PlayerMovement player_movement;
     [SerializeField]
     private UIActiveGetKeyInput ui_active_get_key_input;
+
     private bool is_mouse_inside_in_skill_slot = false;
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false) return;
             if (is_mouse_inside_in_skill_slot == true) return;
+            if (IsDoingAnotherAnimation() == true) return;
 
             else // UI 밖 클릭
             {
@@ -64,6 +66,12 @@ public class PlayerAttack : MonoBehaviour
             //2. UI가 아무것도 안 켜져있을 경우 어택.
             Attack();
         }
+    }
+    public bool IsDoingAnotherAnimation()
+    {
+        if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true) return true;
+
+        return false;
     }
     public void InitAttackAnimation()
     {

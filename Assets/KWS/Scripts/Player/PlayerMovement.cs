@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
     {
         player_animator = GetComponent<Animator>();
     }
-
     private void Update()
     {
         GetMoveInput();
@@ -44,12 +43,12 @@ public class PlayerMovement : MonoBehaviour
         //StartCoroutine(Move());
         //Move();
     }
-    //IEnumerator Move()
     void Move()
     {
         if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true ||
-            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true)
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true)
                 //yield return null; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
                 return; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
         
