@@ -12,6 +12,18 @@ public class FollowingCamera : MonoBehaviour
 
     [SerializeField]
     private UIActiveGetKeyInput ui_active_get_key_input;
+
+    [SerializeField]
+    private InteractionSlotEvent interaction_slot_event;
+    private bool is_using_skill_slot = false;
+    private void Start()
+    {
+        interaction_slot_event.UsingSkillSlot += UsingSkillSlot;
+    }
+    private void UsingSkillSlot(bool value)
+    {
+        is_using_skill_slot = value;
+    }
     private void FixedUpdate()
     {
         RotateCamera();
@@ -28,7 +40,7 @@ public class FollowingCamera : MonoBehaviour
     }
     void RotateCamera()
     {
-        //if (InventoryUI.instance.IsActiveInventoryUI() == true) return;
+        if (is_using_skill_slot == true) return;
         if (ui_active_get_key_input.IsActivedUI() == true) return;
 
         Vector2 mouse_input = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));

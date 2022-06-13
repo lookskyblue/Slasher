@@ -9,7 +9,7 @@ public class SkillDragAndDropContainer : MonoBehaviour
 
     [SerializeField]
     private Image image;
-    private SkillInfo? skill_info = null;
+    private SkillInfo skill_info = null;
 
     public Image Image
     {
@@ -17,7 +17,7 @@ public class SkillDragAndDropContainer : MonoBehaviour
         set { image = value; }
     }
 
-    public SkillInfo? Skill_Info
+    public SkillInfo Skill_Info
     {
         get { return skill_info; }
         set { skill_info = value; }

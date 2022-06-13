@@ -8,18 +8,22 @@ public class PlayerAttack : MonoBehaviour
     private float fire_gap_time;
     private Animator player_animator;
     private int attack_click_cnt = 0;
-    
     private float last_clicked_time = 0f;
     private float max_combo_delay = 0.5f;
     private PlayerMovement player_movement;
     [SerializeField]
     private UIActiveGetKeyInput ui_active_get_key_input;
+    private bool is_mouse_inside_in_skill_slot = false;
     private void Awake()
     {
         player_animator = GetComponent<Animator>();
         player_movement = GetComponent<PlayerMovement>();
     }
-    //private void Update()
+
+    public void IsMouseInsideInSkillSlots(bool value)
+    {
+        is_mouse_inside_in_skill_slot = value;
+    }
     private void Update()
     { 
         AnimationCheck();
@@ -45,10 +49,9 @@ public class PlayerAttack : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false)
-            {
-                return; // UI클릭
-            }
+            if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false) return;
+            if (is_mouse_inside_in_skill_slot == true) return;
+
             else // UI 밖 클릭
             {
                 //1. UI가 하나라도 켜져있을 경우 UI다 끄고 리턴.

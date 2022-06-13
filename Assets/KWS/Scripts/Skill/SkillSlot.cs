@@ -13,6 +13,8 @@ public class SkillSlot : SkillBookSlot
     private KeyCode key_code;
     [SerializeField]
     private Text key_code_text;
+    [SerializeField]
+    private InteractionSlotEvent interaction_slot_event;
     private void Start()
     {
         InitKeyCodeText();
@@ -23,24 +25,28 @@ public class SkillSlot : SkillBookSlot
         key_code_text.text = key_code_text_str.Substring(key_code_text_str.Length - 1);
     }
 
-    public void UpdateSlotUI(SkillInfo? skill_info) 
+    public void UpdateSlotUI(SkillInfo skill_info) 
     {
         this.skill_info = skill_info;
-        image.sprite = skill_info.Value.icon;
-        
-        // 키 등록
+
+        image.sprite = skill_info.icon;
+        interaction_slot_event.MountSkillSlot.Invoke(key_code, this.skill_info);
     }
 
     public void RemoveSlotUI() 
     {
+        if (skill_info == null) return;
+
         skill_info = null;
         image.sprite = default_image;
 
-        // 키 해제
+        interaction_slot_event.UnmountSkillSlot.Invoke(key_code);
     }
 
     public override void OnPointerUp(PointerEventData event_data)
     {
+        interaction_slot_event.UsingSkillSlot.Invoke(false);
+
         if (event_data.button != PointerEventData.InputButton.Right) return;
         if (skill_info == null) return;
 
@@ -48,38 +54,37 @@ public class SkillSlot : SkillBookSlot
     }
     public override void OnDrop(PointerEventData event_data)
     {
-        if (skill_drag_and_drop_container.Skill_Info == null) return;
+        interaction_slot_event.UsingSkillSlot.Invoke(false);
 
-        SkillInfo ?temp_skill_info = skill_info;
+        if (skill_drag_and_drop_container.Skill_Info == null) return;
+        if (IsValidSkillToRegister(skill_drag_and_drop_container.Skill_Info) == false) return;
+
+        SkillInfo temp_skill_info = skill_info;
 
         if (skill_info != null)
             RemoveSlotUI();
 
-        RemoveAlreadySkillRegistered(skill_drag_and_drop_container.Skill_Info.Value.name);
+        skill_book_manager. RemoveAlreadySkillRegistered(skill_drag_and_drop_container.Skill_Info.name);
         UpdateSlotUI(skill_drag_and_drop_container.Skill_Info);
 
         skill_drag_and_drop_container.Skill_Info = temp_skill_info;
     }
-    void RemoveAlreadySkillRegistered(string skill_name)
+
+    private bool IsValidSkillToRegister(SkillInfo skill_info)
     {
-        Transform parent = this.transform.parent;
-
-        for(int i = 0; i < parent.childCount; i++)
+        if(skill_info.taken_point <= 0)
         {
-            SkillSlot skill_slot = parent.GetChild(i).GetComponent<SkillSlot>();
+            Debug.Log("아직 배우지 않은 스킬입니다.");
 
-            if (skill_slot.GetSkillName().Equals(skill_name) == true)
-            {
-                skill_slot.RemoveSlotUI();
-
-                return;
-            }
+            return false;
         }
+
+        return true;
     }
     public override void OnBeginDrag(PointerEventData event_data)
     {
-        //skill_drag_and_drop_container.Skill_Info = null;
         base.OnBeginDrag(event_data);
+        interaction_slot_event.UsingSkillSlot.Invoke(true);
     }
 
     public override void OnDrag(PointerEventData event_data)
@@ -89,6 +94,8 @@ public class SkillSlot : SkillBookSlot
 
     public override void OnEndDrag(PointerEventData event_data)
     {
+        interaction_slot_event.UsingSkillSlot.Invoke(false);
+
         if (skill_drag_and_drop_container.Skill_Info == null)
         {
             base.OnEndDrag(event_data);
@@ -104,6 +111,8 @@ public class SkillSlot : SkillBookSlot
     {
         if (skill_info == null) return string.Empty;
 
-        return skill_info.Value.name;
+        return skill_info.name;
     }
+
+    public bool IsEmpty() { return skill_info == null; }
 }

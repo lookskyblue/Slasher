@@ -14,6 +14,10 @@ public class InteractionSlotEvent : ScriptableObject
     private Action<int> unmount_shield;
     private Action<KeyCode> unmount_potion;
     private Action<float> show_cool_time_ui;
+    private Action<bool> using_skill_slot;
+    private Action<KeyCode, SkillInfo> mount_skill_slot;
+    private Action<KeyCode> unmount_skill_slot;
+
     public Action<string, int> Mount_Shield
     {
         get { return mount_shield; }
@@ -51,5 +55,23 @@ public class InteractionSlotEvent : ScriptableObject
     {
         get { return show_cool_time_ui; }
         set { show_cool_time_ui = value; }
+    }
+
+    public Action<bool> UsingSkillSlot
+    {
+        get { return using_skill_slot; }
+        set { using_skill_slot = value; }
+    }
+
+    public Action<KeyCode, SkillInfo> MountSkillSlot
+    {
+        get { return mount_skill_slot; }
+        set { mount_skill_slot = value; }
+    }
+
+    public Action<KeyCode> UnmountSkillSlot
+    {
+        get { return unmount_skill_slot; }
+        set { unmount_skill_slot = value; }
     }
 }

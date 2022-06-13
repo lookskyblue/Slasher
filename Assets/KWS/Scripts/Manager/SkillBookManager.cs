@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
-public struct SkillInfo
+public class SkillInfo
 {
     public Sprite icon;
     public string name;
@@ -19,6 +19,18 @@ public struct SkillInfo
     public string animation_key;
     public string particle_key;
     public GameObject hit_area;
+
+    public override string ToString()
+    {
+        string str = string.Empty;
+
+        Debug.Log("Name: " + name);
+        Debug.Log("PossibleLevel: " + possible_level);
+        Debug.Log("taken_point: " + taken_point);
+        Debug.Log("limit_point: " + limit_point);
+
+        return str;
+    }
 }
 public class SkillBookManager : MonoBehaviour
 {
@@ -36,7 +48,9 @@ public class SkillBookManager : MonoBehaviour
     private UnitStats player_stats;
     [SerializeField]
     private SkillDragAndDropContainer skill_drag_and_drop_container;
-
+    [SerializeField]
+    private Transform skill_slots_container;
+    private const int NOT_FOUND = -1;
     private void Awake()
     {
         CreateSkillList();
@@ -50,7 +64,7 @@ public class SkillBookManager : MonoBehaviour
         {
             GameObject skill_obj = Instantiate(skill_prefab, skill_scroll_view_content.transform);
 
-            skill_obj.GetComponent<SkillBookSlot>().Init(skill_info_list[i], skill_drag_and_drop_container);
+            skill_obj.GetComponent<SkillBookSlot>().Init(skill_info_list[i], skill_drag_and_drop_container, this);
             
             Transform skill_obj_background = skill_obj.transform.GetChild(0);
 
@@ -97,7 +111,11 @@ public class SkillBookManager : MonoBehaviour
         }
 
         remaining_skill_point_text.text = (--remaining_skill_point).ToString();
-        skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(2).GetComponent<Text>().text = (++skill_info_list[idx].taken_point).ToString();
+
+        int updated_taken_point = ++skill_info_list[idx].taken_point;
+
+        skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(2).GetComponent<Text>().text = (updated_taken_point).ToString();
+        skill_scroll_view_content.transform.GetChild(idx).GetComponent<SkillBookSlot>().UpdateSkillTakenPoint(updated_taken_point);
 
         CheckSkillMaster(idx);
     }
@@ -107,6 +125,74 @@ public class SkillBookManager : MonoBehaviour
         if (skill_info_list[idx].limit_point <= skill_info_list[idx].taken_point)
         {
             skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(3).GetComponent<Button>().interactable = false;
+        }
+    }
+    
+    public void AddSkill(SkillInfo skill_info)
+    {
+        if (GetIdxOfAlreadySkillRegistered(skill_info.name) != NOT_FOUND) return;
+
+        int idx = GetIdxOfEmptySkillSlot();
+
+        if (idx == NOT_FOUND) AddSkillToSkillSlot(0, skill_info); // 빈 공간이 없다면 제일 스킬슬롯들 중 제일 왼쪽 슬록에 등록
+        else AddSkillToSkillSlot(idx, skill_info);
+    }
+    void AddSkillToSkillSlot(int slot_idx, SkillInfo skill_info)
+    {
+        skill_slots_container.GetChild(slot_idx).GetComponent<SkillSlot>().RemoveSlotUI();
+        skill_slots_container.GetChild(slot_idx).GetComponent<SkillSlot>().UpdateSlotUI(skill_info);
+    }
+
+    private int GetIdxOfAlreadySkillRegistered(string skill_name)
+    {
+        int result = NOT_FOUND;
+
+        for (int i = 0; i < skill_slots_container.childCount; i++)
+        {
+            SkillSlot skill_slot = skill_slots_container.GetChild(i).GetComponent<SkillSlot>();
+
+            if (skill_slot.GetSkillName().Equals(skill_name) == true)
+            {
+                result = i;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private int GetIdxOfEmptySkillSlot()
+    {
+        int result = NOT_FOUND;
+
+        for (int i = 0; i < skill_slots_container.childCount; i++)
+        {
+            SkillSlot skill_slot = skill_slots_container.GetChild(i).GetComponent<SkillSlot>();
+
+            if (skill_slot.IsEmpty() == true)
+            {
+                result = i;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public void RemoveAlreadySkillRegistered(string skill_name)
+    {
+        for (int i = 0; i < skill_slots_container.childCount; i++)
+        {
+            SkillSlot skill_slot = skill_slots_container.GetChild(i).GetComponent<SkillSlot>();
+
+            if (skill_slot.GetSkillName().Equals(skill_name) == true)
+            {
+                skill_slot.RemoveSlotUI();
+
+                return;
+            }
         }
     }
 }

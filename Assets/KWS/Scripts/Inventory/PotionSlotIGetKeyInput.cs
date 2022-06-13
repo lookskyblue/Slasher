@@ -40,11 +40,16 @@ public class PotionSlotIGetKeyInput : MonoBehaviour
 
     private void Update()
     {
+        CheckKeyInput();
+    }
+
+    void CheckKeyInput()
+    {
         if (input_key_dic.Count == 0) return;
 
-        foreach(KeyValuePair<KeyCode, Action> pair in input_key_dic)
+        foreach (KeyValuePair<KeyCode, Action> pair in input_key_dic)
         {
-            if(Input.GetKeyDown(pair.Key) == true)
+            if (Input.GetKeyDown(pair.Key) == true)
             {
                 pair.Value();
                 return;
