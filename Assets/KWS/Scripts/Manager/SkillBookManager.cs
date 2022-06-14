@@ -21,17 +21,41 @@ public class SkillInfo
     public float during_particle_time;
     public float damage_ratio;
     public Collider hit_area;
-
-    public override string ToString()
+    public Transform spawn_transform;
+    private Action on_use_skill_callback;
+    public Action On_Use_Skill_Callback
     {
-        string str = string.Empty;
+        get { return on_use_skill_callback; }
+        set 
+        {
+            Debug.Log("¼Â!");
+            on_use_skill_callback = value; 
+        }
+    }
+    private bool is_cool_time = false;
+    public bool Is_Cool_Time { get { return is_cool_time; } }
+    
+    private float remaining_cool_time = 0f;
+    public float Remaining_Cool_Time { get { return remaining_cool_time; } }
+    public void DoCoolTime()
+    {
+        MonoBehaviour mono = GameManager.instance.BorrowMono();
 
-        Debug.Log("Name: " + name);
-        Debug.Log("PossibleLevel: " + possible_level);
-        Debug.Log("taken_point: " + taken_point);
-        Debug.Log("limit_point: " + limit_point);
+        mono.StartCoroutine(ActiveCoolTime());
+    }
+    IEnumerator ActiveCoolTime()
+    {
+        is_cool_time = true;
+        remaining_cool_time = 0f;
 
-        return str;
+        while(remaining_cool_time < cool_time)
+        {
+            remaining_cool_time += Time.deltaTime;
+
+            yield return null;
+        }
+
+        is_cool_time = false;
     }
 }
 public class SkillBookManager : MonoBehaviour

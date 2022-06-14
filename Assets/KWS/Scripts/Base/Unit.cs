@@ -15,6 +15,10 @@ public class Unit : MonoBehaviour
     [SerializeField]
     protected Image unit_hp_ui;
     [SerializeField]
+    protected GameObject unit_mp_ui_group;
+    [SerializeField]
+    protected Image unit_mp_ui;
+    [SerializeField]
     protected Renderer renderer;
 
     [SerializeField]
@@ -25,7 +29,7 @@ public class Unit : MonoBehaviour
     protected Weapon weapon;
     [SerializeField]
     protected UnitStats unit_stats;
-
+    private float initial_mp;
     protected void Start()
     {
         unit_animation = GetComponent<Animator>();
@@ -39,9 +43,12 @@ public class Unit : MonoBehaviour
 
     void InitUnitStats()
     {
+        unit_stats.On_Change_Mp += OnChangeMp;
         unit_stats.AcceptUsedPotion += AcceptUsedPotion;
 
         unit_stats.Total_Hp  = unit_stats.Default_Hp;
+        unit_stats.Total_Mp  = unit_stats.Default_Mp;
+        initial_mp = unit_stats.Total_Mp;
         unit_stats.Total_Str = unit_stats.Default_Str;
         unit_stats.Total_Def = unit_stats.Default_Def;
 
@@ -59,7 +66,8 @@ public class Unit : MonoBehaviour
         StartCoroutine(ShowHitParticle(hit_pos));
         StartCoroutine(ShowDamageText(damage));
         LoseHp(damage);
-        DrawHpUi();
+        //DrawHpUI();
+        DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
         if (IsDead() == true)
             Dye();
     }
@@ -116,18 +124,36 @@ public class Unit : MonoBehaviour
     {
         unit_now_hp -= damage;
     }
-    void DrawHpUi()
+    void DrawHpUI()
     {
         if (unit_hp_ui_group == null) return;
         if (unit_hp_ui_group.activeSelf == false) return;
 
-        //unit_stats.Total_Hp = (int)unit_now_hp;
-        //unit_now_hp = unit_stats.Total_Hp;
-        
         float ratio = unit_now_hp / unit_stats.Total_Hp;
         float width = unit_hp_ui.GetComponent<RectTransform>().rect.width;
 
-        unit_hp_ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, width - width * ratio, 0f);
+        unit_hp_ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
+    }
+
+    void DrawBarUI(GameObject ui_group, Image ui, float now_value, float total_value)
+    {
+        if (ui_group == null) return;
+        if (ui_group.activeSelf == false) return;
+
+        float ratio = now_value / total_value;
+        float width = ui.GetComponent<RectTransform>().rect.width;
+
+        ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
+    }
+    void DrawMpUI()
+    {
+        if (unit_mp_ui_group == null) return;
+        if (unit_mp_ui_group.activeSelf == false) return;
+
+        float ratio = unit_stats.Total_Mp / initial_mp;
+        float width = unit_mp_ui.GetComponent<RectTransform>().rect.width;
+
+        unit_mp_ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
     }
 
     bool IsDead() // 반납 하기전에 이펙트 효과 제자리로..
@@ -162,11 +188,20 @@ public class Unit : MonoBehaviour
             transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
-    private void AcceptUsedPotion(int hp)
+    private void AcceptUsedPotion(int hp, int mp)
     {
         unit_now_hp += hp;
         unit_stats.SetValidHpRange(ref unit_now_hp);
+        DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
 
-        DrawHpUi();
+        unit_stats.Total_Mp += mp;
+        DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_stats.Total_Mp, initial_mp);
+    }
+
+    private void OnChangeMp(int mp)
+    {
+        unit_stats.Total_Mp += mp;
+        DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_stats.Total_Mp, initial_mp);
+        //DrawMpUI();
     }
 }

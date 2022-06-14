@@ -22,6 +22,7 @@ public class Item
     public int str;
     public int def;
     public int hp_recovery_amount;
+    public int mp_recovery_amount;
     public string effect_pooling_key;
     public float cool_time;
 
@@ -64,9 +65,7 @@ public class Item
 
         DoCoolTime();
 
-        Debug.Log("È¸º¹·®: " + hp_recovery_amount);
-
-        unit_stats.AcceptUsedPotion(hp_recovery_amount);
+        unit_stats.AcceptUsedPotion(hp_recovery_amount, mp_recovery_amount);
 
         ActiveOnUsingPotionEffect();
 
@@ -83,7 +82,6 @@ public class Item
     IEnumerator ActiveCoolTime()
     {
         is_cool_time = true;
-
         remaining_cool_time = 0f;
 
         while(remaining_cool_time < cool_time)
@@ -144,6 +142,7 @@ public class Item
         new_copy.str = this.str;
         new_copy.def = this.def;
         new_copy.hp_recovery_amount = this.hp_recovery_amount;
+        new_copy.mp_recovery_amount = this.mp_recovery_amount;
         new_copy.effect_pooling_key = this.effect_pooling_key;
         new_copy.cool_time = this.cool_time;
         new_copy.is_cool_time = this.is_cool_time;

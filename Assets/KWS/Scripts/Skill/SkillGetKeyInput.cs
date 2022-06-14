@@ -11,7 +11,6 @@ public class SkillGetKeyInput : MonoBehaviour
     private Dictionary<KeyCode, SkillInfo> skill_input_key_dic = new Dictionary<KeyCode, SkillInfo>();
     private Animator player_ani;
     private SkillInfo now_doing_skill = null;
-    private UsingSkillEvent using_skill_event;
     private void Start()
     {
         player_ani = GetComponent<Animator>();
@@ -99,26 +98,49 @@ public class SkillGetKeyInput : MonoBehaviour
             return;
         }
 
+        if (IsSKillAvailability(skill_info) == false)
+        {
+            return;
+        }
+
+        if(skill_info.Is_Cool_Time == true)
+        {
+            Debug.Log("Still Cool Time");
+
+            return;
+        }
+
         now_doing_skill = skill_info;
 
-        Debug.Log("Activate Skill");
-
-        // 0. 발동 가능 조건인지 체크
-        // ex. 마을인지, 다른 스킬 시전중인지, mp 안 부족한지, 피격중인지
-
         PlaySkillAnimation(skill_info.animation_key);
-
-        ConsumeMp();
-        ActiveCoolTime();
+        ConsumeMp(skill_info.mp_cost);
+        
+        skill_info.DoCoolTime();
+        skill_info.On_Use_Skill_Callback.Invoke();
     }
 
-    void ConsumeMp()
+    bool IsSKillAvailability(SkillInfo skill_info)
     {
+        if(player_stats.Total_Mp < skill_info.mp_cost)
+        {
+            Debug.Log("Lack of mana");
 
+            return false;
+        }
+
+        if(player_ani.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true)
+        {
+            Debug.Log("Still in hit animation");
+
+            return false;
+        }
+
+        return true;
     }
-    void ActiveCoolTime()
-    {
 
+    void ConsumeMp(int mp_cost)
+    {
+        player_stats.On_Change_Mp.Invoke(-mp_cost);
     }
 
     void PlaySkillAnimation(string animation_key)
@@ -135,8 +157,8 @@ public class SkillGetKeyInput : MonoBehaviour
         GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue(now_doing_skill.particle_key);
         ParticleSystem particle = obj.GetComponent<ParticleSystem>();
 
-        particle.transform.position = ObjectPoolingManager.Instance.Player_Transform.position;
-        particle.transform.rotation = ObjectPoolingManager.Instance.Player_Transform.rotation;
+        particle.transform.position = now_doing_skill.spawn_transform.position;
+        particle.transform.rotation = now_doing_skill.spawn_transform.rotation;
         particle.Play();
 
         string particle_key = now_doing_skill.particle_key;
@@ -149,15 +171,15 @@ public class SkillGetKeyInput : MonoBehaviour
     {
         Debug.Log("히트 영역 켬");
 
-        now_doing_skill.hit_area.enabled = true;
-        //now_doing_skill.hit_area.gameObject.SetActive(true);
+        //now_doing_skill.hit_area.enabled = true;
+        now_doing_skill.hit_area.gameObject.SetActive(true);
     }
     void DisableHitArea()
     {
         Debug.Log("히트 영역 끔");
 
-        now_doing_skill.hit_area.enabled = false;
-        //now_doing_skill.hit_area.gameObject.SetActive(false);
+        //now_doing_skill.hit_area.enabled = false;
+        now_doing_skill.hit_area.gameObject.SetActive(false);
     }
     void HideSkillParticle(GameObject obj, string particle_key)
     {

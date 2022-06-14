@@ -69,7 +69,11 @@ public class PlayerAttack : MonoBehaviour
     }
     public bool IsDoingAnotherAnimation()
     {
-        if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true) return true;
+        if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("GroundCrack") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Smash") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("CannonShot") == true) 
+            return true;
 
         return false;
     }

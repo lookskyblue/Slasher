@@ -48,7 +48,10 @@ public class PlayerMovement : MonoBehaviour
         if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
-            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true)
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true  ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("GroundCrack") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Smash") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("CannonShot") == true)
                 //yield return null; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
                 return; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
         
@@ -106,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float total_time = 0f;
 
-        yield return new WaitForSeconds(0.35f);
+        //yield return new WaitForSeconds(0.35f);
 
         while (total_time < 1)
         {

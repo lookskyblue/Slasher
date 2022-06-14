@@ -19,14 +19,19 @@ public class UnitStats : ScriptableObject
     [SerializeField]
     private int maxiam_hp = 5000;
     [SerializeField]
+    private int maxiam_mp = 3000;
+    [SerializeField]
     private int maxiam_str = 1000;
     [SerializeField]
     private int maxiam_def = 1000;
 
-    private Action<int> accept_changed_hp;
+    private Action<int, int> accept_changed_hp;
+    private Action<int> on_change_mp;
 
     [SerializeField]
     private int default_hp = 200;
+    [SerializeField]
+    private int default_mp = 150;
 
     [SerializeField]
     private int default_str = 20;
@@ -38,12 +43,16 @@ public class UnitStats : ScriptableObject
     private int total_hp;
 
     [SerializeField]
+    private int total_mp;
+
+    [SerializeField]
     private int total_str;
 
     [SerializeField]
     private int total_def;
 
     public int Default_Hp { get { return default_hp; } }
+    public int Default_Mp { get { return default_mp; } }
     public int Default_Str { get { return default_str; } }
     public int Default_Def { get { return default_def; } }
     public int Total_Hp 
@@ -53,6 +62,15 @@ public class UnitStats : ScriptableObject
         {
             total_hp = value;
             total_hp = Mathf.Clamp(total_hp, 0, maxiam_hp);
+        }
+    }
+    public int Total_Mp
+    {
+        get { return total_mp; }
+        set
+        {
+            total_mp = value;
+            total_mp = Mathf.Clamp(total_mp, 0, maxiam_mp);
         }
     }
     public int Total_Str 
@@ -74,12 +92,21 @@ public class UnitStats : ScriptableObject
             total_def = Mathf.Clamp(total_def, 0, maxiam_def);
         }
     }
-    public Action<int> AcceptUsedPotion
+    public Action<int, int> AcceptUsedPotion
     {
         get { return accept_changed_hp; }
         set 
         {
             accept_changed_hp = value;
+        }
+    }
+
+    public Action<int> On_Change_Mp
+    {
+        get { return on_change_mp; }
+        set 
+        {
+            on_change_mp = value;
         }
     }
 

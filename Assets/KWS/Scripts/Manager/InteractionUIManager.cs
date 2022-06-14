@@ -30,6 +30,8 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField]
     private Text item_hp_recovery_amount_text;
     [SerializeField]
+    private Text item_mp_recovery_amount_text;
+    [SerializeField]
     private Text item_cool_time_text;
     #endregion
     
@@ -107,13 +109,15 @@ public class InteractionUIManager : MonoBehaviour
         item_name_text.text = "아이템명" + "\n" + item.item_name;
         item_str_text.text = "공격력: " + item.str.ToString();
         item_def_text.text = "방어력: " + item.def.ToString();
-        item_hp_recovery_amount_text.text = "회복량: " + item.hp_recovery_amount.ToString();
+        item_hp_recovery_amount_text.text = "체력 회복량: " + item.hp_recovery_amount.ToString();
+        item_mp_recovery_amount_text.text = "마나 회복량: " + item.mp_recovery_amount.ToString();
         item_cool_time_text.text = "재사용 대기시간: " + item.cool_time.ToString() + "초";
 
         // 수치가 0인 아이템 정보는 표기할 필요 없음.
         item_str_text.gameObject.SetActive(item.str != 0);
         item_def_text.gameObject.SetActive(item.def != 0);
         item_hp_recovery_amount_text.gameObject.SetActive(item.hp_recovery_amount != 0);
+        item_mp_recovery_amount_text.gameObject.SetActive(item.mp_recovery_amount != 0);
         item_cool_time_text.gameObject.SetActive(item.cool_time != 0);
     }
     private void HideItemInfoUI()

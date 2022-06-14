@@ -15,6 +15,8 @@ public class SkillSlot : SkillBookSlot
     private Text key_code_text;
     [SerializeField]
     private InteractionSlotEvent interaction_slot_event;
+    [SerializeField]
+    private Image cool_time_ui;
     private void Start()
     {
         InitKeyCodeText();
@@ -28,21 +30,45 @@ public class SkillSlot : SkillBookSlot
     public void UpdateSlotUI(SkillInfo skill_info) 
     {
         this.skill_info = skill_info;
+        this.skill_info.On_Use_Skill_Callback = OnSkillInputCallback;
 
         image.sprite = skill_info.icon;
         interaction_slot_event.MountSkillSlot.Invoke(key_code, this.skill_info);
     }
-
     public void RemoveSlotUI() 
     {
         if (skill_info == null) return;
 
+        skill_info.On_Use_Skill_Callback = null;
         skill_info = null;
         image.sprite = default_image;
 
         interaction_slot_event.UnmountSkillSlot.Invoke(key_code);
     }
+    public void OnSkillInputCallback()
+    {
+        StartCoroutine(UpdateCoolTimeUI());
+    }
+    IEnumerator UpdateCoolTimeUI()
+    {
+        if(skill_info.Is_Cool_Time == true)
+        {
+            cool_time_ui.gameObject.SetActive(true);
 
+            float remaining_cool_time = skill_info.Remaining_Cool_Time;
+            float max_cool_time = skill_info.cool_time;
+
+            while(remaining_cool_time < max_cool_time)
+            {
+                remaining_cool_time += Time.deltaTime;
+                cool_time_ui.fillAmount = 1 - remaining_cool_time / max_cool_time;
+
+                yield return null;
+            }
+
+            cool_time_ui.gameObject.SetActive(false);
+        }
+    }
     public override void OnPointerUp(PointerEventData event_data)
     {
         interaction_slot_event.UsingSkillSlot.Invoke(false);
