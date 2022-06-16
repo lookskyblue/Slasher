@@ -11,6 +11,9 @@ public class SkillGetKeyInput : MonoBehaviour
     private Dictionary<KeyCode, SkillInfo> skill_input_key_dic = new Dictionary<KeyCode, SkillInfo>();
     private Animator player_ani;
     private SkillInfo now_doing_skill = null;
+    [SerializeField]
+    private PlayerAttack player_attack;
+
     private void Start()
     {
         player_ani = GetComponent<Animator>();
@@ -20,8 +23,6 @@ public class SkillGetKeyInput : MonoBehaviour
 
     void AddSkillKey(KeyCode key_code, SkillInfo skill_info)
     {
-        Debug.Log("Add Skill");
-
         if (skill_info == null) return;
         
         if(skill_input_key_dic.ContainsKey(key_code) == true)
@@ -111,6 +112,9 @@ public class SkillGetKeyInput : MonoBehaviour
         }
 
         now_doing_skill = skill_info;
+
+        player_attack.StopAndAttackReset();
+        StartCoroutine(player_attack.ResetAttackAndIdlePhase());
 
         PlaySkillAnimation(skill_info.animation_key);
         ConsumeMp(skill_info.mp_cost);

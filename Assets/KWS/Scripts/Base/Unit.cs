@@ -80,7 +80,6 @@ public class Unit : MonoBehaviour
 
     public virtual void DamagedAnimation()
     {
-        return;
         // 해당 애니메이션이 있다는 조건 있어야 함.
         unit_animation.SetBool("IsDamaged", true);
         
@@ -98,9 +97,8 @@ public class Unit : MonoBehaviour
 
         ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("HitParticle", obj);
     }
-    IEnumerator ShowDamageText(float damage)
+    public virtual IEnumerator ShowDamageText(float damage)
     {
-        //Text text = ObjectPoolingManager.GetDamageText();
         GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("DamageCanvas");
         Text text = obj.transform.GetChild(0).GetComponent<Text>();
 
@@ -185,9 +183,9 @@ public class Unit : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") == true || collision.gameObject.CompareTag("Monster") == true)
         {
-            Debug.Log("가속도 제로");
-            collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //Debug.Log("가속도 제로");
+            //collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            //transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
     private void AcceptUsedPotion(int hp, int mp)

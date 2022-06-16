@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Unit
 {
@@ -22,5 +23,22 @@ public class Player : Unit
 
         base.DamagedAnimation();
         //if(unit_animation.GetCurrentAnimatorStateInfo(0).IsName)
+    }
+
+    public override IEnumerator ShowDamageText(float damage)
+    {
+        GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("DamageCanvasPlayer");
+        Text text = obj.transform.GetChild(0).GetComponent<Text>();
+
+        int i_damage = (int)damage;
+
+        text.text = i_damage.ToString();
+        obj.transform.SetParent(transform);
+
+        ObjectPoolingManager.Instance.InitDamageTextTransform(ref obj);
+
+        yield return new WaitForSeconds(1f);
+
+        ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("DamageCanvasPlayer", obj);
     }
 }

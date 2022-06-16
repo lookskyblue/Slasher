@@ -26,11 +26,11 @@ public class FollowingCamera : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        RotateCamera();
     }
 
     private void LateUpdate()
     {
+        RotateCamera();
         FollowingCameraToCharacter();
     }
 

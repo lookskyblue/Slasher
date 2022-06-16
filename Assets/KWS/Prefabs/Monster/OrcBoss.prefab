@@ -3246,7 +3246,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: ca2f9b4beeab1004487157c5404f215d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -3264,7 +3264,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -3298,10 +3298,13 @@ MonoBehaviour:
   unit_canvas: {fileID: 8947491849410240476}
   unit_hp_ui_group: {fileID: 8947491848732954824}
   unit_hp_ui: {fileID: 8947491847975338022}
+  unit_mp_ui_group: {fileID: 0}
+  unit_mp_ui: {fileID: 0}
   renderer: {fileID: 9065007006815998365}
   change_color: {r: 1, g: 0, b: 0, a: 0}
   weapon: {fileID: 4407455954187893127}
   unit_stats: {fileID: 11400000, guid: e9f590577115dfe45a0dff30e35226ea, type: 2}
+  attack_delay: 0
 --- !u!114 &6549687415351569598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3328,7 +3331,7 @@ NavMeshAgent:
   m_Acceleration: 500
   avoidancePriority: 0
   m_AngularSpeed: 4000
-  m_StoppingDistance: 2
+  m_StoppingDistance: 5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

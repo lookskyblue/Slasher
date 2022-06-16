@@ -14,6 +14,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private UIActiveGetKeyInput ui_active_get_key_input;
     private bool is_mouse_inside_in_skill_slot = false;
+    private bool is_doing_attack_stop_cor;
+    public bool Is_Doing_Attack_Stop_Cor { get { return is_doing_attack_stop_cor; } }
     private void Awake()
     {
         player_animator = GetComponent<Animator>();
@@ -133,7 +135,11 @@ public class PlayerAttack : MonoBehaviour
         if (
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true ||
-            player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack2") == true)
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack2") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Skill1") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("GroundCrack") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("Smash") == true ||
+            player_animator.GetCurrentAnimatorStateInfo(0).IsName("CannonShot") == true)
             return;
 
         player_animator.SetInteger("attack_phase", 1);
@@ -143,19 +149,14 @@ public class PlayerAttack : MonoBehaviour
 
     IEnumerator AllowNextAttack(int next_attack_phase)
     {
-        Debug.Log("@ 코루틴 최초 진입 @");
-
         float total_time = 0f;
 
         while(total_time < 0.7f)
         {
             total_time += Time.deltaTime;
-            Debug.Log("@ 코루틴 중 @");
 
             if(Input.GetMouseButtonDown(0) == true)
             {
-                Debug.Log("다음 공격: " + next_attack_phase);
-
                 player_animator.SetInteger("attack_phase", next_attack_phase);
                 player_movement.CheckTurnTiming();
 
@@ -166,10 +167,9 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    public bool is_doing_cor;
     IEnumerator StopNowAttackAnimation(int now_attack_phase)
     {
-        is_doing_cor = true;
+        is_doing_attack_stop_cor = true;
         Debug.Log("Stop now motion");
         
         player_animator.SetInteger("attack_phase", 0);
@@ -184,7 +184,7 @@ public class PlayerAttack : MonoBehaviour
         yield return null;
         player_animator.SetInteger("attack_to_idle", 0);
 
-        is_doing_cor = false;
+        is_doing_attack_stop_cor = false;
     }
 
     void ResetAttackPhase() 
@@ -202,6 +202,23 @@ public class PlayerAttack : MonoBehaviour
         StopAllCoroutines();
         //SetAttackPhaseToZero();
         //player_animator.SetInteger("attack_to_idle", 2);
+    }
+
+    public IEnumerator ResetAttackAndIdlePhase()
+    {
+        Debug.Log("Hello World");
+        //ResetAttackPhase();
+        //player_animator.SetInteger("attack_to_idle", 0);
+
+        for (int i = 1; i < 4; i++)
+        {
+            //while (is_doing_attack_stop_cor == true)
+            {
+                Debug.Log("i: " + i);
+                StartCoroutine(StopNowAttackAnimation(i));
+                yield return null;
+            }
+        }
     }
 }
 

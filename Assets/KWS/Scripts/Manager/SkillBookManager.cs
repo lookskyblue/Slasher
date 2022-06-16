@@ -29,7 +29,6 @@ public class SkillInfo
         get { return on_use_skill_callback; }
         set 
         {
-            Debug.Log("¼Â!");
             on_use_skill_callback = value; 
         }
     }

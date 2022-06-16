@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
         player_animator.SetBool("is_walk", is_move);
 
-        if (player_attack.is_doing_cor == true) return;
+        if (player_attack.Is_Doing_Attack_Stop_Cor == true) return;
 
         player_attack.StopAndAttackReset();
 

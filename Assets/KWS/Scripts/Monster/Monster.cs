@@ -9,21 +9,33 @@ public class Monster : Unit
     private Action<bool> death_callback;
     private bool is_main_boss;
     private Transform target_transform;
+    [SerializeField]
+    private float attack_delay;
+    private Coroutine is_doing_attack_motion_cor = null;
+    private Coroutine is_doing_follow_cor = null;
     private void Start()
     {
         base.Start();
 
         nav_mesh_agent = GetComponent<NavMeshAgent>();
 
-        GetComponent<TriggerCallback>().collision_stay_event = FollowToPlayer;
+        GetComponent<TriggerCallback>().collision_enter_event = FollowToPlayer;
         GetComponent<TriggerCallback>().collision_exit_event = (Collider) =>
         {
+            Debug.Log("ÅðÀå");
+
+            if (is_doing_follow_cor != null)
+            {
+                StopCoroutine(is_doing_follow_cor);
+                is_doing_follow_cor = null;
+            }
+
             nav_mesh_agent.enabled = false;
             unit_animation.SetBool("IsRun", false);
             unit_animation.SetBool("IsAttack", false);
         };
         
-        GetComponent<TriggerCallback>().collision_stay_event = FollowToPlayer;
+        //GetComponent<TriggerCallback>().collision_stay_event = FollowToPlayer;
         InstancingMaterial();
     }
     public void Init(Action<bool> death_callback, bool is_main_boss)
@@ -63,45 +75,90 @@ public class Monster : Unit
     }
     void FollowToPlayer(Collider collider)
     {
-        return;
+        if (is_doing_follow_cor != null) return;
+        if (collider.gameObject.CompareTag("Player") == false) return;
 
-        if (collider.gameObject.CompareTag("Player") == true)
+        is_doing_follow_cor = StartCoroutine(Follow(collider));
+    }
+
+    IEnumerator Follow(Collider collider)
+    {
+        Debug.Log("4");
+
+        target_transform = collider.transform;
+        nav_mesh_agent.enabled = true;
+
+        while (true)
         {
-            target_transform = collider.transform;
-            nav_mesh_agent.enabled = true;
-
-            if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack") == false &&
-                unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == false)
-                nav_mesh_agent.SetDestination(collider.transform.GetChild(0).position);
+            Debug.Log("5");
 
             float distance = Vector3.Distance(transform.position, collider.transform.GetChild(0).position);
 
-            if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true)
-                return;
-
-            if (distance <= nav_mesh_agent.stoppingDistance)
+            if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == false)
             {
-                //Debug.Log("µµÂø");
-                nav_mesh_agent.isStopped = true;
-                nav_mesh_agent.updatePosition = false;
-                nav_mesh_agent.updateRotation = false;
+                if (distance <= nav_mesh_agent.stoppingDistance)
+                {
+                    nav_mesh_agent.isStopped = true;
+                    nav_mesh_agent.updatePosition = false;
+                    nav_mesh_agent.updateRotation = false;
 
-                unit_animation.SetBool("IsRun", false);
-                unit_animation.SetBool("IsAttack", true);
+                    if (is_doing_attack_motion_cor == null)
+                    {
+                        unit_animation.SetBool("IsRun", false);
+
+                        is_doing_attack_motion_cor = StartCoroutine(OnAttackMotion());
+                    }
+                }
+
+                else
+                {
+                    nav_mesh_agent.isStopped = false;
+                    nav_mesh_agent.updatePosition = true;
+                    nav_mesh_agent.updateRotation = true;
+                    nav_mesh_agent.velocity = Vector3.zero;
+
+                    if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack") == false &&
+                        unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == false)
+                    {
+                        yield return nav_mesh_agent.SetDestination(collider.transform.GetChild(0).position);
+                        unit_animation.SetBool("IsRun", true);
+                    }
+                }
             }
 
-            else
-            {
-                // Debug.Log("ºñ µµÂø dist: " + distance);
-                nav_mesh_agent.isStopped = false;
-                nav_mesh_agent.updatePosition = true;
-                nav_mesh_agent.updateRotation = true; 
-                nav_mesh_agent.velocity = Vector3.zero;
-
-                unit_animation.SetBool("IsAttack", false);
-                unit_animation.SetBool("IsRun", true);
-            }
+            yield return null;
         }
+
+        is_doing_follow_cor = null;
+    }
+
+    IEnumerator OnAttackMotion()
+    {
+        float total_time = 0f;
+
+        while (total_time < attack_delay)
+        {
+            total_time += Time.deltaTime;
+            yield return null;
+        }
+
+        unit_animation.SetBool("IsAttack", true);
+
+        yield return null;
+
+        while (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack") == true)
+        {
+            yield return null;
+        }
+
+        is_doing_attack_motion_cor = null;
+    }
+
+    void OffAttackMotion()
+    {
+        Debug.Log("Off");
+
+        unit_animation.SetBool("IsAttack", false);
     }
 
     private void LookAtPlayerEvent()
