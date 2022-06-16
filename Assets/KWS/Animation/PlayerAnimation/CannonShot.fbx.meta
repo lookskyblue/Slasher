@@ -59,28 +59,28 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.26728112
+      - time: 0.39526376
         functionName: ShowSkillParticle
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.46847335
+      - time: 0.5227033
         functionName: EnableHitArea
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5491185
+      - time: 0.59901005
         functionName: DisableHitArea
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6522513
+      - time: 0.7303424
         functionName: StopSkillAnimation
         data: 
         objectReferenceParameter: {instanceID: 0}

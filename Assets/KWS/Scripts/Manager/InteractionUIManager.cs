@@ -13,10 +13,10 @@ public class InteractionUIManager : MonoBehaviour
     private GameObject acquired_item_ui_group;
     [SerializeField]
     private Image acquired_item_image_ui;
-    [SerializeField]
-    private GameObject item_info_ui_group;
 
     #region 아이템 리스트
+    [SerializeField]
+    private GameObject item_info_ui_group;
     [SerializeField]
     private Image item_image;
     [SerializeField]
@@ -34,13 +34,40 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField]
     private Text item_cool_time_text;
     #endregion
-    
+
+    #region 스킬 리스트
+    [SerializeField]
+    private GameObject skill_info_ui_group;
+    [SerializeField]
+    private Image skill_image;
+    [SerializeField]
+    private Text skill_name_text;
+    [SerializeField]
+    private Text skill_possible_level_text;
+    [SerializeField]
+    private Text skill_cool_time_text;
+    [SerializeField]
+    private Text skill_mp_cost_text;
+    [SerializeField]
+    private Text skill_taken_point_text;
+    [SerializeField]
+    private Text skill_limit_point_text;
+    [SerializeField]
+    private Text skill_explain_text;
+    [SerializeField]
+    private Text skill_damage_text;
+    #endregion
+
     private void Start()
     {
         interaction_event.Get_Field_Item_Text_UI = PopUpFieldItemGetTextUI;
         interaction_event.Show_Acquired_Item_UI = PopUpAcquiredItemUI;
+        
         interaction_event.Show_Item_Info_UI = ShowItemInfoUI;
         interaction_event.Hide_Item_Info_UI = HideItemInfoUI;
+
+        interaction_event.Show_Skill_Info_UI = ShowSkillInfoUI;
+        interaction_event.Hide_Skill_Info_UI = HideSkillInfoUI;
     }
     private void PopUpFieldItemGetTextUI(bool value)
     {
@@ -87,16 +114,7 @@ public class InteractionUIManager : MonoBehaviour
 
     private void ShowItemInfoUI(Item item, Vector3 mouse_position)
     {
-        item_info_ui_group.SetActive(true);
-        
-        RectTransform rect_transform = item_info_ui_group.transform.GetChild(0).GetComponent<RectTransform>();
-        Rect rect = rect_transform.rect;
-
-        float offset_x = (rect.width / 2) * rect_transform.localScale.x;
-        float offset_y = (rect.height / 2) * rect_transform.localScale.y;
-
-        item_info_ui_group.transform.GetChild(0).position = mouse_position - new Vector3(offset_x, offset_y, 0); // 정보창 ui 기준 좌측 하단으로 ui 펼침
-        item_info_ui_group.transform.GetChild(0).position = GetFullyVisibleItemInfoUIZone(rect_transform, offset_x, offset_y);
+        SetInfoUIPosition(item_info_ui_group, mouse_position);
 
         item_image.sprite = item.item_image;
         item_image.SetNativeSize();
@@ -120,8 +138,48 @@ public class InteractionUIManager : MonoBehaviour
         item_mp_recovery_amount_text.gameObject.SetActive(item.mp_recovery_amount != 0);
         item_cool_time_text.gameObject.SetActive(item.cool_time != 0);
     }
+
+    private void SetInfoUIPosition(GameObject info_ui_group, Vector3 mouse_position)
+    {
+        info_ui_group.SetActive(true);
+
+        RectTransform rect_transform = info_ui_group.transform.GetChild(0).GetComponent<RectTransform>();
+        Rect rect = rect_transform.rect;
+
+        float offset_x = (rect.width / 2) * rect_transform.localScale.x;
+        float offset_y = (rect.height / 2) * rect_transform.localScale.y;
+
+        info_ui_group.transform.GetChild(0).position = mouse_position - new Vector3(offset_x, offset_y, 0); // 정보창 ui 기준 좌측 하단으로 ui 펼침
+        info_ui_group.transform.GetChild(0).position = GetFullyVisibleItemInfoUIZone(rect_transform, offset_x, offset_y);
+    }
     private void HideItemInfoUI()
     {
         item_info_ui_group.SetActive(false);
+    }
+
+    private void ShowSkillInfoUI(SkillInfo skill_info, Vector3 mouse_position)
+    {
+        SetInfoUIPosition(skill_info_ui_group, mouse_position);
+
+        skill_image.sprite = skill_info.icon;
+        //skill_image.SetNativeSize();
+
+        skill_name_text.text = skill_info.name;
+        skill_possible_level_text.text = "LV: " + skill_info.possible_level.ToString();
+        skill_cool_time_text.text = "재사용 대기시간: " + skill_info.cool_time.ToString() + "초";
+        skill_mp_cost_text.text = "마나 소모량: " + skill_info.mp_cost.ToString();
+        //skill_taken_point_text.text = "현재 포인트: " + skill_info.taken_point.ToString();
+        skill_taken_point_text.text = "Point: (" + skill_info.taken_point + "/" + skill_info.limit_point + ")";
+        //skill_limit_point_text.text = "마스터 포인트: " + skill_info.limit_point.ToString();
+        skill_damage_text.text = "공격력의 " + ((int)(skill_info.damage_ratio * 100)).ToString() + "%";
+        skill_explain_text.text = skill_info.explain.ToString();
+
+        skill_mp_cost_text.gameObject.SetActive(skill_info.mp_cost != 0);
+        skill_damage_text.gameObject.SetActive(skill_info.damage_ratio != 0f);
+    }
+
+    private void HideSkillInfoUI()
+    {
+        skill_info_ui_group.SetActive(false);
     }
 }

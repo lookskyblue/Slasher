@@ -22,6 +22,7 @@ public class SkillInfo
     public float damage_ratio;
     public Collider hit_area;
     public Transform spawn_transform;
+    public string explain;
     private Action on_use_skill_callback;
     public Action On_Use_Skill_Callback
     {
@@ -76,6 +77,9 @@ public class SkillBookManager : MonoBehaviour
     private SkillDragAndDropContainer skill_drag_and_drop_container;
     [SerializeField]
     private Transform skill_slots_container;
+    [SerializeField]
+    private InteractionUIEvent interaction_ui_event;
+
     private const int NOT_FOUND = -1;
     private void Awake()
     {
@@ -90,7 +94,7 @@ public class SkillBookManager : MonoBehaviour
         {
             GameObject skill_obj = Instantiate(skill_prefab, skill_scroll_view_content.transform);
 
-            skill_obj.GetComponent<SkillBookSlot>().Init(skill_info_list[i], skill_drag_and_drop_container, this);
+            skill_obj.GetComponent<SkillBookSlot>().Init(skill_info_list[i], skill_drag_and_drop_container, this, interaction_ui_event);
             
             Transform skill_obj_background = skill_obj.transform.GetChild(0);
 

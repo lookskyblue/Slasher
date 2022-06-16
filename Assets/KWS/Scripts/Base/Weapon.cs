@@ -59,6 +59,11 @@ namespace KWSWeapon
         {
             melee_area.enabled = false;
             trail_effect.enabled = false;
+
+            float tmp = trail_effect.time;
+            
+            trail_effect.time = 0;
+            trail_effect.time = tmp;
         }
     }
 }

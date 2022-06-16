@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SkillBookSlot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class SkillBookSlot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     protected SkillDragAndDropContainer skill_drag_and_drop_container;
@@ -11,6 +11,8 @@ public class SkillBookSlot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler
     protected bool is_dragging = false;
     [SerializeField]
     protected SkillBookManager skill_book_manager;
+    [SerializeField]
+    protected InteractionUIEvent interaction_ui_event;
 
     public virtual void OnBeginDrag(PointerEventData event_data)
     {
@@ -51,11 +53,12 @@ public class SkillBookSlot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler
 
         skill_book_manager.AddSkill(skill_info);
     }
-    public void Init(SkillInfo skill_info, SkillDragAndDropContainer container, SkillBookManager skill_book_manager)
+    public void Init(SkillInfo skill_info, SkillDragAndDropContainer container, SkillBookManager skill_book_manager, InteractionUIEvent interaction_ui_event)
     {
         this.skill_info = skill_info;
         this.skill_drag_and_drop_container = container;
         this.skill_book_manager = skill_book_manager;
+        this.interaction_ui_event = interaction_ui_event;
     }
     private bool IsValidSkillToRegister()
     {
@@ -72,4 +75,17 @@ public class SkillBookSlot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler
     {
         skill_info.taken_point = updated_taken_point;
     }
+
+    public virtual void OnPointerEnter(PointerEventData event_data)
+    {
+        if (skill_info == null) return;
+
+        interaction_ui_event.Show_Skill_Info_UI(skill_info, GetComponent<RectTransform>().position);
+    }
+
+    public virtual void OnPointerExit(PointerEventData event_data)
+    {
+        interaction_ui_event.Hide_Skill_Info_UI();
+    }
+
 }
