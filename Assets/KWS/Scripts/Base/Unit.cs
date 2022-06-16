@@ -78,10 +78,12 @@ public class Unit : MonoBehaviour
         if (damage <= 0) damage = 0;
     }
 
-    void DamagedAnimation()
+    public virtual void DamagedAnimation()
     {
+        return;
         // 해당 애니메이션이 있다는 조건 있어야 함.
         unit_animation.SetBool("IsDamaged", true);
+        
     }
 
     IEnumerator ShowHitParticle(Vector3 hit_pos)

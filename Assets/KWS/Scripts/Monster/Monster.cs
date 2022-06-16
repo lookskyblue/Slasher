@@ -63,6 +63,8 @@ public class Monster : Unit
     }
     void FollowToPlayer(Collider collider)
     {
+        return;
+
         if (collider.gameObject.CompareTag("Player") == true)
         {
             target_transform = collider.transform;

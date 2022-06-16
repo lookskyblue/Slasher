@@ -55,24 +55,22 @@ public class PlayerMovement : MonoBehaviour
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("CannonShot") == true)
                 //yield return null; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
                 return; // 공격 및 피격 애니메이션 중일 때는 뛰기 불가.
-        
+
         //move_input = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
 
         bool is_move = move_input.magnitude != 0;
 
         if (is_move == false)
         {
-            //player_attack.InitAttackAnimation();
             player_animator.SetBool("is_walk", is_move);
-
-            if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("Run") == true &&
-                player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.05f)
-                ;//    player_animator.SetBool("is_walk", is_move);
 
             return;
         }
 
         player_animator.SetBool("is_walk", is_move);
+
+        if (player_attack.is_doing_cor == true) return;
+
         player_attack.StopAndAttackReset();
 
         if (is_move)

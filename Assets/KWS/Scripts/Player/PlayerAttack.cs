@@ -25,15 +25,19 @@ public class PlayerAttack : MonoBehaviour
         is_mouse_inside_in_skill_slot = value;
     }
     private void Update()
-    { 
+    {
         AnimationCheck();
     }
 
     void AnimationCheck()
     {
+        if (player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.2f && player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true)
+            player_animator.SetInteger("attack_phase", 0);
+
         if (player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f && player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true)
         {
-            SetAttackPhaseToZero();
+            player_animator.SetInteger("attack_phase", 0);
+            player_animator.SetInteger("attack_to_idle", 1);
         }
 
         if (player_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true)
@@ -84,12 +88,6 @@ public class PlayerAttack : MonoBehaviour
 
         return false;
     }
-    public void InitAttackAnimation()
-    {
-        SetAttackPhaseToZero();
-        attack_click_cnt = 0;
-    }
-
     void Attack()
     {
         last_clicked_time = Time.time;
@@ -138,12 +136,15 @@ public class PlayerAttack : MonoBehaviour
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack2") == true)
             return;
 
-            player_animator.SetInteger("attack_phase", 1);
-     //       is_attack_phase_reset = false;
+        player_animator.SetInteger("attack_phase", 1);
+
+        //       is_attack_phase_reset = false;
     }
 
     IEnumerator AllowNextAttack(int next_attack_phase)
     {
+        Debug.Log("@ 코루틴 최초 진입 @");
+
         float total_time = 0f;
 
         while(total_time < 0.7f)
@@ -165,12 +166,25 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    void StopNowAttackAnimation(int now_attack_phase)
+    public bool is_doing_cor;
+    IEnumerator StopNowAttackAnimation(int now_attack_phase)
     {
+        is_doing_cor = true;
         Debug.Log("Stop now motion");
-
+        
         player_animator.SetInteger("attack_phase", 0);
-        player_animator.SetInteger("attack_to_idle", now_attack_phase);
+        //player_animator.SetInteger("attack_to_idle", now_attack_phase);
+
+        while (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack" + (now_attack_phase - 1)) == true)
+        {
+            player_animator.SetInteger("attack_to_idle", now_attack_phase);
+            yield return null;
+        }
+
+        yield return null;
+        player_animator.SetInteger("attack_to_idle", 0);
+
+        is_doing_cor = false;
     }
 
     void ResetAttackPhase() 
@@ -187,6 +201,7 @@ public class PlayerAttack : MonoBehaviour
     {
         StopAllCoroutines();
         //SetAttackPhaseToZero();
+        //player_animator.SetInteger("attack_to_idle", 2);
     }
 }
 
