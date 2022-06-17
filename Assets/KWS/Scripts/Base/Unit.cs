@@ -37,8 +37,6 @@ public class Unit : MonoBehaviour
         InitUnitStats();
 
         origin_color = renderer.material.color;
-
-        //weapon.SetWeaponTotalDamage(unit_stats.Str);
     }
 
     void InitUnitStats()
@@ -55,18 +53,15 @@ public class Unit : MonoBehaviour
         unit_now_hp = unit_stats.Total_Hp;
     }
 
-    public void ReceiveDamage(float damage, Vector3 hit_pos)
+    public virtual void ReceiveDamage(float damage, Vector3 hit_pos)
     {
         if (IsDead() == true) return;
-        if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true) return;
         
         ApplyDefense(ref damage);
-        DamagedAnimation();
         StartCoroutine(ActiveHitEffect());
         StartCoroutine(ShowHitParticle(hit_pos));
         StartCoroutine(ShowDamageText(damage));
         LoseHp(damage);
-        //DrawHpUI();
         DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
         if (IsDead() == true)
             Dye();
@@ -80,9 +75,7 @@ public class Unit : MonoBehaviour
 
     public virtual void DamagedAnimation()
     {
-        // 해당 애니메이션이 있다는 조건 있어야 함.
         unit_animation.SetBool("IsDamaged", true);
-        
     }
 
     IEnumerator ShowHitParticle(Vector3 hit_pos)
@@ -117,24 +110,13 @@ public class Unit : MonoBehaviour
     IEnumerator ActiveHitEffect()
     {
         renderer.material.color = change_color;
-        yield return new WaitForSeconds(0.03f);
+        yield return new WaitForSeconds(0.1f);
         renderer.material.color = origin_color;
     }
     void LoseHp(float damage)
     {
         unit_now_hp -= damage;
     }
-    void DrawHpUI()
-    {
-        if (unit_hp_ui_group == null) return;
-        if (unit_hp_ui_group.activeSelf == false) return;
-
-        float ratio = unit_now_hp / unit_stats.Total_Hp;
-        float width = unit_hp_ui.GetComponent<RectTransform>().rect.width;
-
-        unit_hp_ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
-    }
-
     void DrawBarUI(GameObject ui_group, Image ui, float now_value, float total_value)
     {
         if (ui_group == null) return;
@@ -145,18 +127,7 @@ public class Unit : MonoBehaviour
 
         ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
     }
-    void DrawMpUI()
-    {
-        if (unit_mp_ui_group == null) return;
-        if (unit_mp_ui_group.activeSelf == false) return;
-
-        float ratio = unit_stats.Total_Mp / initial_mp;
-        float width = unit_mp_ui.GetComponent<RectTransform>().rect.width;
-
-        unit_mp_ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
-    }
-
-    bool IsDead() // 반납 하기전에 이펙트 효과 제자리로..
+    protected bool IsDead() // 반납 하기전에 이펙트 효과 제자리로..
     {
         return unit_now_hp <= 0;
     }
@@ -170,24 +141,18 @@ public class Unit : MonoBehaviour
         weapon.ActiveOffWeaponArea();
     }
 
-    void CancelDamagedAnimation()
+    IEnumerator CancelDamagedAnimation()
     {
-        unit_animation.SetBool("IsDamaged", false);
-
-        // 공격 모션중 히트로 모션이 캔슬 될 때, 해당 공격의 후반 프레임에서 ActiveOffWeaponArea를 호출하지 못할 수도 있어서 수동으로 호출
         ActiveOffWeaponArea();
-    }
-    protected virtual void Dye() { }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player") == true || collision.gameObject.CompareTag("Monster") == true)
+        while (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true)
         {
-            //Debug.Log("가속도 제로");
-            //collision.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            //transform.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            unit_animation.SetBool("IsDamaged", false);
+            yield return null;
         }
     }
+    protected virtual void Dye() { }
+    
     private void AcceptUsedPotion(int hp, int mp)
     {
         unit_now_hp += hp;
@@ -202,6 +167,5 @@ public class Unit : MonoBehaviour
     {
         unit_stats.Total_Mp += mp;
         DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_stats.Total_Mp, initial_mp);
-        //DrawMpUI();
     }
 }

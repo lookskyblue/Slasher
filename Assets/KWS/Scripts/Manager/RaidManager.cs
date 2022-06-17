@@ -11,7 +11,6 @@ public class RaidManager : MonoBehaviour
     [Serializable]
     private class SpawnInfo
     {
-        public bool is_main_boss;
         public GameObject monster_prefab;
         public Transform[] monster_spawn_position;
     }
@@ -38,7 +37,7 @@ public class RaidManager : MonoBehaviour
         for (int i = 0; i < spawn_info.monster_spawn_position.Length; i++)
         {
             GameObject monster = Instantiate(spawn_info.monster_prefab);
-            monster.GetComponent<Monster>().Init(death_callback, spawn_info.is_main_boss);
+            monster.GetComponent<Monster>().Init(death_callback);
             monster.transform.position = spawn_info.monster_spawn_position[i].position;
         }
     }

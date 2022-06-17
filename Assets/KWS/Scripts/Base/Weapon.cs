@@ -22,8 +22,7 @@ namespace KWSWeapon
         {
             set { trail_effect = value; }
         }
-
-        //protected int total_damage;
+        
         [SerializeField]
         protected UnitStats unit_stats;
 
@@ -31,10 +30,6 @@ namespace KWSWeapon
         protected Animator unit_animation;
         #endregion
 
-        public void SetWeaponTotalDamage(int unit_str)
-        {
-            //total_damage = unit_str + weapon_power;
-        }
         public void ActiveOnWeaponArea()
         {
             if (weapon_type == WeaponType.Melee)

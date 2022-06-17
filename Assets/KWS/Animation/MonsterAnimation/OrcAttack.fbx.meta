@@ -85,7 +85,7 @@ ModelImporter:
           rotationOrder: 4
       events:
       - time: 0.07320145
-        functionName: LookAtPlayerEvent
+        functionName: LookAtPlayer
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -105,7 +105,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.74417746
+      - time: 0.5661538
         functionName: OffAttackMotion
         data: 
         objectReferenceParameter: {instanceID: 0}

@@ -206,7 +206,6 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator ResetAttackAndIdlePhase()
     {
-        Debug.Log("Hello World");
         //ResetAttackPhase();
         //player_animator.SetInteger("attack_to_idle", 0);
 

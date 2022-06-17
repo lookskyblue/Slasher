@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Player : Unit
 {
+    private bool is_damaged = false;
     private void Start()
     {
         base.Start();
     }
-
     public override void DamagedAnimation()
     {
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
@@ -19,10 +19,23 @@ public class Player : Unit
            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("GroundCrack") == true ||
            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Smash") == true ||
            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("CannonShot") == true)
+        {
+            is_damaged = false;
             return;
+        }
 
+        is_damaged = true;
         base.DamagedAnimation();
-        //if(unit_animation.GetCurrentAnimatorStateInfo(0).IsName)
+    }
+
+    public override void ReceiveDamage(float damage, Vector3 hit_pos)
+    {
+        if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true) return;
+        if (is_damaged == true) return;
+
+        base.ReceiveDamage(damage, hit_pos);
+        
+        if (IsDead() == false) DamagedAnimation();
     }
 
     public override IEnumerator ShowDamageText(float damage)
@@ -40,5 +53,11 @@ public class Player : Unit
         yield return new WaitForSeconds(1f);
 
         ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("DamageCanvasPlayer", obj);
+    }
+
+    void EndGetDamageMotion()
+    {
+        Debug.Log("³¡");
+        is_damaged = false;
     }
 }
