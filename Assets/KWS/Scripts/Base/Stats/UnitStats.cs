@@ -94,7 +94,7 @@ public class UnitStats : ScriptableObject
         {
             total_str = value;
             total_str = Mathf.Clamp(total_str, 0, maxiam_str);
-            on_str_change.Invoke();
+            on_str_change?.Invoke();
         }
     }
 
@@ -105,7 +105,7 @@ public class UnitStats : ScriptableObject
         {
             total_def = value;
             total_def = Mathf.Clamp(total_def, 0, maxiam_def);
-            on_def_change.Invoke();
+            on_def_change?.Invoke();
         }
     }
     public Action<int, int> AcceptUsedPotion

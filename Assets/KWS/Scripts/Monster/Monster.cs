@@ -11,7 +11,9 @@ public class Monster : Unit
     private float rotate_fower;
     private NavMeshAgent nav_mesh_agent;
     private Coroutine is_doing_attack_motion_cor = null;
-    
+    [SerializeField]
+    private float player_find_range;
+
     protected Action<bool> death_callback;
 
     private void Start()
@@ -74,7 +76,7 @@ public class Monster : Unit
 
         float dist = Vector3.Distance(ObjectPoolingManager.Instance.Player_Transform.position, transform.position);
 
-        if (dist < 12) // 발견 범위
+        if (dist < player_find_range) // 발견 범위
         {
             nav_mesh_agent.isStopped = false;
 
