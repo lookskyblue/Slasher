@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class RaidBoardManager : MonoBehaviour
 {
-    [SerializeField]
-    private InteractionUIEvent interaction_ui_event;
     private string selected_raid_name;
 
     [SerializeField]
@@ -26,19 +24,25 @@ public class RaidBoardManager : MonoBehaviour
     {
         if (collider.CompareTag("Player") == false) return;
 
-        interaction_ui_event.On_Change_Visible_Raid_Map_UI(true);
+        raid_map_ui.SetActive(true);
+        popup_ui.SetActive(false);
+
+        ClearRaidNameCache();
     }
     void OnCloseRaidMapUI(Collider collider)
     {
         if (collider.CompareTag("Player") == false) return;
 
-        interaction_ui_event.On_Change_Visible_Raid_Map_UI(false);
+        raid_map_ui.SetActive(false);
+        popup_ui.SetActive(false);
+
+        ClearRaidNameCache();
     }
 
     public void PushWantRaidIconButton(string raid_name)
     {
-        selected_raid_name = raid_name;
         popup_ui.SetActive(true);
+        ClearRaidNameCache();
     }
 
     public void PushEntrySelectedRaidButton()
@@ -56,7 +60,9 @@ public class RaidBoardManager : MonoBehaviour
 
     public void PushCancelSelectedRaidButton()
     {
-        selected_raid_name = string.Empty;
         popup_ui.SetActive(false);
+        ClearRaidNameCache();
     }
+
+    void ClearRaidNameCache() { selected_raid_name = string.Empty; }
 }

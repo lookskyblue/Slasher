@@ -15,6 +15,7 @@ public class FollowingCamera : MonoBehaviour
 
     [SerializeField]
     private InteractionSlotEvent interaction_slot_event;
+
     private bool is_using_skill_slot = false;
     private void Start()
     {

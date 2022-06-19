@@ -60,4 +60,9 @@ public class Player : Unit
         Debug.Log("³¡");
         is_damaged = false;
     }
+
+    void OnChangeExp()
+    {
+
+    }
 }

@@ -70,8 +70,6 @@ public class InteractionUIManager : MonoBehaviour
 
         interaction_event.Show_Skill_Info_UI = ShowSkillInfoUI;
         interaction_event.Hide_Skill_Info_UI = HideSkillInfoUI;
-
-        interaction_event.On_Change_Visible_Raid_Map_UI = ChangeVisibleRaidMapUI;
     }
     private void PopUpFieldItemGetTextUI(bool value)
     {
@@ -185,10 +183,5 @@ public class InteractionUIManager : MonoBehaviour
     private void HideSkillInfoUI()
     {
         skill_info_ui_group.SetActive(false);
-    }
-
-    void ChangeVisibleRaidMapUI(bool value)
-    {
-        raid_map_ui.SetActive(value);
     }
 }

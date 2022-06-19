@@ -50,7 +50,9 @@ public class UIActiveGetKeyInput : MonoBehaviour
     {
         for(int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
-            if(Input.GetKeyDown(ui_toggle_key_with_obj[i].ui_toggle_key_code) == true)
+            KeyCode key_code = ui_toggle_key_with_obj[i].ui_toggle_key_code;
+
+            if (key_code != KeyCode.None && Input.GetKeyDown(key_code) == true)
             {
                 GameObject obj = ui_toggle_key_with_obj[i].ui_toggle_obj;
 
