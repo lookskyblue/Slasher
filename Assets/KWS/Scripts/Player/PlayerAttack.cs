@@ -170,7 +170,6 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator StopNowAttackAnimation(int now_attack_phase)
     {
         is_doing_attack_stop_cor = true;
-        Debug.Log("Stop now motion");
         
         player_animator.SetInteger("attack_phase", 0);
         //player_animator.SetInteger("attack_to_idle", now_attack_phase);

@@ -6,12 +6,19 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Object/InteractionUIEvent")]
 public class InteractionUIEvent : ScriptableObject
 {
+    private Action<bool> on_change_visible_raid_map_ui;
     private Action<bool> get_field_item_text_ui;
     private Action<Item> show_acquired_item_ui;
     private Action<Item, Vector3> show_item_info_ui;
     private Action<SkillInfo, Vector3> show_skill_info_ui;
     private Action hide_item_info_ui;
     private Action hide_skill_info_ui;
+
+    public Action<bool> On_Change_Visible_Raid_Map_UI
+    {
+        get { return on_change_visible_raid_map_ui; }
+        set { on_change_visible_raid_map_ui = value; }
+    }
     public Action<bool> Get_Field_Item_Text_UI
     {
         get { return get_field_item_text_ui; }
