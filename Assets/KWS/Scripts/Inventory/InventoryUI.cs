@@ -60,7 +60,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    void OnRedrawItemCntUI(string item_name) // 슬롯 순회 해서 슬롯의 아이템명이 같으면 업데이트
+    void OnRedrawItemCntUI(string item_key) // 슬롯 순회 해서 슬롯의 아이템명이 같으면 업데이트
     {
         for (int i = 0; i < slots.Length; i++)
         {
@@ -68,7 +68,7 @@ public class InventoryUI : MonoBehaviour
             
             if (item != null)
             {
-                if (item.item_name.Equals(item_name) == true)
+                if (item.item_key.Equals(item_key) == true)
                 {
                     slots[i].UpdateItemCnt(item.item_cnt);
                     return;

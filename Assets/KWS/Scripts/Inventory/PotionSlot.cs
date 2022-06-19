@@ -59,7 +59,7 @@ public class PotionSlot : Slot
 
         StartCoroutine(UpdateCoolTimeUI());
         UpdateItemCnt(item.item_cnt);
-        InventoryManager.instance.ReportChangedItemCntToInventorySlot(item.item_name);
+        InventoryManager.instance.ReportChangedItemCntToInventorySlot(item.item_key);
     }
 
     IEnumerator UpdateCoolTimeUI()
@@ -118,7 +118,7 @@ public class PotionSlot : Slot
                 InventoryManager.instance.UnmountItem(potion_slot_num);
 
             // 드랍된 아이템이 이미 소비슬롯에 존재 한다면 해제 한다.
-            InventoryManager.instance.UnmountPotionByName(drag_and_drop_container.item.item_name);
+            InventoryManager.instance.UnmountPotionByName(drag_and_drop_container.item.item_key);
 
             // 드랍된 아이템을 등록 한다.
             Slot_Num = drag_and_drop_container.slot_num;
@@ -142,7 +142,7 @@ public class PotionSlot : Slot
     public string GetPotionName()
     {
         if (item == null) return string.Empty;
-        else return item.item_name;
+        else return item.item_key;
     }
 
     public int GetPotionSlotIdx()

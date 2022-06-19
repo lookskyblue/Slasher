@@ -103,12 +103,12 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < items.Count; i++)
             {
-                if (items[i].item_name.Equals(item.item_name) == true &&
+                if (items[i].item_key.Equals(item.item_key) == true &&
                     items[i].is_stackable == true) // 같은 아이템
                 {
                     items[i].item_cnt += item.item_cnt;
 
-                    OnChangedItemCnt.Invoke(item.item_name);
+                    OnChangedItemCnt.Invoke(item.item_key);
                     return true;
                 }
             }
@@ -243,7 +243,7 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].item_name.Equals(item_name) == true)
+            if (items[i].item_key.Equals(item_name) == true)
             {
                 items.RemoveAt(i);
 

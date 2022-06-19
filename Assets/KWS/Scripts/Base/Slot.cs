@@ -65,7 +65,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         // 해당 아이템이 소비 아이템이며 장착중이라면 장착된 슬롯에도 개수 동기화 해줄 것
         if(item.item_type == ItemType.Potion && Is_Mount == true)
         {
-            InventoryManager.instance.ReportChangedItemCntToPotionSlot(item.item_name, cnt);
+            InventoryManager.instance.ReportChangedItemCntToPotionSlot(item.item_key, cnt);
         }
     }
 
@@ -188,7 +188,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                 {
                     if (item.item_type == ItemType.Potion)
                     {
-                        InventoryManager.instance.ReportSlotNumToPotionSlotNum(item.item_name, Slot_Num); // 순회검사
+                        InventoryManager.instance.ReportSlotNumToPotionSlotNum(item.item_key, Slot_Num); // 순회검사
                     }
 
                     else

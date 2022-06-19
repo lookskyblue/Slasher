@@ -15,7 +15,7 @@ public enum ItemType
 public class Item
 {
     public ItemType item_type;
-    public string item_name;
+    public string item_key;
     public Sprite item_image;
     public bool is_stackable;
     public int item_cnt;
@@ -25,6 +25,7 @@ public class Item
     public int mp_recovery_amount;
     public string effect_pooling_key;
     public float cool_time;
+    public string name;
 
     private bool is_cool_time = false;
     public bool Is_Cool_Time { get { return is_cool_time; } }
@@ -135,7 +136,7 @@ public class Item
         Item new_copy = new Item();
 
         new_copy.item_type = this.item_type;
-        new_copy.item_name = this.item_name;
+        new_copy.item_key = this.item_key;
         new_copy.item_image = this.item_image;
         new_copy.is_stackable = this.is_stackable;
         new_copy.item_cnt = this.item_cnt;
@@ -146,6 +147,7 @@ public class Item
         new_copy.effect_pooling_key = this.effect_pooling_key;
         new_copy.cool_time = this.cool_time;
         new_copy.is_cool_time = this.is_cool_time;
+        new_copy.name = this.name;
 
         return new_copy;
     }
@@ -156,7 +158,7 @@ public class Item
 
         if(item_cnt <= 0)
         {
-            InventoryManager.instance.ReportItemCntIsZero(item_name);
+            InventoryManager.instance.ReportItemCntIsZero(item_key);
         }
 
         return item_cnt;

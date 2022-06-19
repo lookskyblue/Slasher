@@ -68,10 +68,10 @@ public class EquipmentSlot : Slot
     private void CallbackMountEquipment(Item item)
     {
         if (item.item_type == ItemType.Sword)
-            interaction_slot_event.Mount_Sword(item.item_name, item.str);
+            interaction_slot_event.Mount_Sword(item.item_key, item.str);
 
         else if (item.item_type == ItemType.Shield)
-            interaction_slot_event.Mount_Shield(item.item_name, item.def);
+            interaction_slot_event.Mount_Shield(item.item_key, item.def);
     }
 
     private void CallbackUnmountEquipment(Item item)

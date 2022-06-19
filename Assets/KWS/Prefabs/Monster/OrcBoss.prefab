@@ -3306,7 +3306,7 @@ MonoBehaviour:
   unit_stats: {fileID: 11400000, guid: e9f590577115dfe45a0dff30e35226ea, type: 2}
   attack_delay: 3
   rotate_fower: 6
-  player_find_range: 10
+  player_find_range: 12
 --- !u!114 &6549687415351569598
 MonoBehaviour:
   m_ObjectHideFlags: 0

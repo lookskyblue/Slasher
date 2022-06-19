@@ -124,7 +124,7 @@ public class InteractionUIManager : MonoBehaviour
         else if (item.item_type == ItemType.Potion) item_type_text.text = "타입: " + "포션";
         else if (item.item_type == ItemType.Helmet) item_type_text.text = "타입: " + "헬멧";
 
-        item_name_text.text = item.item_name.ToString();
+        item_name_text.text = item.name;
         item_str_text.text = "공격력: " + item.str.ToString();
         item_def_text.text = "방어력: " + item.def.ToString();
         item_hp_recovery_amount_text.text = "체력 회복량: " + item.hp_recovery_amount.ToString();
