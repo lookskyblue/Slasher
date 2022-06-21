@@ -43,6 +43,8 @@ public class RaidBoardManager : MonoBehaviour
     {
         popup_ui.SetActive(true);
         ClearRaidNameCache();
+
+        this.selected_raid_name = raid_name;
     }
 
     public void PushEntrySelectedRaidButton()
