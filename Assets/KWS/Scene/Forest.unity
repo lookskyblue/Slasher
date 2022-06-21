@@ -59997,6 +59997,7 @@ MonoBehaviour:
     - {fileID: 399488280}
     - {fileID: 1855138780}
     - {fileID: 1811084995}
+  amount_of_exp: 50
 --- !u!4 &1696415577
 Transform:
   m_ObjectHideFlags: 0

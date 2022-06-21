@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class UnitStats : ScriptableObject
 {
+    public float TestExp;
+
     private Action on_level_up;
     public Action On_Level_Up
     {
@@ -30,6 +32,10 @@ public class UnitStats : ScriptableObject
 
     [SerializeField]
     private int level;
+    [SerializeField]
+    private float max_exp = 200;
+    [SerializeField]
+    private float exp = 0;
     [SerializeField]
     private int maxiam_hp = 5000;
     [SerializeField]
@@ -77,6 +83,12 @@ public class UnitStats : ScriptableObject
             total_hp = value;
             total_hp = Mathf.Clamp(total_hp, 0, maxiam_hp);
         }
+    }
+
+    public float Total_Exp
+    {
+        get { return exp; }
+        set { exp = value; }
     }
     public int Total_Mp
     {
@@ -136,6 +148,12 @@ public class UnitStats : ScriptableObject
             level = value;
             On_Level_Up.Invoke();
         } 
+    }
+
+    public float MaxExp
+    {
+        get { return max_exp; }
+        set { max_exp = value; }
     }
 
     public void SetValidHpRange(ref float hp)

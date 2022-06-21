@@ -21,6 +21,9 @@ public class RaidManager : MonoBehaviour
     private int spawn_info_idx;
     private int max_monster;
     private int now_monster;
+
+    [SerializeField]
+    private float amount_of_exp;
     private void Start()
     {
         spawn_info_idx = 0;
@@ -88,5 +91,7 @@ public class RaidManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
         Camera.main.fieldOfView += 20f;
+
+        GameManager.instance.SendCompensation(amount_of_exp);
     }
 }

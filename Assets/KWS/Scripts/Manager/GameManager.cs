@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject first_spawn_zone;
     [SerializeField]
-    private GameObject player;
+    private GameObject player_group;
+    private Player player;
     public static GameManager instance = null;
-
     private void Awake()
     {
         if (instance == null) // 첫 씬일 때는 일단 생성. 
@@ -30,8 +30,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         //player = CreatePlayer();
         SetPlayerToSpawnPoint();
-        DontDestroyOnLoad(player);
-
+        DontDestroyOnLoad(player_group);
+        
+        player = player_group.transform.GetChild(0).GetComponent<Player>();
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     GameObject CreatePlayer()
@@ -52,10 +54,15 @@ public class GameManager : MonoBehaviour
     {
         GameObject player_spawn_position = GameObject.Find("PlayerSpawnPosition");
 
-        player.transform.GetChild(0).position = player_spawn_position.transform.position;
-        player.transform.GetChild(0).rotation = player_spawn_position.transform.rotation;
-        player.transform.GetChild(1).rotation = player.transform.GetChild(0).rotation;
+        player_group.transform.GetChild(0).position = player_spawn_position.transform.position;
+        player_group.transform.GetChild(0).rotation = player_spawn_position.transform.rotation;
+        player_group.transform.GetChild(1).rotation = player_group.transform.GetChild(0).rotation;
     }
 
     public MonoBehaviour BorrowMono() { return this; }
+
+    public void SendCompensation(float exp)
+    {
+        player.OnChangeExp(exp);
+    }
 }

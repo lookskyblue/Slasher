@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,22 @@ using UnityEngine.UI;
 
 public class Player : Unit
 {
+    [SerializeField]
+    private Image exp_ui_image;
+    [SerializeField]
+    private Text exp_text;
+    [SerializeField]
+    private Text overhead_level_text;
+    [SerializeField]
+    private Text overhead_name_text;
+
     private bool is_damaged = false;
     private void Start()
     {
         base.Start();
+        DrawExpUI();
+        DrawLevelUI();
+        DrawNameUI();
     }
     public override void DamagedAnimation()
     {
@@ -61,8 +74,90 @@ public class Player : Unit
         is_damaged = false;
     }
 
-    void OnChangeExp()
+    public void OnChangeExp(float acquired_exp) // 게임 매니저에서 호출할 함수이다.
+    {
+        while(true)
+        {
+            if(IsLevelUp(acquired_exp, out float left_exp) == true)
+            {
+                Debug.Log("축하합니다. 레벨업 했습니다.");
+
+                unit_stats.LevelUp = unit_stats.GetLevel + 1;
+                unit_stats.Total_Exp = 0;
+                unit_stats.MaxExp = Mathf.Pow(((unit_stats.GetLevel - 1) * 50 / 49), 2.5f) * 10;
+
+                //unit_stats.Default_Str = 2;
+
+                // 사운드 및 파티클 이펙트
+                GrowUpStats();
+                DrawLevelUI();
+
+                acquired_exp = left_exp;
+            }
+
+            else
+            {
+                unit_stats.Total_Exp = unit_stats.Total_Exp + acquired_exp;
+                break;
+            }
+
+        }
+
+        DrawExpUI();
+    }
+
+    bool IsLevelUp(float acquired_exp, out float left_exp)
+    {
+        bool is_level_up = false;
+        left_exp = 0;
+
+        float after_exp = unit_stats.Total_Exp + acquired_exp;
+
+        if (unit_stats.MaxExp <= after_exp) // 초과업
+        {
+            is_level_up = true;
+            left_exp = after_exp - unit_stats.MaxExp;
+        }
+
+        return is_level_up;
+    }
+
+    void GrowUpStats()
     {
 
+    }
+
+    void DrawExpUI()
+    {
+        float now_exp = unit_stats.Total_Exp;
+        float max_exp = unit_stats.MaxExp;
+
+        Debug.Log("D: " + (double)now_exp);
+
+        //exp_text.text = "EXP:  " + (int)now_exp + " / " + (int)max_exp; 절대량 표기 
+        exp_text.text = "EXP:  " + (Math.Truncate((now_exp / max_exp) * 100) / 100) * 100 + "%"; // 비율 표기 
+
+        float width = exp_ui_image.GetComponent<RectTransform>().rect.width;
+        float ratio = now_exp / max_exp;
+
+        exp_ui_image.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
+    }
+
+    void DrawNameUI()
+    {
+        overhead_name_text.text = "캐라니스";
+    }
+
+    void DrawLevelUI()
+    {
+        overhead_level_text.text = "Lv." + unit_stats.GetLevel;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            OnChangeExp(unit_stats.TestExp);
+        }
     }
 }
