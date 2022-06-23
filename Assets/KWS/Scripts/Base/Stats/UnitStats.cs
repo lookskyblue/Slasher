@@ -71,10 +71,33 @@ public class UnitStats : ScriptableObject
     [SerializeField]
     private int total_def;
 
-    public int Default_Hp { get { return default_hp; } }
-    public int Default_Mp { get { return default_mp; } }
-    public int Default_Str { get { return default_str; } }
-    public int Default_Def { get { return default_def; } }
+    public int Default_Hp 
+    { 
+        get { return default_hp; }
+        set { default_hp = value; }
+    }
+
+    public int Default_Mp 
+    {
+        get { return default_mp; } 
+        set { default_mp = value; }
+    }
+
+    public int Default_Str 
+    {
+        get { return default_str; } 
+        set { default_str = value; }
+    }
+    public int Default_Def 
+    {
+        get { return default_def; } 
+        set { default_def = value; } 
+    }
+
+    /// <summary>
+    /// /////////////////////////////////////////////
+    /// </summary>
+
     public int Total_Hp 
     {
         get { return total_hp; }

@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     private Animator player_animator;
     private Vector3 move_input;
     private Coroutine is_turning = null;
+    [SerializeField]
+    private Player player;
     #endregion
     private void Awake()
     {
@@ -45,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Move()
     {
+        if (player.IsDead() == true) return;
+
         if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack2") == true ||

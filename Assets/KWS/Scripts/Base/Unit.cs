@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
     protected Weapon weapon;
     [SerializeField]
     protected UnitStats unit_stats;
-    private float initial_mp;
+    protected float initial_mp;
     protected void Start()
     {
         unit_animation = GetComponent<Animator>();
@@ -39,11 +39,14 @@ public class Unit : MonoBehaviour
         origin_color = renderer.material.color;
     }
 
-    void InitUnitStats()
+    protected void AddCallback()
     {
         unit_stats.On_Change_Mp += OnChangeMp;
         unit_stats.AcceptUsedPotion += AcceptUsedPotion;
+    }
 
+    public void InitUnitStats()
+    {
         unit_stats.Total_Hp  = unit_stats.Default_Hp;
         unit_stats.Total_Mp  = unit_stats.Default_Mp;
         initial_mp = unit_stats.Total_Mp;
@@ -117,7 +120,7 @@ public class Unit : MonoBehaviour
     {
         unit_now_hp -= damage;
     }
-    void DrawBarUI(GameObject ui_group, Image ui, float now_value, float total_value)
+    protected void DrawBarUI(GameObject ui_group, Image ui, float now_value, float total_value)
     {
         if (ui_group == null) return;
         if (ui_group.activeSelf == false) return;
@@ -127,7 +130,7 @@ public class Unit : MonoBehaviour
 
         ui.GetComponent<RectMask2D>().padding = new Vector4(0f, 0f, (width - width * ratio), 0f);
     }
-    protected bool IsDead() // 반납 하기전에 이펙트 효과 제자리로..
+    public bool IsDead() // 반납 하기전에 이펙트 효과 제자리로..
     {
         return unit_now_hp <= 0;
     }

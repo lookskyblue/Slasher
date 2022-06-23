@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     private GameObject player_group;
     private Player player;
     public static GameManager instance = null;
+    [SerializeField]
+    private RaidBoardManager raid_board_manager;
+    private Animator palyer_ani;
+
     private void Awake()
     {
         if (instance == null) // 첫 씬일 때는 일단 생성. 
@@ -24,7 +28,6 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
@@ -33,7 +36,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(player_group);
         
         player = player_group.transform.GetChild(0).GetComponent<Player>();
-        
+        palyer_ani = player.GetComponent<Animator>();
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     GameObject CreatePlayer()
@@ -44,7 +48,17 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string next_scene_name) // 비동기로 할 것
     {
         SceneManager.LoadScene(next_scene_name);
+
+        PlayerInit();
     }
+
+    void PlayerInit()
+    {
+        player.InitUnitStats();
+        player.DrawGaugeUI();
+        palyer_ani.Play("Idle");
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode load_scene_mode)
     {
         SetPlayerToSpawnPoint();
@@ -61,8 +75,12 @@ public class GameManager : MonoBehaviour
 
     public MonoBehaviour BorrowMono() { return this; }
 
-    public void SendCompensation(float exp)
+    public void SendCompensation(float gold = 0, float exp = 0)
     {
+        Debug.Log("보상을 받음 골드: " + gold + ", 경험치: " + exp);
+
         player.OnChangeExp(exp);
     }
+
+    public RaidBoardManager GetRaidBoardManager() { return raid_board_manager; }
 }

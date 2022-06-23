@@ -4165,7 +4165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4979701802269814, guid: 6cf39f6a19d60be4a9e2989aa38e2026, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4979701802269814, guid: 6cf39f6a19d60be4a9e2989aa38e2026, type: 3}
       propertyPath: m_LocalScale.x
@@ -14156,7 +14156,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418783634}
+      - m_Target: {fileID: 984576634}
         m_TargetAssemblyTypeName: RaidBoardManager, Assembly-CSharp
         m_MethodName: PushEntrySelectedRaidButton
         m_Mode: 1
@@ -14570,7 +14570,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418783634}
+      - m_Target: {fileID: 984576634}
         m_TargetAssemblyTypeName: RaidBoardManager, Assembly-CSharp
         m_MethodName: PushCancelSelectedRaidButton
         m_Mode: 1
@@ -18848,6 +18848,9 @@ MonoBehaviour:
   - prefab: {fileID: 85085703269953665, guid: 6fefb1f34176d8c479d073b44e8d4717, type: 3}
     key: DamageCanvasPlayer
     amount: 1
+  - prefab: {fileID: 1624714524768532, guid: c9eb15264aa6c4348b00d5b9b3daab2a, type: 3}
+    key: LevelUp
+    amount: 1
   player_transform: {fileID: 9135527943073714633}
 --- !u!4 &866832265
 Transform:
@@ -20114,7 +20117,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418783634}
+      - m_Target: {fileID: 984576634}
         m_TargetAssemblyTypeName: RaidBoardManager, Assembly-CSharp
         m_MethodName: PushWantRaidIconButton
         m_Mode: 5
@@ -21483,13 +21486,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 984576633}
+  - component: {fileID: 984576634}
   m_Layer: 5
   m_Name: RaidMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &984576633
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21497,7 +21501,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984576632}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -21511,6 +21515,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &984576634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984576632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4166f033da97cca4981c09d6e031a839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raid_map_ui: {fileID: 984576632}
+  popup_ui: {fileID: 444178517}
 --- !u!1001 &984599025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29775,23 +29793,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1418783631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a2e43f4d4672004dbf19ed51bcb80e7, type: 3}
+  m_Script: {fileID: 11500000, guid: a48f87bb9bb25ea46bd996281550c90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1418783634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418783631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4166f033da97cca4981c09d6e031a839, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raid_map_ui: {fileID: 984576632}
-  popup_ui: {fileID: 444178517}
 --- !u!1 &1423046957
 GameObject:
   m_ObjectHideFlags: 0
@@ -38673,7 +38677,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4999170364732814, guid: c751cac06f3d18a49ac854230e4643d1, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4999170364732814, guid: c751cac06f3d18a49ac854230e4643d1, type: 3}
       propertyPath: m_LocalScale.x
@@ -45677,9 +45681,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7602308551411241673, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
+      propertyPath: raid_map_ui
+      value: 
+      objectReference: {fileID: 984576632}
+    - target: {fileID: 7602308551411241673, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
       propertyPath: player_group
       value: 
       objectReference: {fileID: 9139621857790104056}
+    - target: {fileID: 7602308551411241673, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
+      propertyPath: raid_map_obj
+      value: 
+      objectReference: {fileID: 984576632}
     - target: {fileID: 7602308551411241673, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
       propertyPath: player_prefab
       value: 
@@ -45688,6 +45700,10 @@ PrefabInstance:
       propertyPath: first_spawn_zone
       value: 
       objectReference: {fileID: 1688095840}
+    - target: {fileID: 7602308551411241673, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
+      propertyPath: raid_board_manager
+      value: 
+      objectReference: {fileID: 984576634}
     - target: {fileID: 7602308551411241686, guid: f11668cefff500f4db8ecb39b7a5e5af, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -47934,6 +47950,7 @@ MonoBehaviour:
   rotate_power: 36
   turn_power: 4
   player_attack: {fileID: 9138017421332875378}
+  player: {fileID: 3662128321647975416}
 --- !u!1 &9139621857790104056
 GameObject:
   m_ObjectHideFlags: 0

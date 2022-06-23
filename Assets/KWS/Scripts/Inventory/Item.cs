@@ -116,13 +116,15 @@ public class Item
         {
             ParticleSystem using_potion_particle = obj.GetComponent<ParticleSystem>();
 
+            using_potion_particle.transform.SetParent(ObjectPoolingManager.Instance.Player_Transform);
+            using_potion_particle.transform.position = ObjectPoolingManager.Instance.Player_Transform.position;
             using_potion_particle.Play();
 
             float total_time = 0f;
 
             while(total_time <= 1f)
             {
-                using_potion_particle.transform.position = ObjectPoolingManager.Instance.Player_Transform.position;
+                //using_potion_particle.transform.position = ObjectPoolingManager.Instance.Player_Transform.position;
                 total_time += Time.deltaTime;
                 
                 yield return null;

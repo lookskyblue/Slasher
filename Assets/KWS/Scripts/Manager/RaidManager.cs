@@ -23,7 +23,12 @@ public class RaidManager : MonoBehaviour
     private int now_monster;
 
     [SerializeField]
-    private float amount_of_exp;
+    private float compensation_exp;
+    [SerializeField]
+    private float compensation_gold;
+
+    [SerializeField]
+    private BattleResultUIManager battle_result_ui_manager;
     private void Start()
     {
         spawn_info_idx = 0;
@@ -34,7 +39,6 @@ public class RaidManager : MonoBehaviour
     }
     private void SpawnNewMonster()
     {
-
         SpawnInfo spawn_info = spawn_infos[spawn_info_idx];
 
         for (int i = 0; i < spawn_info.monster_spawn_position.Length; i++)
@@ -77,7 +81,9 @@ public class RaidManager : MonoBehaviour
     void ClearRaid()
     {
         Debug.Log("레이드 클리어.");
+        
         StartCoroutine(SlowMotion());
+        battle_result_ui_manager.ShowBattleResult(BattleResult.battle_success, compensation_gold, compensation_exp);
     }
 
     IEnumerator SlowMotion()
@@ -91,7 +97,12 @@ public class RaidManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
         Camera.main.fieldOfView += 20f;
+    }
 
-        GameManager.instance.SendCompensation(amount_of_exp);
+    public void ReportPlayerDeath()
+    {
+        Debug.Log("레이드 실패");
+        
+        battle_result_ui_manager.ShowBattleResult(BattleResult.battle_failed);
     }
 }

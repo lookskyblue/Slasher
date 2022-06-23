@@ -14,6 +14,10 @@ public class UIActiveGetKeyInput : MonoBehaviour
     [SerializeField]
     private UIToggleKeyWithObj[] ui_toggle_key_with_obj;
 
+    private void Awake()
+    {
+        GameObject.Find("RaidMap");
+    }
     private void Start()
     {
         ActiveOffAllToggleObj();
@@ -25,6 +29,7 @@ public class UIActiveGetKeyInput : MonoBehaviour
 
         for (int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj == null) continue;
             if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == true) active_off_cnt++;
             ui_toggle_key_with_obj[i].ui_toggle_obj.SetActive(false);
             CheckHaveInfoUI(i);
@@ -36,7 +41,7 @@ public class UIActiveGetKeyInput : MonoBehaviour
     {
         for(int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
-            if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == false) continue;
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj == null || ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == false) continue;
 
             RectTransform rect_transform = ui_toggle_key_with_obj[i].ui_toggle_obj.transform.GetChild(0).GetComponent<RectTransform>();
 
@@ -78,7 +83,7 @@ public class UIActiveGetKeyInput : MonoBehaviour
     {
         for(int i = 0; i < ui_toggle_key_with_obj.Length; i++)
         {
-            if (ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == true) return true;
+            if (ui_toggle_key_with_obj[i].ui_toggle_obj != null && ui_toggle_key_with_obj[i].ui_toggle_obj.activeSelf == true) return true;
         }
 
         return false;

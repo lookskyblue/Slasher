@@ -12,5 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3abb7e08f020024cba88814ec51c654, type: 3}
   m_Name: OrcBoss
   m_EditorClassIdentifier: 
-  hp: 300
-  str: 15
+  TestExp: 0
+  level: 0
+  max_exp: 200
+  exp: 0
+  maxiam_hp: 5000
+  maxiam_mp: 3000
+  maxiam_str: 1000
+  maxiam_def: 1000
+  default_hp: 600
+  default_mp: 150
+  default_str: 20
+  default_def: 20
+  total_hp: 0
+  total_mp: 0
+  total_str: 0
+  total_def: 0

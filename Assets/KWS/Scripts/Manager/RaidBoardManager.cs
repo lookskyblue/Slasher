@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,16 +13,15 @@ public class RaidBoardManager : MonoBehaviour
     [SerializeField]
     private GameObject popup_ui;
 
-    private void Start()
+    public void GetTriggerCallback(ref Action<Collider> collider_enter, ref Action<Collider> collider_exit)
     {
-        TriggerCallback trigger_callback = GetComponent<TriggerCallback>();
-
-        trigger_callback.collision_enter_event = OnOpenRaidMapUI;
-        trigger_callback.collision_exit_event = OnCloseRaidMapUI;
+        collider_enter = OnOpenRaidMapUI;
+        collider_exit = OnCloseRaidMapUI;
     }
-
     void OnOpenRaidMapUI(Collider collider)
     {
+        Debug.Log("Open");
+
         if (collider.CompareTag("Player") == false) return;
 
         raid_map_ui.SetActive(true);
@@ -31,6 +31,8 @@ public class RaidBoardManager : MonoBehaviour
     }
     void OnCloseRaidMapUI(Collider collider)
     {
+        Debug.Log("Close");
+
         if (collider.CompareTag("Player") == false) return;
 
         raid_map_ui.SetActive(false);

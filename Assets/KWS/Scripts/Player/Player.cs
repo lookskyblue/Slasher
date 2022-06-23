@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Player : Unit
 {
+    private static Player player = null;
+
     [SerializeField]
     private Image exp_ui_image;
     [SerializeField]
@@ -16,13 +18,29 @@ public class Player : Unit
     private Text overhead_name_text;
 
     private bool is_damaged = false;
+
+    private void Awake()
+    {
+        if (player != null) Destroy(transform.parent.gameObject);
+        else player = this;
+    }
     private void Start()
     {
         base.Start();
-        DrawExpUI();
+
+        AddCallback();
+        DrawGaugeUI();
         DrawLevelUI();
         DrawNameUI();
     }
+
+    public void DrawGaugeUI()
+    {
+        DrawExpUI();
+        DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
+        DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_stats.Total_Mp, initial_mp);
+    }
+
     public override void DamagedAnimation()
     {
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
@@ -43,12 +61,28 @@ public class Player : Unit
 
     public override void ReceiveDamage(float damage, Vector3 hit_pos)
     {
+        if (IsDead() == true) return;
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true) return;
         if (is_damaged == true) return;
 
         base.ReceiveDamage(damage, hit_pos);
-        
+
         if (IsDead() == false) DamagedAnimation();
+        else ReportDeathToRaidManager();
+    }
+
+    void ReportDeathToRaidManager()
+    {
+        RaidManager raid_manager = GameObject.FindObjectOfType<RaidManager>();
+
+        if(raid_manager == null)
+        {
+            Debug.LogError("raid manager is null");
+            
+            return;
+        }
+
+        raid_manager.ReportPlayerDeath();
     }
 
     public override IEnumerator ShowDamageText(float damage)
@@ -70,7 +104,6 @@ public class Player : Unit
 
     void EndGetDamageMotion()
     {
-        Debug.Log("끝");
         is_damaged = false;
     }
 
@@ -91,6 +124,7 @@ public class Player : Unit
                 // 사운드 및 파티클 이펙트
                 GrowUpStats();
                 DrawLevelUI();
+                StartCoroutine(ShowLevelUpParticle());
 
                 acquired_exp = left_exp;
             }
@@ -124,15 +158,20 @@ public class Player : Unit
 
     void GrowUpStats()
     {
+        unit_stats.Default_Hp += 100;
+        unit_stats.Total_Hp += 100;
 
+        unit_stats.Default_Mp += 50;
+        unit_stats.Total_Mp += 50;
+
+        //DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
+        //DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_now_m, unit_stats.Total_Mp);
     }
 
     void DrawExpUI()
     {
         float now_exp = unit_stats.Total_Exp;
         float max_exp = unit_stats.MaxExp;
-
-        Debug.Log("D: " + (double)now_exp);
 
         //exp_text.text = "EXP:  " + (int)now_exp + " / " + (int)max_exp; 절대량 표기 
         exp_text.text = "EXP:  " + (Math.Truncate((now_exp / max_exp) * 100) / 100) * 100 + "%"; // 비율 표기 
@@ -159,5 +198,26 @@ public class Player : Unit
         {
             OnChangeExp(unit_stats.TestExp);
         }
+    }
+
+    IEnumerator ShowLevelUpParticle()
+    {
+        GameObject obj = ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("LevelUp");
+
+        ParticleSystem particle = obj.GetComponent<ParticleSystem>();
+
+        particle.transform.SetParent(transform);
+        particle.transform.position = transform.position;
+        particle.Play();
+
+        yield return new WaitForSeconds(2f);
+
+        ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("LevelUp", obj);
+    }
+
+    protected override void Dye()
+    {
+        weapon.ActiveOffWeaponArea();
+        unit_animation.Play("Dying");
     }
 }
