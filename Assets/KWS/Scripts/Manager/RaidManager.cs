@@ -15,17 +15,14 @@ public class RaidManager : MonoBehaviour
         public Transform[] monster_spawn_position;
     }
 
-    [SerializeField]
-    private SpawnInfo[] spawn_infos;
+    [SerializeField] private SpawnInfo[] spawn_infos;
 
     private int spawn_info_idx;
     private int max_monster;
     private int now_monster;
 
-    [SerializeField]
-    private float compensation_exp;
-    [SerializeField]
-    private float compensation_gold;
+    [SerializeField] private int compensation_exp;
+    [SerializeField] private int compensation_gold;
 
     [SerializeField]
     private BattleResultUIManager battle_result_ui_manager;

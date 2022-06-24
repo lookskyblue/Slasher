@@ -20,8 +20,7 @@ public class InventoryManager : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
-    private int max_useable_slot_cnt;
+    [SerializeField] private int max_useable_slot_cnt;
 
     #region 대리자 정의
     private Action<int> on_slot_cnt_change;
@@ -59,21 +58,25 @@ public class InventoryManager : MonoBehaviour
         set { on_removed_item = value; }
     }
 
+    private Action<int> on_changed_gold;
+
+    public Action<int> OnChangedGold
+    {
+        get { return on_changed_gold; }
+        set { on_changed_gold = value; }
+    }
+
     #endregion
 
-    [HideInInspector]
-    public List<Item> items = new List<Item>();
+    [HideInInspector] public List<Item> items = new List<Item>();
 
-    [SerializeField]
-    private EquipmentSlot helmet_slot;
-    [SerializeField]
-    private EquipmentSlot sword_slot;
-    [SerializeField]
-    private EquipmentSlot shield_slot;
-    [SerializeField]
-    private PotionSlot[] potion_slots;
+    [SerializeField] private EquipmentSlot helmet_slot;
+    [SerializeField] private EquipmentSlot sword_slot;
+    [SerializeField] private EquipmentSlot shield_slot;
+    [SerializeField] private PotionSlot[] potion_slots;
+    [SerializeField] private int slot_cnt;
+    [SerializeField] private UnitStats player_stats;
 
-    private int slot_cnt;
     public int Slot_Cnt
     {
         get => slot_cnt;
@@ -87,6 +90,15 @@ public class InventoryManager : MonoBehaviour
     {
         Slot_Cnt = max_useable_slot_cnt;
         //slot_cnt = max_useable_slot_cnt;
+
+        RoadGold();
+    }
+
+    void RoadGold()
+    {
+        int now_gold = player_stats.Total_Gold;
+
+        on_changed_gold.Invoke(now_gold);
     }
     public bool AddItem(Item item)
     {

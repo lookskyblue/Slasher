@@ -25,14 +25,14 @@ public class BattleResultUIManager : MonoBehaviour
     private Text exp_text;
     private float compensation_gold = 0;
     private float compensation_exp = 0;
-    public void ShowBattleResult(BattleResult battle_result, float gold = 0f, float exp = 0f)
+    public void ShowBattleResult(BattleResult battle_result, int gold = 0, int exp = 0)
     {
         compensation_gold = gold;
         compensation_exp = exp;
 
         StartCoroutine(ShowBattleResultUI(battle_result, gold, exp));
     }
-    IEnumerator ShowBattleResultUI(BattleResult battle_result, float gold, float exp)
+    IEnumerator ShowBattleResultUI(BattleResult battle_result, int gold, int exp)
     {
         yield return new WaitForSeconds(3f);
         yield return null;
@@ -43,8 +43,8 @@ public class BattleResultUIManager : MonoBehaviour
         else if (BattleResult.battle_failed == battle_result) battle_result_text.text = "Battle Failed";
         
         battle_result_ui.SetActive(true);
-        gold_text.text = "»πµÊ«— ∞ÒµÂ:  " + gold.ToString();
-        exp_text.text = "»πµÊ«— ∞Ê«Ëƒ°: " + exp.ToString();
+        gold_text.text = gold == 0 ? "0" : GetThousandCommaText(gold);
+        exp_text.text = exp == 0 ? "0" : GetThousandCommaText(exp);
         canvas_group.alpha = 0;
 
         while (total_time < battle_result_fade_out_time)
@@ -54,6 +54,8 @@ public class BattleResultUIManager : MonoBehaviour
             yield return null;
         }
     }
+
+    string GetThousandCommaText(int value) { return string.Format("{0:#,###}", value); }
     public void PushGoToTownButton()
     {
         GameManager.instance.LoadScene("Town");

@@ -30,46 +30,26 @@ public class UnitStats : ScriptableObject
         set { on_def_change = value; }
     }
 
-    [SerializeField]
-    private int level;
-    [SerializeField]
-    private float max_exp = 200;
-    [SerializeField]
-    private float exp = 0;
-    [SerializeField]
-    private int maxiam_hp = 5000;
-    [SerializeField]
-    private int maxiam_mp = 3000;
-    [SerializeField]
-    private int maxiam_str = 1000;
-    [SerializeField]
-    private int maxiam_def = 1000;
+    [SerializeField] private int level;
+    [SerializeField] private float max_exp = 200;
+    [SerializeField] private float exp = 0;
+    [SerializeField] private int maxiam_hp = 5000;
+    [SerializeField] private int maxiam_mp = 3000;
+    [SerializeField] private int maxiam_str = 1000;
+    [SerializeField] private int maxiam_def = 1000;
 
     private Action<int, int> accept_changed_hp;
     private Action<int> on_change_mp;
 
-    [SerializeField]
-    private int default_hp = 200;
-    [SerializeField]
-    private int default_mp = 150;
-
-    [SerializeField]
-    private int default_str = 20;
-
-    [SerializeField]
-    private int default_def = 20;
-
-    [SerializeField]
-    private int total_hp;
-
-    [SerializeField]
-    private int total_mp;
-
-    [SerializeField]
-    private int total_str;
-
-    [SerializeField]
-    private int total_def;
+    [SerializeField] private int default_hp = 200;
+    [SerializeField] private int default_mp = 150;
+    [SerializeField] private int default_str = 20;
+    [SerializeField] private int default_def = 20;
+    [SerializeField] private int total_hp;
+    [SerializeField] private int total_mp;
+    [SerializeField] private int total_str;
+    [SerializeField] private int total_def;
+    [SerializeField] private int total_gold;
 
     public int Default_Hp 
     { 
@@ -93,11 +73,6 @@ public class UnitStats : ScriptableObject
         get { return default_def; } 
         set { default_def = value; } 
     }
-
-    /// <summary>
-    /// /////////////////////////////////////////////
-    /// </summary>
-
     public int Total_Hp 
     {
         get { return total_hp; }
@@ -106,6 +81,12 @@ public class UnitStats : ScriptableObject
             total_hp = value;
             total_hp = Mathf.Clamp(total_hp, 0, maxiam_hp);
         }
+    }
+
+    public int Total_Gold
+    {
+        get { return total_gold; }
+        set { total_gold = value; }
     }
 
     public float Total_Exp

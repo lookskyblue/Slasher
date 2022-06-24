@@ -7,14 +7,11 @@ public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI instance;
 
-    [SerializeField]
-    private GameObject inventory_panel;
-    [SerializeField]
-    private Transform slot_holder;
-    [SerializeField]
-    private InventorySlot[] slots;
-    [SerializeField]
-    private GameObject item_info_ui;
+    [SerializeField] private GameObject inventory_panel;
+    [SerializeField] private Transform slot_holder;
+    [SerializeField] private InventorySlot[] slots;
+    [SerializeField] private GameObject item_info_ui;
+    [SerializeField] private Text gold_text;
     private void Awake()
     {
         if(instance == null)
@@ -32,6 +29,7 @@ public class InventoryUI : MonoBehaviour
         InventoryManager.instance.OnChangedItemCnt += OnRedrawItemCntUI;
         InventoryManager.instance.OnChangedMountState += OnChangeMountStateUI;
         InventoryManager.instance.OnRemovedItem += OnRemovedItem;
+        InventoryManager.instance.OnChangedGold += OnChangedGold;
 
         slots = slot_holder.GetComponentsInChildren<InventorySlot>();
     }
@@ -102,5 +100,14 @@ public class InventoryUI : MonoBehaviour
                 break;
             }
         }
+    }
+    void OnChangedGold(int gold)
+    {
+        if (gold == 0) gold_text.text = "0";
+        else gold_text.text = GetThousandCommaText(gold);
+    }
+    string GetThousandCommaText(int gold)
+    {
+        return string.Format("{0:#,###}", gold);
     }
 }

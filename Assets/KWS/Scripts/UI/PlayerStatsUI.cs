@@ -44,20 +44,20 @@ public class PlayerStatsUI : MonoBehaviour
         RefrestDefStat();
         RefreshLevelStat();
 
-        hp_text.text = "체력:  " + now_hp.ToString();
-        mp_text.text = "마나:  " + now_mp.ToString();
+        hp_text.text = now_hp.ToString();
+        mp_text.text = now_mp.ToString();
     }
     void RefreshLevelStat()
     {
-        level_text.text = "Lv:  " + player_stats.GetLevel;
+        level_text.text = player_stats.GetLevel.ToString();
     }
     void RefrestStrStat()
     {
-        str_text.text = "공격력:  " + player_stats.Total_Str;
+        str_text.text = player_stats.Total_Str.ToString();
     }
 
     void RefrestDefStat()
     {
-        def_text.text = "방어력:  " + player_stats.Total_Def;
+        def_text.text = player_stats.Total_Def.ToString();
     }
 }
