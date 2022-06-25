@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class RaidBoardManager : MonoBehaviour
 {
-    [SerializeField] private GameObject alert_dialog_ui;
+    [SerializeField] private InteractionUIEvent interaction_ui_event;
     [SerializeField] private UnitStats player_stats;
     [SerializeField] private string alert_text_of_not_enough_level;
     [SerializeField] private GameObject raid_map_ui;
@@ -15,8 +15,6 @@ public class RaidBoardManager : MonoBehaviour
     [SerializeField] private Text entry_level;
     [SerializeField] private Text compensation_gold;
     [SerializeField] private Text compensation_exp;
-    private Coroutine is_doing_alert_text_cor = null;
-
     private RaidInfo raid_info = null;
 
     public void GetTriggerCallback(ref Action<Collider> collider_enter, ref Action<Collider> collider_exit)
@@ -90,24 +88,6 @@ public class RaidBoardManager : MonoBehaviour
 
     void PopupAlert()
     {
-        if (is_doing_alert_text_cor != null)
-        {
-            StopCoroutine(is_doing_alert_text_cor);
-            is_doing_alert_text_cor = null;
-        }
-
-        is_doing_alert_text_cor = StartCoroutine(PopupAlertUI(alert_text_of_not_enough_level));
-    }
-    IEnumerator PopupAlertUI(string alert_text)
-    {
-        alert_dialog_ui.SetActive(false);
-
-        alert_dialog_ui.transform.GetChild(0).GetComponent<Text>().text = alert_text;
-        alert_dialog_ui.SetActive(true);
-
-        yield return new WaitForSeconds(1f);
-
-        alert_dialog_ui.SetActive(false);
-        is_doing_alert_text_cor = null;
+        interaction_ui_event.On_Change_Alert_Text_UI(alert_text_of_not_enough_level);
     }
 }

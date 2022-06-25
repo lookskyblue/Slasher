@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class FieldItem : MonoBehaviour
 {
-    [SerializeField]
-    private ItemDB item_db;
-    [SerializeField]
-    private InteractionUIEvent interaction_event;
+    [SerializeField] private string full_item_alert_text;
+    [SerializeField] private ItemDB item_db;
+    [SerializeField] private InteractionUIEvent interaction_event;
     private Item acquired_item = null;
     void Start()
     {
@@ -30,8 +29,8 @@ public class FieldItem : MonoBehaviour
             
             if(InventoryManager.instance.AddItem(acquired_item) == false)
             {
-                Debug.Log("ÀÎº¥Åä¸®°¡ °¡µæ Ã¡½À´Ï´Ù.");
-                // UIÆË¾÷ ¶ç¿ì±â
+                Debug.Log(full_item_alert_text);
+                interaction_event.On_Change_Alert_Text_UI.Invoke(full_item_alert_text);
 
                 return;
             }
@@ -39,7 +38,8 @@ public class FieldItem : MonoBehaviour
             interaction_event.Get_Field_Item_Text_UI(false);
             interaction_event.Show_Acquired_Item_UI(acquired_item);
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("RandomItem", gameObject);
         }
     }
 

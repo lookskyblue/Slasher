@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InteractionUIManager : MonoBehaviour
 {
+    [SerializeField] private GameObject alert_dialog_ui;
     [SerializeField] private InteractionUIEvent interaction_event;
     [SerializeField] private GameObject get_field_item_text_ui;
     [SerializeField] private GameObject acquired_item_ui_group;
@@ -37,6 +38,7 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField] private Text skill_damage_text;
     #endregion
 
+    private Coroutine is_doing_alert_text_cor = null;
     private void Start()
     {
         interaction_event.Get_Field_Item_Text_UI = PopUpFieldItemGetTextUI;
@@ -47,6 +49,8 @@ public class InteractionUIManager : MonoBehaviour
 
         interaction_event.Show_Skill_Info_UI = ShowSkillInfoUI;
         interaction_event.Hide_Skill_Info_UI = HideSkillInfoUI;
+
+        interaction_event.On_Change_Alert_Text_UI = PopUpAlertTextUI;
     }
     private void PopUpFieldItemGetTextUI(bool value)
     {
@@ -161,5 +165,28 @@ public class InteractionUIManager : MonoBehaviour
     private void HideSkillInfoUI()
     {
         skill_info_ui_group.SetActive(false);
+    }
+
+    void PopUpAlertTextUI(string alert_text)
+    {
+        if (is_doing_alert_text_cor != null)
+        {
+            StopCoroutine(is_doing_alert_text_cor);
+            is_doing_alert_text_cor = null;
+        }
+
+        is_doing_alert_text_cor = StartCoroutine(PopupAlertUI(alert_text));
+    }
+    IEnumerator PopupAlertUI(string alert_text)
+    {
+        alert_dialog_ui.SetActive(false);
+
+        alert_dialog_ui.transform.GetChild(0).GetComponent<Text>().text = alert_text;
+        alert_dialog_ui.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        alert_dialog_ui.SetActive(false);
+        is_doing_alert_text_cor = null;
     }
 }

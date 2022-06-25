@@ -50,8 +50,17 @@ public class Monster : Unit
         EffectReset();
         ActiveOffWeaponArea();
         ReportDeath();
+        DropItem();
         StartCoroutine(DestroyObject());
     }
+
+    void DropItem()
+    {
+        if (UnityEngine.Random.Range(0, 2) == 0) return;
+
+        ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("RandomItem").transform.position = transform.position;
+    }
+
     void InstancingMaterial()
     {
         renderer.material = Instantiate(renderer.material);

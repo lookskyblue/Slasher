@@ -73373,11 +73373,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battle_result_ui: {fileID: 1371557813}
-  battle_result_fade_out_time: 2
+  battle_result_fade_out_time: 6
   canvas_group: {fileID: 2010157320}
   battle_result_text: {fileID: 1638733724}
   gold_text: {fileID: 755194833}
   exp_text: {fileID: 1834215418}
+  wait_time_to_show_for_battle_result: 0
 --- !u!114 &2010157316
 MonoBehaviour:
   m_ObjectHideFlags: 0

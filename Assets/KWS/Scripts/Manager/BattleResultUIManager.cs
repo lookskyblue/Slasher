@@ -13,16 +13,12 @@ public class BattleResultUIManager : MonoBehaviour
     [SerializeField]
     GameObject battle_result_ui;
     [Tooltip("배틀 결과창 UI가 서서히 선명해지는 속도를 나타냅니다.")]
-    [SerializeField]
-    private float battle_result_fade_out_time;
-    [SerializeField]
-    private CanvasGroup canvas_group;
-    [SerializeField]
-    private Text battle_result_text;
-    [SerializeField]
-    private Text gold_text;
-    [SerializeField]
-    private Text exp_text;
+    [SerializeField] private float battle_result_fade_out_time;
+    [SerializeField] private CanvasGroup canvas_group;
+    [SerializeField] private Text battle_result_text;
+    [SerializeField] private Text gold_text;
+    [SerializeField] private Text exp_text;
+    [SerializeField] private float wait_time_to_show_for_battle_result;
     private float compensation_gold = 0;
     private float compensation_exp = 0;
     public void ShowBattleResult(BattleResult battle_result, int gold = 0, int exp = 0)
@@ -34,10 +30,7 @@ public class BattleResultUIManager : MonoBehaviour
     }
     IEnumerator ShowBattleResultUI(BattleResult battle_result, int gold, int exp)
     {
-        yield return new WaitForSeconds(3f);
-        yield return null;
-
-        float total_time = 0f;
+        yield return new WaitForSeconds(wait_time_to_show_for_battle_result);
 
         if (BattleResult.battle_success == battle_result) battle_result_text.text = "Battle Success";
         else if (BattleResult.battle_failed == battle_result) battle_result_text.text = "Battle Failed";
@@ -46,6 +39,8 @@ public class BattleResultUIManager : MonoBehaviour
         gold_text.text = gold == 0 ? "0" : GetThousandCommaText(gold);
         exp_text.text = exp == 0 ? "0" : GetThousandCommaText(exp);
         canvas_group.alpha = 0;
+
+        float total_time = 0f;
 
         while (total_time < battle_result_fade_out_time)
         {
