@@ -84,7 +84,7 @@ ModelImporter:
           postInfinity: 2
           rotationOrder: 4
       events:
-      - time: 0.22854827
+      - time: 0.31380174
         functionName: ActiveOnWeaponArea
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -98,7 +98,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 3
         messageOptions: 0
-      - time: 0.47051612
+      - time: 0.44747463
         functionName: ActiveOffWeaponArea
         data: 
         objectReferenceParameter: {instanceID: 0}

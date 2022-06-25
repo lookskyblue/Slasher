@@ -20,7 +20,7 @@ MonoBehaviour:
   maxiam_mp: 3000
   maxiam_str: 1000
   maxiam_def: 1000
-  default_hp: 200
+  default_hp: 2000
   default_mp: 150
   default_str: 50
   default_def: 20
@@ -28,3 +28,4 @@ MonoBehaviour:
   total_mp: 0
   total_str: 0
   total_def: 0
+  total_gold: 0

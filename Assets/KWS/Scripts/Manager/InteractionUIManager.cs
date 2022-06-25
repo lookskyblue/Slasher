@@ -39,6 +39,7 @@ public class InteractionUIManager : MonoBehaviour
     #endregion
 
     private Coroutine is_doing_alert_text_cor = null;
+    private float resale_ratio;
     private void Start()
     {
         interaction_event.Get_Field_Item_Text_UI = PopUpFieldItemGetTextUI;
@@ -51,6 +52,8 @@ public class InteractionUIManager : MonoBehaviour
         interaction_event.Hide_Skill_Info_UI = HideSkillInfoUI;
 
         interaction_event.On_Change_Alert_Text_UI = PopUpAlertTextUI;
+
+        resale_ratio = GameManager.instance.GetResaleRatio;
     }
     private void PopUpFieldItemGetTextUI(bool value)
     {
@@ -113,7 +116,7 @@ public class InteractionUIManager : MonoBehaviour
         item_hp_recovery_amount_text.text = item.hp_recovery_amount.ToString();
         item_mp_recovery_amount_text.text = item.mp_recovery_amount.ToString();
         item_cool_time_text.text = item.cool_time.ToString() + "초";
-        item_resale_price_text.text = item.resale_price == 0 ? "0" : GetThousandCommaText(item.resale_price);
+        item_resale_price_text.text = GetThousandCommaText((int)(item.price * resale_ratio));
 
         // 수치가 0인 아이템 정보는 표기할 필요 없음.
         item_str_text.gameObject.transform.parent.gameObject.SetActive(item.str != 0);

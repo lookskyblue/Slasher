@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3abb7e08f020024cba88814ec51c654, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  TestExp: 200
+  TestExp: 50
   level: 1
   max_exp: 100
   exp: 0
@@ -20,12 +20,12 @@ MonoBehaviour:
   maxiam_mp: 3000
   maxiam_str: 1000
   maxiam_def: 1000
-  default_hp: 300
-  default_mp: 300
+  default_hp: 30100
+  default_mp: 350
   default_str: 20
   default_def: 5
-  total_hp: 300
-  total_mp: 300
+  total_hp: 5000
+  total_mp: 350
   total_str: 20
   total_def: 5
   total_gold: 123

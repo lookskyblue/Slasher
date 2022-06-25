@@ -5,25 +5,15 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     #region ¸â¹ö º¯¼ö
-    [SerializeField]
-    private Transform follow_camera;
-
-    [SerializeField]
-    private float move_power;
-
-    [SerializeField]
-    private float rotate_power;
-
-    [SerializeField]
-    private float turn_power;
-
-    [SerializeField]
-    private PlayerAttack player_attack;
+    [SerializeField] private Player player;
+    [SerializeField] private Transform follow_camera;
+    [SerializeField] private float move_power;
+    [SerializeField] private float rotate_power;
+    [SerializeField] private float turn_power;
+    [SerializeField] private PlayerAttack player_attack;
     private Animator player_animator;
     private Vector3 move_input;
     private Coroutine is_turning = null;
-    [SerializeField]
-    private Player player;
     #endregion
     private void Awake()
     {

@@ -5,23 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class PotionSlot : Slot
 {
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-    [SerializeField]
-    private ItemType default_type;
-    [SerializeField]
-    private int potion_slot_num;
-    [SerializeField]
-    private byte color_alpha;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private UnitStats unit_stats;
+    [SerializeField] private Image cool_time_ui;
+    [SerializeField] private ItemType default_type;
+    [SerializeField] private KeyCode key_code;
+    [SerializeField] private int potion_slot_num;
+    [SerializeField] private byte color_alpha;
     private Color32 default_color;
 
-    [SerializeField]
-    private KeyCode key_code;
-
-    [SerializeField]
-    private UnitStats unit_stats;
-    [SerializeField]
-    private Image cool_time_ui;
     private void Start()
     {
         default_color = new Color32(255, 255, 255, 255);

@@ -18,8 +18,7 @@ public class ObjectPoolingManager : MonoBehaviour
     private Dictionary<string, Queue<GameObject>> object_pooling_dic = new Dictionary<string, Queue<GameObject>>();
     private Dictionary<string, GameObject> object_dic = new Dictionary<string, GameObject>();
     
-    [SerializeField]
-    private Transform player_transform;
+    [SerializeField] private Transform player_transform;
 
     public Transform Player_Transform
     {

@@ -134,19 +134,19 @@ public class Unit : MonoBehaviour
     {
         return unit_now_hp <= 0;
     }
-    void ActiveOnWeaponArea()
+    void ActiveOnWeaponArea(int idx)
     {
-        weapon.ActiveOnWeaponArea();
+        weapon.ActiveOnWeaponArea(idx);
     }
-
-    protected void ActiveOffWeaponArea()
+    protected void ActiveOffWeaponArea(int idx)
     {
-        weapon.ActiveOffWeaponArea();
+        weapon.ActiveOffWeaponArea(idx);
     }
 
     IEnumerator CancelDamagedAnimation()
     {
-        ActiveOffWeaponArea();
+        ActiveOffWeaponArea(0);
+        //ActiveOffWeaponArea(1);
 
         while (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true)
         {

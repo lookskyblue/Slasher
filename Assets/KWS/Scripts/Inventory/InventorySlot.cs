@@ -6,16 +6,28 @@ public class InventorySlot : Slot
 {
     public override void RemoveSlotUI()
     {
+        StartCoroutine(RemoveSlotUICor());
+    }
+    IEnumerator RemoveSlotUICor()
+    {
         base.RemoveSlotUI();
+
+        yield return null;
 
         item_cnt_text.text = null;
         item_cnt_text.gameObject.SetActive(false);
         item_mount_state_text.gameObject.SetActive(false);
     }
-
     public override void UpdateSlotUI(Item item)
     {
         base.UpdateSlotUI(item);
+    }
+
+    private void Update()
+    {
+        if (item == null) return;
+
+        Debug.Log("아이템명: " + item.name + ", 슬롯넘: " + Slot_Num);
     }
 
     public void Unmount()

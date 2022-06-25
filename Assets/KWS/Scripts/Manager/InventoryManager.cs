@@ -76,7 +76,18 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private PotionSlot[] potion_slots;
     [SerializeField] private int slot_cnt;
     [SerializeField] private UnitStats player_stats;
-
+    [SerializeField] private int gold_on_hand;
+    [SerializeField] private InteractionUIEvent interaction_ui_event;
+    [SerializeField] private string full_item_alert_text;
+    public int Gold_On_Hand
+    {
+        get { return gold_on_hand; }
+        set 
+        { 
+            gold_on_hand = value;
+            on_changed_gold.Invoke(gold_on_hand);
+        }
+    }
     public int Slot_Cnt
     {
         get => slot_cnt;
@@ -96,47 +107,90 @@ public class InventoryManager : MonoBehaviour
 
     void RoadGold()
     {
-        int now_gold = player_stats.Total_Gold;
-
-        on_changed_gold.Invoke(now_gold);
+        on_changed_gold.Invoke(gold_on_hand);
     }
-    public bool AddItem(Item item)
+
+    //public bool AddItem(Item item, int item_cnt)
+    //{
+    //    if (items.Count >= Slot_Cnt)
+    //    {
+    //        Debug.Log(full_item_alert_text);
+    //        interaction_ui_event.On_Change_Alert_Text_UI.Invoke(full_item_alert_text);
+
+    //        return false;
+    //    }
+
+    //    if (item.is_stackable == false)
+    //    {
+    //        items.Add(item);
+    //    }
+
+    //    else // 리스트 순회 검사
+    //    {
+    //        for (int i = 0; i < items.Count; i++)
+    //        {
+    //            if (items[i].item_key.Equals(item.item_key) == true &&
+    //                items[i].is_stackable == true) // 같은 아이템
+    //            {
+    //                items[i].item_cnt += item_cnt;
+
+    //                OnChangedItemCnt.Invoke(item.item_key);
+    //                return true;
+    //            }
+    //        }
+
+    //        item.item_cnt = item_cnt;
+    //        items.Add(item);
+
+    //    }  // UI에도 개수 표기 할 수 있게 작업할 것
+
+    //    OnItemAdded.Invoke(item);
+
+    //    return true;
+    //}
+    bool IsFullInventory()
     {
-        if (items.Count >= Slot_Cnt) return false;
-
-        //Debug.Log("획득한 아이템명: " + item.item_name);
-
-        if (item.is_stackable == false)
+        if (items.Count >= Slot_Cnt)
         {
-            items.Add(item);
+            Debug.Log(full_item_alert_text);
+            interaction_ui_event.On_Change_Alert_Text_UI.Invoke(full_item_alert_text);
+
+            return true;
         }
 
-        else // 리스트 순회 검사
+        return false;
+    }
+    public bool AddItem(Item item, int item_cnt)
+    {
+        for (int i = 0; i < items.Count; i++)
         {
-            for (int i = 0; i < items.Count; i++)
+            if (items[i].item_key.Equals(item.item_key) == true) // 아이템 이미 존재
             {
-                if (items[i].item_key.Equals(item.item_key) == true &&
-                    items[i].is_stackable == true) // 같은 아이템
+                if (items[i].is_stackable == true)
                 {
-                    items[i].item_cnt += item.item_cnt;
-
+                    items[i].item_cnt += item_cnt;
                     OnChangedItemCnt.Invoke(item.item_key);
+
                     return true;
                 }
+
+                else if (IsFullInventory() == true) return false;
             }
 
-            items.Add(item);
+            else if (IsFullInventory() == true) return false;
+        }
 
-        }  // UI에도 개수 표기 할 수 있게 작업할 것
-
+        item.item_cnt = item_cnt;
+        items.Add(item);
         OnItemAdded.Invoke(item);
+
         return true;
     }
 
     public void ReportSlotNumToEquipmentSlotNum(ItemType item_type, int new_slot_num) // 중요
     {
         EquipmentSlot equipment_slot = GetSlotType(item_type);
-
+        Debug.Log("원래 슬롯 넘: " + equipment_slot.Slot_Num + " 바뀔 슬롯 넘: " + new_slot_num);
         equipment_slot.Slot_Num = new_slot_num;
     }
 
@@ -154,15 +208,22 @@ public class InventoryManager : MonoBehaviour
 
     public void UnmountItem(ItemType item_type) // 중요
     {
+        StartCoroutine(UnmountItemCor(item_type));
+    }
+
+    IEnumerator UnmountItemCor(ItemType item_type)
+    {
         EquipmentSlot equipment_slot = GetSlotType(item_type);
 
-        if (equipment_slot == null) return;
-        if (equipment_slot.Is_Mount == false) return;
-        
-        int slot_num = equipment_slot.Slot_Num;
-        equipment_slot.RemoveSlotUI();
+        if(equipment_slot != null && equipment_slot.Is_Mount != false)
+        {
+            yield return null;
 
-        OnChangedMountState(slot_num);
+            int slot_num = equipment_slot.Slot_Num;
+            equipment_slot.RemoveSlotUI();
+
+            OnChangedMountState(slot_num);
+        }
     }
     public void UnmountItem(int potion_slot_idx) // 중요
     {
@@ -175,13 +236,21 @@ public class InventoryManager : MonoBehaviour
 
     public void MountItem(ItemType item_type, Item item, int slot_num) // 중요
     {
+        StartCoroutine(MountItemCor(item_type, item, slot_num));
+    }
+
+    IEnumerator MountItemCor(ItemType item_type, Item item, int slot_num)
+    {
+        yield return null;
         EquipmentSlot equipment_slot = GetSlotType(item_type);
 
         if (equipment_slot != null)
         {
+            yield return null;
             equipment_slot.UpdateSlotUI(item, slot_num);
         }
     }
+
     public void MountItem(Item potion_item, int slot_num)
     {
         for(int i  = 0; i < potion_slots.Length; i++)
@@ -251,14 +320,39 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-    private void RemoveItemInList(string item_name)
+
+    public void RemoveItem(Item item, int slot_num, int item_cnt)
+    {
+        RemoveItemInList(item, ref item_cnt);
+        InventoryUI.instance.OnRemovedItem(slot_num, item_cnt);
+    }
+    private void RemoveItemInList(Item item, ref int item_cnt)
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i].item_key.Equals(item_name) == true)
+            //if (items[i] == item)
+            if (items[i].Equals(item) == true)
+            {
+                items[i].item_cnt -= item_cnt;
+                item_cnt = items[i].item_cnt;
+
+                if (items[i].item_cnt <= 0)
+                {
+                    items.RemoveAt(i);
+                }
+
+                break;
+            }
+        }
+    }
+
+    private void RemoveItemInList(string item_key)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].item_key.Equals(item_key) == true)
             {
                 items.RemoveAt(i);
-
                 break;
             }
         }

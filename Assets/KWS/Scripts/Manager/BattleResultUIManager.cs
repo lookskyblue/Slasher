@@ -51,6 +51,7 @@ public class BattleResultUIManager : MonoBehaviour
     }
 
     string GetThousandCommaText(int value) { return string.Format("{0:#,###}", value); }
+    
     public void PushGoToTownButton()
     {
         GameManager.instance.LoadScene("Town");
@@ -59,7 +60,7 @@ public class BattleResultUIManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             PushGoToTownButton();
         }

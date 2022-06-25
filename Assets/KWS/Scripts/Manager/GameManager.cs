@@ -5,17 +5,38 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject player_prefab;
-    [SerializeField]
-    private GameObject first_spawn_zone;
-    [SerializeField]
-    private GameObject player_group;
-    private Player player;
     public static GameManager instance = null;
-    [SerializeField]
-    private RaidBoardManager raid_board_manager;
+
+    [SerializeField] private GameObject player_prefab;
+    [SerializeField] private GameObject first_spawn_zone;
+    [SerializeField] private GameObject player_group;
+    [SerializeField] private RaidBoardManager raid_board_manager;
+    [SerializeField] private DragAndDropContainer drag_and_drop_container;
+
+    [Tooltip("아이템을 되팔기 할 때의 정가에서 곱해지는 비율입니다.(0 ~ 1)")]
+    [SerializeField] private float resale_ratio;
+
+    private Player player;
     private Animator palyer_ani;
+    private bool is_using_store = false;
+    private bool is_talking_with_npc = false;
+
+    public RaidBoardManager GetRaidBoardManager { get { return raid_board_manager; } }
+    public DragAndDropContainer GetDragAndDropContainer { get { return drag_and_drop_container; } }
+    public float GetResaleRatio { get { return resale_ratio; } }
+    public MonoBehaviour BorrowMono { get { return this; } }
+
+    public bool Is_Using_Store 
+    {
+        get { return is_using_store; } 
+        set { is_using_store = value; } 
+    }
+
+    public bool Is_Talking_With_Npc
+    {
+        get { return is_talking_with_npc; }
+        set { is_talking_with_npc = value; }
+    }
 
     private void Awake()
     {
@@ -73,14 +94,19 @@ public class GameManager : MonoBehaviour
         player_group.transform.GetChild(1).rotation = player_group.transform.GetChild(0).rotation;
     }
 
-    public MonoBehaviour BorrowMono() { return this; }
-
     public void SendCompensation(float gold = 0, float exp = 0)
     {
         Debug.Log("보상을 받음 골드: " + gold + ", 경험치: " + exp);
 
         player.OnChangeExp(exp);
     }
+    public bool IsDoingOtherTask()
+    {
+        bool is_doing_task = false;
 
-    public RaidBoardManager GetRaidBoardManager() { return raid_board_manager; }
+        if (is_using_store == true || is_talking_with_npc == true)
+            is_doing_task = true;
+
+        return is_doing_task;
+    }
 }

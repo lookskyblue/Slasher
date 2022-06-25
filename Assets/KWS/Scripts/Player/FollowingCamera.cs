@@ -43,6 +43,7 @@ public class FollowingCamera : MonoBehaviour
     {
         if (is_using_skill_slot == true) return;
         if (ui_active_get_key_input.IsActivedUI() == true) return;
+        if (GameManager.instance.IsDoingOtherTask() == true) return;
 
         Vector2 mouse_input = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         Vector3 cam_angle = anchor_transform.rotation.eulerAngles;

@@ -39,7 +39,7 @@ public class SkillInfo
     public float Remaining_Cool_Time { get { return remaining_cool_time; } }
     public void DoCoolTime()
     {
-        MonoBehaviour mono = GameManager.instance.BorrowMono();
+        MonoBehaviour mono = GameManager.instance.BorrowMono;
 
         mono.StartCoroutine(ActiveCoolTime());
     }
@@ -60,24 +60,15 @@ public class SkillInfo
 }
 public class SkillBookManager : MonoBehaviour
 {
-    [SerializeField]
-    private SkillInfo[] skill_info_list;
-    [SerializeField]
-    private GameObject skill_prefab;
-    [SerializeField]
-    private GameObject skill_scroll_view_content;
-    [SerializeField]
-    private Text remaining_skill_point_text;
-    [SerializeField]
-    private int remaining_skill_point;
-    [SerializeField]
-    private UnitStats player_stats;
-    [SerializeField]
-    private SkillDragAndDropContainer skill_drag_and_drop_container;
-    [SerializeField]
-    private Transform skill_slots_container;
-    [SerializeField]
-    private InteractionUIEvent interaction_ui_event;
+    [SerializeField] private SkillInfo[] skill_info_list;
+    [SerializeField] private GameObject skill_prefab;
+    [SerializeField] private GameObject skill_scroll_view_content;
+    [SerializeField] private Text remaining_skill_point_text;
+    [SerializeField] private int remaining_skill_point;
+    [SerializeField] private UnitStats player_stats;
+    [SerializeField] private SkillDragAndDropContainer skill_drag_and_drop_container;
+    [SerializeField] private Transform skill_slots_container;
+    [SerializeField] private InteractionUIEvent interaction_ui_event;
 
     private const int NOT_FOUND = -1;
     private void Awake()

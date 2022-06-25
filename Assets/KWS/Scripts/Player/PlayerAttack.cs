@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField]
-    private float fire_gap_time;
+    [SerializeField] private UIActiveGetKeyInput ui_active_get_key_input;
+    [SerializeField] private float fire_gap_time;
+    private PlayerMovement player_movement;
     private Animator player_animator;
-    private int attack_click_cnt = 0;
     private float last_clicked_time = 0f;
     private float max_combo_delay = 0.7f;
-    private PlayerMovement player_movement;
-    [SerializeField]
-    private UIActiveGetKeyInput ui_active_get_key_input;
+    private int attack_click_cnt = 0;
     private bool is_mouse_inside_in_skill_slot = false;
     private bool is_doing_attack_stop_cor;
     public bool Is_Doing_Attack_Stop_Cor { get { return is_doing_attack_stop_cor; } }
@@ -65,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
             if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false) return;
             if (is_mouse_inside_in_skill_slot == true) return;
             if (IsDoingAnotherAnimation() == true) return;
-
+            if (GameManager.instance.IsDoingOtherTask() == true) return;
             else // UI 밖 클릭
             {
                 //1. UI가 하나라도 켜져있을 경우 UI다 끄고 리턴.

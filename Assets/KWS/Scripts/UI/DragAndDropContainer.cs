@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 public class DragAndDropContainer : MonoBehaviour
 {
+    [HideInInspector] public Item item = null;
     public Image item_image;
-    [HideInInspector]
-    public Item item = null;
-    public bool is_mount = false;
     public int slot_num = -1;
-    //public int potion_slot_num = -1;
+    public bool is_mount = false;
 
     private void Start()
     {

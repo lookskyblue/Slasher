@@ -5,20 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerStatsUI : MonoBehaviour
 {
-    [SerializeField]
-    private UnitStats player_stats;
+    [SerializeField] private UnitStats player_stats;
 
     #region Ω∫≈» ¡§∫∏
-    [SerializeField]
-    private Text level_text;
-    [SerializeField]
-    private Text hp_text;
-    [SerializeField]
-    private Text mp_text;
-    [SerializeField]
-    private Text str_text;
-    [SerializeField]
-    private Text def_text;
+    [SerializeField] private Text level_text;
+    [SerializeField] private Text hp_text;
+    [SerializeField] private Text mp_text;
+    [SerializeField] private Text str_text;
+    [SerializeField] private Text def_text;
     #endregion
 
     private void Start()

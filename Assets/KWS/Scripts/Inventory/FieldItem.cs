@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FieldItem : MonoBehaviour
 {
-    [SerializeField] private string full_item_alert_text;
     [SerializeField] private ItemDB item_db;
     [SerializeField] private InteractionUIEvent interaction_event;
     private Item acquired_item = null;
@@ -24,21 +23,12 @@ public class FieldItem : MonoBehaviour
 
         if (Input.GetKey(KeyCode.E))
         {
-            if (acquired_item == null)
-                acquired_item = GetRandomItem();
-            
-            if(InventoryManager.instance.AddItem(acquired_item) == false)
-            {
-                Debug.Log(full_item_alert_text);
-                interaction_event.On_Change_Alert_Text_UI.Invoke(full_item_alert_text);
-
-                return;
-            }
+            if (acquired_item == null) acquired_item = GetRandomItem();
+            if(InventoryManager.instance.AddItem(acquired_item, acquired_item.item_cnt) == false) return;
 
             interaction_event.Get_Field_Item_Text_UI(false);
             interaction_event.Show_Acquired_Item_UI(acquired_item);
 
-            //Destroy(gameObject);
             ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("RandomItem", gameObject);
         }
     }

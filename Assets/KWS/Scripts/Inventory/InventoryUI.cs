@@ -54,6 +54,7 @@ public class InventoryUI : MonoBehaviour
             {
                 slots[i].UpdateSlotUI(item);
                 slots[i].SetNativeSize();
+
                 return;
             }
         }
@@ -81,21 +82,38 @@ public class InventoryUI : MonoBehaviour
         {
             if(slots[i].Slot_Num == slot_num)
             {
+                Debug.Log("¹þ±â·Á´Â ½½·Ô ³Ñ: " + slot_num);
                 slots[i].Unmount();
                 //Destroy(slots[i].gameObject);
-                Debug.Log("UnMount");
                 break;
             }
         }
     }
     public bool IsActiveInventoryUI() { return inventory_panel.activeSelf; }
-    void OnRemovedItem(int slot_num)
+    public void OnRemovedItem(int slot_num)
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].Slot_Num == slot_num)
             {
                 slots[i].RemoveSlotUI();
+
+                break;
+            }
+        }
+    }
+    public void OnRemovedItem(int slot_num, int item_cnt)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            Item item = slots[i].GetItem();
+            
+            if (item != null && slots[i].Slot_Num == slot_num)
+            {
+                item.item_cnt = item_cnt;
+
+                if (item.item_cnt <= 0) slots[i].RemoveSlotUI();
+                else slots[i].UpdateItemCnt(item.item_cnt);
 
                 break;
             }
@@ -110,4 +128,17 @@ public class InventoryUI : MonoBehaviour
     {
         return string.Format("{0:#,###}", gold);
     }
+
+    //bool IsMountedItem(string item_name)
+    //{
+    //    for(int i = 0; i < slots.Length; i++)
+    //    {
+    //        if(slots[i].name.Equals(item_name) == true)
+    //        {
+                
+    //        }
+    //    }
+    //}
+
+    public void OnInventoryUI() { inventory_panel.SetActive(true); }
 }

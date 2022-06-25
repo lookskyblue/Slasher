@@ -26,7 +26,7 @@ public class Item
     public string effect_pooling_key;
     public float cool_time;
     public string name;
-    public int resale_price;
+    public int price;
 
     private bool is_cool_time = false;
     public bool Is_Cool_Time { get { return is_cool_time; } }
@@ -76,7 +76,7 @@ public class Item
 
     void DoCoolTime()
     {
-        MonoBehaviour mono = GameManager.instance.BorrowMono();
+        MonoBehaviour mono = GameManager.instance.BorrowMono;
 
         mono.StartCoroutine(ActiveCoolTime());
     }
@@ -105,7 +105,7 @@ public class Item
             return;
         }
 
-        MonoBehaviour temp_mono = GameManager.instance.BorrowMono();
+        MonoBehaviour temp_mono = GameManager.instance.BorrowMono;
         temp_mono.StartCoroutine(ShowUsingPotionEffect(effect_pooling_key));
     }
 
@@ -151,7 +151,7 @@ public class Item
         new_copy.cool_time = this.cool_time;
         new_copy.is_cool_time = this.is_cool_time;
         new_copy.name = this.name;
-        new_copy.resale_price = this.resale_price;
+        new_copy.price = this.price;
 
         return new_copy;
     }

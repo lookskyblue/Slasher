@@ -8,14 +8,10 @@ public class Player : Unit
 {
     private static Player player = null;
 
-    [SerializeField]
-    private Image exp_ui_image;
-    [SerializeField]
-    private Text exp_text;
-    [SerializeField]
-    private Text overhead_level_text;
-    [SerializeField]
-    private Text overhead_name_text;
+    [SerializeField] private Image exp_ui_image;
+    [SerializeField] private Text exp_text;
+    [SerializeField] private Text overhead_level_text;
+    [SerializeField] private Text overhead_name_text;
 
     private bool is_damaged = false;
 
@@ -139,7 +135,6 @@ public class Player : Unit
 
         DrawExpUI();
     }
-
     bool IsLevelUp(float acquired_exp, out float left_exp)
     {
         bool is_level_up = false;
@@ -217,7 +212,7 @@ public class Player : Unit
 
     protected override void Dye()
     {
-        weapon.ActiveOffWeaponArea();
+        weapon.ActiveOffWeaponArea(0);
         unit_animation.Play("Dying");
     }
 }

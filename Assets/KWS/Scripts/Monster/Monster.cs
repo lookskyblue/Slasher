@@ -1,18 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Monster : Unit
 {
-    [SerializeField]
-    private float attack_delay;
-    [SerializeField]
-    private float rotate_fower;
+    [SerializeField] private float attack_delay;
+    [SerializeField] private float rotate_fower;
+    [SerializeField] private float player_find_range;
+    [SerializeField] private List<int> attack_phase_list;
     private NavMeshAgent nav_mesh_agent;
     private Coroutine is_doing_attack_motion_cor = null;
-    [SerializeField]
-    private float player_find_range;
 
     protected Action<bool> death_callback;
 
@@ -48,7 +47,8 @@ public class Monster : Unit
         nav_mesh_agent.enabled = false;
         unit_animation.Play("Dying");
         EffectReset();
-        ActiveOffWeaponArea();
+        ActiveOffWeaponArea(0);
+        ActiveOffWeaponArea(1);
         ReportDeath();
         DropItem();
         StartCoroutine(DestroyObject());
@@ -89,8 +89,7 @@ public class Monster : Unit
         {
             nav_mesh_agent.isStopped = false;
 
-            if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
-               unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack") == true)
+            if (IsDoingAnotherMotion() == true)
             {
                 nav_mesh_agent.isStopped = true;
                 //unit_animation.SetBool("IsRun", false);
@@ -108,8 +107,7 @@ public class Monster : Unit
 
             else
             {
-                if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
-                    unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack") == true)
+                if(IsDoingAnotherMotion() == true)
                 {
                     nav_mesh_agent.isStopped = true;
                     //unit_animation.SetBool("IsRun", false);
@@ -129,10 +127,25 @@ public class Monster : Unit
         else // 발견 범위 밖
         {
             unit_animation.SetBool("IsRun", false);
-            unit_animation.SetBool("IsAttack", false);
+            unit_animation.SetInteger("AttackPhase", 0);
 
             nav_mesh_agent.isStopped = true;
         }
+    }
+
+    bool IsDoingAnotherMotion()
+    {
+        bool result = false;
+
+        if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
+            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack1") == true ||
+            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack2") == true ||
+            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack3") == true)
+        {
+            result = true;
+        }
+
+        return result;
     }
 
     private void Update()
@@ -149,16 +162,26 @@ public class Monster : Unit
             yield return null;
         }
 
-        unit_animation.SetBool("IsAttack", true);
+        int attack_motion_idx = GetRandomAttackMotionIdx();
+
+        unit_animation.SetInteger("AttackPhase", attack_motion_idx);
 
         yield return new WaitForSeconds(0.2f);
 
         is_doing_attack_motion_cor = null;
     }
 
+    int GetRandomAttackMotionIdx()
+    {
+        int rand_idx = UnityEngine.Random.Range(0, attack_phase_list.Count);
+        int rand_attack_phase = attack_phase_list[rand_idx];
+
+        return rand_attack_phase;
+    }
+
     private void OffAttackMotion()
     {
-        unit_animation.SetBool("IsAttack", false);
+        unit_animation.SetInteger("AttackPhase", 0);
     }
     protected IEnumerator LookAtPlayer()
     {

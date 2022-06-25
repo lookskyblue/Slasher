@@ -6,20 +6,13 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField]
-    protected DragAndDropContainer drag_and_drop_container;
+    [SerializeField] protected DragAndDropContainer drag_and_drop_container;
+    [SerializeField] protected InteractionUIEvent interaction_ui_event;
+    [SerializeField] protected Image item_image;
+    [SerializeField] protected Text item_cnt_text;
+    [SerializeField] protected Text item_mount_state_text;
     private bool is_dragging;
-
-    //[SerializeField]
     protected Item item;
-    [SerializeField]
-    protected Image item_image;
-    [SerializeField]
-    protected Text item_cnt_text;
-    [SerializeField]
-    protected Text item_mount_state_text;
-    [SerializeField]
-    protected InteractionUIEvent interaction_ui_event;
 
     private int slot_num;
     public int Slot_Num
@@ -36,24 +29,43 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     }
     public virtual void RemoveSlotUI()
     {
+        StartCoroutine(RemoveSlotUICor());
+    }
+    IEnumerator RemoveSlotUICor()
+    {
+        Debug.Log("리무스 슬롯넘: " + slot_num);
+
+        yield return null;
         item = null;
         item_image.sprite = null;
         item_image.gameObject.SetActive(false);
-
+        item_mount_state_text.gameObject.SetActive(false);
         Is_Mount = false;
     }
 
     public virtual void UpdateSlotUI(Item item)
     {
+        StartCoroutine(UpdateSlotUICor(item));
+    }
+
+    IEnumerator UpdateSlotUICor(Item item)
+    {
+        yield return null;
+
         this.item = item;
         this.item.item_type = item.item_type;
+
+        yield return null;
+
         this.item_image.sprite = item.item_image;
         this.item_image.gameObject.SetActive(true);
 
-        if (item.is_stackable == true)
+        yield return null;
+
+        if (item_cnt_text != null)
         {
             this.item_cnt_text.text = item.item_cnt.ToString();
-            item_cnt_text.gameObject.SetActive(true);
+            item_cnt_text.gameObject.SetActive(item.is_stackable == true);
         }
 
         item_image.SetNativeSize();
@@ -73,7 +85,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     {
         if (pointer_event_data.button != PointerEventData.InputButton.Right) return;
         if (item == null) return;
-
+        Debug.Log("1 타입: " + item.item_type);
         CheckItem(item.item_type);
     }
 
@@ -85,6 +97,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
             case ItemType.Shield:
                 {
                     bool before_mount_state = Is_Mount;
+
                     UnmountItem(item_type);
                     MountItem(item_type, before_mount_state);
                     
@@ -129,6 +142,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     }
     private void MountItem(ItemType item_type, bool before_mount_state) // 중요
     {
+        Debug.Log("2 비포 착용 상태: " + before_mount_state);
+
         if (before_mount_state == true)
         {
             return;
@@ -141,14 +156,11 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
 
     public virtual void OnBeginDrag(PointerEventData event_data)
     {
-        Debug.Log("Begin0");
-
-        if (item == null) { Debug.Log("Begin1"); return; }
+        if (item == null) return;
         
         if (is_dragging == false && event_data.button == PointerEventData.InputButton.Right)
         {
             drag_and_drop_container.item = null;
-            Debug.Log("Begin2");
             return;
         }
 
@@ -160,8 +172,6 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         drag_and_drop_container.is_mount = Is_Mount;
 
         is_dragging = true;
-
-        Debug.Log("Begin3");
     }
 
     public virtual void OnDrag(PointerEventData event_data)
@@ -169,20 +179,30 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         if (is_dragging == false) return;
 
         drag_and_drop_container.transform.position = event_data.position;
-        Debug.Log("Drag");
-
     }
     public virtual void OnEndDrag(PointerEventData event_data)
     {
-        if(is_dragging == true)
+        StartCoroutine(OnEndDragCor());
+    }
+
+    IEnumerator OnEndDragCor()
+    {
+        yield return null;
+
+        if (is_dragging == true)
         {
+            Debug.Log("엔드 드래그 됐을 때. 원래 넘: " + Slot_Num + ", 바뀐 넘: " + drag_and_drop_container.slot_num);
             if (drag_and_drop_container.item != null)
             {
+                yield return null;
+
                 UpdateSlotUI(drag_and_drop_container.item);
                 Is_Mount = drag_and_drop_container.is_mount;
                 Slot_Num = drag_and_drop_container.slot_num;
 
                 //int potion_slot_num = drag_and_drop_container.potion_slot_num;
+
+                yield return null;
 
                 if (Is_Mount == true)
                 {
@@ -203,17 +223,14 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                     if (item_mount_state_text != null)
                         item_mount_state_text.gameObject.SetActive(false);
                 }
-
-                Debug.Log("End Drag1");
             }
 
             else
             {
+                yield return null;
                 RemoveSlotUI();
                 Is_Mount = false;
                 Slot_Num = drag_and_drop_container.slot_num;
-             
-                Debug.Log("End Drag2");
             }
         }
 
@@ -224,31 +241,43 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         drag_and_drop_container.item_image.gameObject.SetActive(false);
         drag_and_drop_container.slot_num = -1;
         drag_and_drop_container.is_mount = false;
-
-        Debug.Log("End Drag3");
     }
     public virtual void OnDrop(PointerEventData event_data) // 드랍 오브젝트의 앤드 드래그 이벤트 보다 드롭 오브젝트에서 드롭 이벤트가 먼저 발생함.
     {
         if (GetComponent<Button>().interactable == false) return;
-        if(drag_and_drop_container.item != null)
+        StartCoroutine(OnDropCor());
+    }
+
+    IEnumerator OnDropCor()
+    {
+        yield return null;
+
+        if (drag_and_drop_container.item != null)
         {
             Item temp_item = item;
             Sprite temp_sprite = item_image.sprite;
             bool is_mount = Is_Mount;
             int slot_num = Slot_Num;
+            
+            yield return null;
 
             UpdateSlotUI(drag_and_drop_container.item);
             Is_Mount = drag_and_drop_container.is_mount;
             Slot_Num = drag_and_drop_container.slot_num;
+            
+            yield return null;
 
             drag_and_drop_container.item = temp_item;
             drag_and_drop_container.item_image.sprite = temp_sprite;
             drag_and_drop_container.slot_num = slot_num;
+            Debug.Log("드랍 됐을 때. 원래 넘: " + slot_num + ", 바뀐 넘: " + Slot_Num);
             drag_and_drop_container.is_mount = is_mount;
+
+            yield return null;
 
             if (Is_Mount == true)
             {
-                if (item.item_type != ItemType.Potion)
+                if (item != null && item.item_type != ItemType.Potion)
                     InventoryManager.instance.ReportSlotNumToEquipmentSlotNum(item.item_type, Slot_Num);
 
                 if (item_mount_state_text != null)
@@ -260,8 +289,6 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                 if (item_mount_state_text != null)
                     item_mount_state_text.gameObject.SetActive(false);
             }
-
-            Debug.Log("End Drop1");
         }
 
         else
@@ -270,10 +297,6 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
             drag_and_drop_container.item_image.sprite = null;
             drag_and_drop_container.is_mount = false;
             drag_and_drop_container.slot_num = -1;
-            
-            Debug.Log("End Drop2");
         }
-
-        Debug.Log("End Drop3");
     }
 }

@@ -5,14 +5,10 @@ using UnityEngine.EventSystems;
 
 public class EquipmentSlot : Slot
 {
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-    [SerializeField]
-    private Sprite defalut_equipment_image;
-    [SerializeField]
-    private ItemType default_type;
-    [SerializeField]
-    private byte color_alpha;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private Sprite defalut_equipment_image;
+    [SerializeField] private ItemType default_type;
+    [SerializeField] private byte color_alpha;
     private Color32 default_color;
 
     private void Start()
@@ -21,11 +17,23 @@ public class EquipmentSlot : Slot
     }
     public void RemoveSlotUI()
     {
+        StartCoroutine(RemoveSlotUICor());
+    }
+
+    IEnumerator RemoveSlotUICor()
+    {
+        yield return null;
+        
         CallbackUnmountEquipment(item);
 
         base.RemoveSlotUI();
 
+        yield return null;
+
         item_image.sprite = defalut_equipment_image;
+
+        Debug.Log("디폴트 이미지로");
+
         item_image.SetNativeSize();
         item_image.gameObject.SetActive(true);
 
@@ -34,18 +42,27 @@ public class EquipmentSlot : Slot
 
     public void UpdateSlotUI(Item item, int slot_num)
     {
+        StartCoroutine(UpdateSlotUICor(item, slot_num));
+    }
+    IEnumerator UpdateSlotUICor(Item item, int slot_num)
+    {
+        Debug.Log("착용 슬롯 번호: " + slot_num);
+
         base.UpdateSlotUI(item);
+
+        yield return null;
 
         this.item.str = item.str;
         this.item.def = item.def;
 
         Slot_Num = slot_num;
         Is_Mount = true;
+        
+        yield return null;
 
         SetNormalColor();
         CallbackMountEquipment(item);
     }
-
     void SetDefaultColor()
     {
         default_color.a = color_alpha;
@@ -67,11 +84,8 @@ public class EquipmentSlot : Slot
     }
     private void CallbackMountEquipment(Item item)
     {
-        if (item.item_type == ItemType.Sword)
-            interaction_slot_event.Mount_Sword(item.item_key, item.str);
-
-        else if (item.item_type == ItemType.Shield)
-            interaction_slot_event.Mount_Shield(item.item_key, item.def);
+        if (item.item_type == ItemType.Sword) interaction_slot_event.Mount_Sword(item.item_key, item.str);
+        else if (item.item_type == ItemType.Shield) interaction_slot_event.Mount_Shield(item.item_key, item.def);
     }
 
     private void CallbackUnmountEquipment(Item item)
@@ -100,7 +114,6 @@ public class EquipmentSlot : Slot
             Slot_Num = drag_and_drop_container.slot_num;
             UpdateSlotUI(drag_and_drop_container.item, Slot_Num);
             drag_and_drop_container.is_mount = true;
-            Debug.Log("노멀 컬러");
 
             SetNormalColor();
         }
