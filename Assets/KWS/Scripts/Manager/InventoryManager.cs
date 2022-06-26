@@ -190,7 +190,6 @@ public class InventoryManager : MonoBehaviour
     public void ReportSlotNumToEquipmentSlotNum(ItemType item_type, int new_slot_num) // Áß¿ä
     {
         EquipmentSlot equipment_slot = GetSlotType(item_type);
-        Debug.Log("¿ø·¡ ½½·Ô ³Ñ: " + equipment_slot.Slot_Num + " ¹Ù²ð ½½·Ô ³Ñ: " + new_slot_num);
         equipment_slot.Slot_Num = new_slot_num;
     }
 
