@@ -22,6 +22,7 @@ public class InventoryUI : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
 
         InventoryManager.instance.OnSlotCntChange += OnSlotCntChange;

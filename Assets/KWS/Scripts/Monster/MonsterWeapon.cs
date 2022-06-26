@@ -26,7 +26,6 @@ public class MonsterWeapon : Weapon
         if (collider.gameObject.CompareTag("Player") == true) 
         {
             int damage = GetDamageAppliedByMotion();
-
             Vector3 hit_pos = collider.ClosestPoint(melee_area[0].transform.position);
             collider.GetComponent<Player>().ReceiveDamage(damage, hit_pos);
         }
@@ -49,6 +48,7 @@ public class MonsterWeapon : Weapon
 
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack2")) ratio = 1.2f;
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack3")) ratio = 1.4f;
+        if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack4")) ratio = 1.6f;
 
         return (int)(defalut_damage * ratio);
     }

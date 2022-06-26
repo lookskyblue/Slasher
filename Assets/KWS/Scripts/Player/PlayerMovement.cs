@@ -92,8 +92,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (test_move_input.magnitude != 0)
         {
-            Debug.Log("üũ1");
-
             Vector3 look_forward = new Vector3(follow_camera.forward.x, 0f, follow_camera.forward.z).normalized;
             Vector3 move_dir = look_forward * move_input.y + follow_camera.right * move_input.x;
             Quaternion new_rotation = Quaternion.LookRotation(move_dir);

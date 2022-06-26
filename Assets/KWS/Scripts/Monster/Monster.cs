@@ -140,7 +140,8 @@ public class Monster : Unit
         if (unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Damaged") == true ||
             unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack1") == true ||
             unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack2") == true ||
-            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack3") == true)
+            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack3") == true ||
+            unit_animation.GetCurrentAnimatorStateInfo(0).IsName("Attack4") == true)
         {
             result = true;
         }

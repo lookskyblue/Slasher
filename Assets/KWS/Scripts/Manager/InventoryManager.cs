@@ -16,7 +16,10 @@ public class InventoryManager : MonoBehaviour
         }
 
         else
+        {
             Destroy(gameObject);
+            return;
+        }
     }
     #endregion
 
@@ -110,44 +113,28 @@ public class InventoryManager : MonoBehaviour
         on_changed_gold.Invoke(gold_on_hand);
     }
 
-    //public bool AddItem(Item item, int item_cnt)
-    //{
-    //    if (items.Count >= Slot_Cnt)
-    //    {
-    //        Debug.Log(full_item_alert_text);
-    //        interaction_ui_event.On_Change_Alert_Text_UI.Invoke(full_item_alert_text);
+    public void ApplyAllMountedItemStats()
+    {
+        ApplyEachMountedItemStats(GetSlotType(ItemType.Sword));
+        ApplyEachMountedItemStats(GetSlotType(ItemType.Shield));
+    }
 
-    //        return false;
-    //    }
+    void ApplyEachMountedItemStats(EquipmentSlot equipment_slot)
+    {
+        Debug.Log("1 각 아이템 스탯 적용");
 
-    //    if (item.is_stackable == false)
-    //    {
-    //        items.Add(item);
-    //    }
+        if (equipment_slot != null && equipment_slot.Is_Mount == true)
+        {
+            Debug.Log("2 각 아이템 낫 널이고 착용중");
+            int str = 0;
+            int def = 0;
 
-    //    else // 리스트 순회 검사
-    //    {
-    //        for (int i = 0; i < items.Count; i++)
-    //        {
-    //            if (items[i].item_key.Equals(item.item_key) == true &&
-    //                items[i].is_stackable == true) // 같은 아이템
-    //            {
-    //                items[i].item_cnt += item_cnt;
+            equipment_slot.GetMountedItemStats(ref str, ref def);
+            player_stats.Total_Str += str;
+            player_stats.Total_Def += def;
+        }
+    }
 
-    //                OnChangedItemCnt.Invoke(item.item_key);
-    //                return true;
-    //            }
-    //        }
-
-    //        item.item_cnt = item_cnt;
-    //        items.Add(item);
-
-    //    }  // UI에도 개수 표기 할 수 있게 작업할 것
-
-    //    OnItemAdded.Invoke(item);
-
-    //    return true;
-    //}
     bool IsFullInventory()
     {
         if (items.Count >= Slot_Cnt)

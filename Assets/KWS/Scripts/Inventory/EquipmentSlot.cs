@@ -139,4 +139,17 @@ public class EquipmentSlot : Slot
     public override void OnEndDrag(PointerEventData event_data)
     {
     }
+
+    public void GetMountedItemStats(ref int str, ref int def)
+    {
+        if(item == null)
+        {
+            Debug.LogError("Mounted Item that doesn't exist");
+
+            return;
+        }
+
+        str = item.str;
+        def = item.def;
+    }
 }

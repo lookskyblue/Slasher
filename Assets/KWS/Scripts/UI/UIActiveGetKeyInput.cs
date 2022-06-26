@@ -13,11 +13,6 @@ public class UIActiveGetKeyInput : MonoBehaviour
 {
     [SerializeField]
     private UIToggleKeyWithObj[] ui_toggle_key_with_obj;
-
-    private void Awake()
-    {
-        GameObject.Find("RaidMap");
-    }
     private void Start()
     {
         ActiveOffAllToggleObj();

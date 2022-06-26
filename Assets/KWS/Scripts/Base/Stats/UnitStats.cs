@@ -16,18 +16,11 @@ public class UnitStats : ScriptableObject
         set { on_level_up = value; }
     }
 
-    private Action on_str_change;
-    public Action On_Str_Change
+    private Action on_stats_change;
+    public Action On_Stats_Change
     {
-        get { return on_str_change; }
-        set { on_str_change = value; }
-    }
-
-    private Action on_def_change;
-    public Action On_Def_Change
-    {
-        get { return on_def_change; }
-        set { on_def_change = value; }
+        get { return on_stats_change; }
+        set { on_stats_change = value; }
     }
 
     [SerializeField] private int level;
@@ -80,6 +73,7 @@ public class UnitStats : ScriptableObject
         {
             total_hp = value;
             total_hp = Mathf.Clamp(total_hp, 0, maxiam_hp);
+            on_stats_change?.Invoke();
         }
     }
 
@@ -101,6 +95,7 @@ public class UnitStats : ScriptableObject
         {
             total_mp = value;
             total_mp = Mathf.Clamp(total_mp, 0, maxiam_mp);
+            on_stats_change?.Invoke();
         }
     }
     public int Total_Str 
@@ -110,7 +105,7 @@ public class UnitStats : ScriptableObject
         {
             total_str = value;
             total_str = Mathf.Clamp(total_str, 0, maxiam_str);
-            on_str_change?.Invoke();
+            on_stats_change?.Invoke();
         }
     }
 
@@ -121,7 +116,7 @@ public class UnitStats : ScriptableObject
         {
             total_def = value;
             total_def = Mathf.Clamp(total_def, 0, maxiam_def);
-            on_def_change?.Invoke();
+            on_stats_change?.Invoke();
         }
     }
     public Action<int, int> AcceptUsedPotion

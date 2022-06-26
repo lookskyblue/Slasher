@@ -43,7 +43,21 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
 
     public virtual void UpdateSlotUI(Item item)
     {
-        StartCoroutine(UpdateSlotUICor(item));
+        //StartCoroutine(UpdateSlotUICor(item));
+
+        this.item = item;
+        this.item.item_type = item.item_type;
+
+        this.item_image.sprite = item.item_image;
+        this.item_image.gameObject.SetActive(true);
+
+        if (item_cnt_text != null)
+        {
+            this.item_cnt_text.text = item.item_cnt.ToString();
+            item_cnt_text.gameObject.SetActive(item.is_stackable == true);
+        }
+
+        item_image.SetNativeSize();
     }
 
     IEnumerator UpdateSlotUICor(Item item)

@@ -24,8 +24,7 @@ public class PlayerStatsUI : MonoBehaviour
     void AddCallback()
     {
         player_stats.On_Level_Up += RefreshLevelStat;
-        player_stats.On_Str_Change += RefrestStrStat;
-        player_stats.On_Def_Change += RefrestDefStat;
+        player_stats.On_Stats_Change += RefreshAllStats;
     }
 
     void RefreshAllStats()
@@ -34,24 +33,15 @@ public class PlayerStatsUI : MonoBehaviour
         int now_mp = player_stats.Total_Mp;
 
         RefreshLevelStat();
-        RefrestStrStat();
-        RefrestDefStat();
-        RefreshLevelStat();
 
         hp_text.text = now_hp.ToString();
         mp_text.text = now_mp.ToString();
+
+        str_text.text = player_stats.Total_Str.ToString();
+        def_text.text = player_stats.Total_Def.ToString();
     }
     void RefreshLevelStat()
     {
         level_text.text = player_stats.GetLevel.ToString();
-    }
-    void RefrestStrStat()
-    {
-        str_text.text = player_stats.Total_Str.ToString();
-    }
-
-    void RefrestDefStat()
-    {
-        def_text.text = player_stats.Total_Def.ToString();
     }
 }

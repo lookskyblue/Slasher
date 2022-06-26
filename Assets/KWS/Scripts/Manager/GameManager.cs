@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     private Animator palyer_ani;
     private bool is_using_store = false;
     private bool is_talking_with_npc = false;
-
+    private bool is_destroy = false;
     public RaidBoardManager GetRaidBoardManager { get { return raid_board_manager; } }
     public DragAndDropContainer GetDragAndDropContainer { get { return drag_and_drop_container; } }
     public float GetResaleRatio { get { return resale_ratio; } }
@@ -47,10 +47,15 @@ public class GameManager : MonoBehaviour
         }
 
         else
+        {
+            is_destroy = true;
             Destroy(gameObject);
+        }
     }
     void Start()
     {
+        if (is_destroy == true) return;
+
         Cursor.lockState = CursorLockMode.Confined;
         //player = CreatePlayer();
         SetPlayerToSpawnPoint();
@@ -76,6 +81,8 @@ public class GameManager : MonoBehaviour
     void PlayerInit()
     {
         player.InitUnitStats();
+        Debug.Log("게임매니저. 플레이어 초기화");
+        player.ApplyMountedItemStats();
         player.DrawGaugeUI();
         palyer_ani.Play("Idle");
     }

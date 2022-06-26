@@ -14,21 +14,35 @@ public class Player : Unit
     [SerializeField] private Text overhead_name_text;
 
     private bool is_damaged = false;
-
+    private bool is_destroy = false;
     private void Awake()
     {
-        if (player != null) Destroy(transform.parent.gameObject);
-        else player = this;
+        if (player != null)
+        {
+            is_destroy = true;
+            Destroy(transform.parent.gameObject);
+        }
+        else 
+        {
+            player = this;
+        }
     }
     private void Start()
     {
-        base.Start();
+        if (is_destroy == true) return;
 
+        base.Start();
+        ApplyMountedItemStats();
         AddCallback();
         DrawGaugeUI();
         DrawLevelUI();
         DrawNameUI();
     }
+    public void ApplyMountedItemStats()
+    {
+        InventoryManager.instance.ApplyAllMountedItemStats();
+    }
+
 
     public void DrawGaugeUI()
     {
