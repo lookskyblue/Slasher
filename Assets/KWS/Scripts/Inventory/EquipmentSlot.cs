@@ -32,8 +32,6 @@ public class EquipmentSlot : Slot
 
         item_image.sprite = defalut_equipment_image;
 
-        Debug.Log("디폴트 이미지로");
-
         item_image.SetNativeSize();
         item_image.gameObject.SetActive(true);
 
@@ -46,8 +44,6 @@ public class EquipmentSlot : Slot
     }
     IEnumerator UpdateSlotUICor(Item item, int slot_num)
     {
-        Debug.Log("착용 슬롯 번호: " + slot_num);
-
         base.UpdateSlotUI(item);
 
         yield return null;

@@ -82,7 +82,6 @@ public class InventoryUI : MonoBehaviour
         {
             if(slots[i].Slot_Num == slot_num)
             {
-                Debug.Log("¹þ±â·Á´Â ½½·Ô ³Ñ: " + slot_num);
                 slots[i].Unmount();
                 //Destroy(slots[i].gameObject);
                 break;

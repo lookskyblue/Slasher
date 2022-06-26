@@ -7,6 +7,7 @@ public class StoreOwnerNPC : NPC
     [SerializeField] private StoreUI store_ui;
     sealed protected override void ShowUI()
     {
+        InventoryUI.instance.OnInventoryUI();
         store_ui.OpenStore();
     }
     sealed protected override void HideUI()

@@ -23,13 +23,6 @@ public class InventorySlot : Slot
         base.UpdateSlotUI(item);
     }
 
-    private void Update()
-    {
-        if (item == null) return;
-
-        Debug.Log("아이템명: " + item.name + ", 슬롯넘: " + Slot_Num);
-    }
-
     public void Unmount()
     {
         item_mount_state_text.gameObject.SetActive(false);
