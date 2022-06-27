@@ -22,10 +22,12 @@ MonoBehaviour:
   maxiam_def: 1000
   default_hp: 100
   default_mp: 0
-  default_str: 10
+  default_str: 50
   default_def: 10
-  total_hp: 0
+  total_hp: 100
   total_mp: 0
-  total_str: 0
-  total_def: 0
+  total_str: 50
+  total_def: 10
   total_gold: 0
+  hp_auto_recovery_amount: 0
+  mp_auto_recovery_amount: 0

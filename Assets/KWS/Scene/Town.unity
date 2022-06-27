@@ -103596,10 +103596,10 @@ MonoBehaviour:
   skill_info_list:
   - icon: {fileID: 21300000, guid: 192bfee081a2c2b429b6e6f4ddd6c361, type: 3}
     name: "\uC720\uC544\uB3C5\uC874"
-    possible_level: 1
+    possible_level: 3
     taken_point: 0
     limit_point: 1
-    mp_cost: 10
+    mp_cost: 50
     cool_time: 1
     animation_key: active_skill1
     particle_key: active_skill1
@@ -103612,10 +103612,10 @@ MonoBehaviour:
       \uC801\uC744 \uACF5\uACA9\uD569\uB2C8\uB2E4."
   - icon: {fileID: 21300000, guid: e57f45354de3d014dad2f5b54e3087a7, type: 3}
     name: "\uAC15\uD0C0"
-    possible_level: 1
+    possible_level: 5
     taken_point: 0
     limit_point: 2
-    mp_cost: 1
+    mp_cost: 50
     cool_time: 0.5
     animation_key: smash
     particle_key: smash
@@ -103627,10 +103627,10 @@ MonoBehaviour:
       \uC801\uC744 \uB2E8\uC228\uC5D0 \uACF5\uACA9\uD569\uB2C8\uB2E4."
   - icon: {fileID: 21300000, guid: ce18604a58de7d04fa202dad93be021c, type: 3}
     name: "\uCE90\uB17C\uC0F7"
-    possible_level: 1
+    possible_level: 8
     taken_point: 0
     limit_point: 3
-    mp_cost: 2
+    mp_cost: 50
     cool_time: 0.5
     animation_key: cannon_shot
     particle_key: cannon_shot
@@ -103642,7 +103642,7 @@ MonoBehaviour:
       \uC804\uBC29\uC5D0 \uBC1C\uC0B0 \uD569\uB2C8\uB2E4."
   - icon: {fileID: 21300000, guid: d1237045d5a8d604fa1c8dea28109324, type: 3}
     name: "\uC9C0\uD615 \uBD84\uC1C4"
-    possible_level: 1
+    possible_level: 10
     taken_point: 0
     limit_point: 3
     mp_cost: 50
@@ -130075,6 +130075,7 @@ MonoBehaviour:
   exp_text: {fileID: 2118327360}
   overhead_level_text: {fileID: 2093754965}
   overhead_name_text: {fileID: 273862875}
+  auto_recovery_wait_time: 5
 --- !u!199 &4120770648347211852
 ParticleSystemRenderer:
   serializedVersion: 6

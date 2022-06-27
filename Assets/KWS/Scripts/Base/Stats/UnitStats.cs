@@ -43,7 +43,10 @@ public class UnitStats : ScriptableObject
     [SerializeField] private int total_str;
     [SerializeField] private int total_def;
     [SerializeField] private int total_gold;
-
+    [SerializeField] private int hp_auto_recovery_amount;
+    [SerializeField] private int mp_auto_recovery_amount;
+    public int Hp_Auto_Recovery_Amount { get { return hp_auto_recovery_amount; } }
+    public int Mp_Auto_Recovery_Amount { get { return mp_auto_recovery_amount; } }
     public int Default_Hp 
     { 
         get { return default_hp; }

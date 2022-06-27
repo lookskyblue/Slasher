@@ -29,7 +29,7 @@ public class Unit : MonoBehaviour
     protected Weapon weapon;
     [SerializeField]
     protected UnitStats unit_stats;
-    protected float initial_mp;
+    protected int initial_mp;
     protected void Start()
     {
         unit_animation = GetComponent<Animator>();

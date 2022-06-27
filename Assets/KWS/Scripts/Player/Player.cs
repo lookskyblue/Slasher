@@ -12,7 +12,7 @@ public class Player : Unit
     [SerializeField] private Text exp_text;
     [SerializeField] private Text overhead_level_text;
     [SerializeField] private Text overhead_name_text;
-
+    [SerializeField] private int auto_recovery_wait_time;
     private bool is_damaged = false;
     private bool is_destroy = false;
     private void Awake()
@@ -37,12 +37,40 @@ public class Player : Unit
         DrawGaugeUI();
         DrawLevelUI();
         DrawNameUI();
+
+        StartCoroutine(AutoRecoverHpAndMp());
     }
+
+    IEnumerator AutoRecoverHpAndMp()
+    {
+        int hp_auto_recovery_amount = unit_stats.Hp_Auto_Recovery_Amount;
+        int mp_auto_recovery_amount = unit_stats.Mp_Auto_Recovery_Amount;
+
+        while(true)
+        {
+            if(IsDead() == false)
+            {
+                if(unit_now_hp < unit_stats.Total_Hp)
+                {
+                    unit_now_hp = Mathf.Clamp(unit_now_hp + hp_auto_recovery_amount, 0, unit_stats.Total_Hp);
+                }
+
+                if(unit_stats.Total_Mp < initial_mp)
+                {
+                    unit_stats.Total_Mp = Mathf.Clamp(unit_stats.Total_Mp + mp_auto_recovery_amount, 0, initial_mp);
+                }
+
+                DrawGaugeUI();
+            }
+
+            yield return new WaitForSeconds(auto_recovery_wait_time);
+        }
+    }
+
     public void ApplyMountedItemStats()
     {
         InventoryManager.instance.ApplyAllMountedItemStats();
     }
-
 
     public void DrawGaugeUI()
     {
@@ -134,6 +162,7 @@ public class Player : Unit
                 // 사운드 및 파티클 이펙트
                 GrowUpStats();
                 DrawLevelUI();
+                DrawGaugeUI();
                 StartCoroutine(ShowLevelUpParticle());
 
                 acquired_exp = left_exp;
@@ -168,13 +197,13 @@ public class Player : Unit
     void GrowUpStats()
     {
         unit_stats.Default_Hp += 100;
-        unit_stats.Total_Hp += 100;
+        unit_stats.Total_Hp = unit_stats.Default_Hp;
 
         unit_stats.Default_Mp += 50;
-        unit_stats.Total_Mp += 50;
+        unit_stats.Total_Mp = unit_stats.Default_Mp;
 
-        //DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
-        //DrawBarUI(unit_mp_ui_group, unit_mp_ui, unit_now_m, unit_stats.Total_Mp);
+        unit_now_hp = unit_stats.Total_Hp;
+        initial_mp = unit_stats.Total_Mp;
     }
 
     void DrawExpUI()

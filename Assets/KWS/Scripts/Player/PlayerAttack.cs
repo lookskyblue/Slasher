@@ -210,7 +210,6 @@ public class PlayerAttack : MonoBehaviour
         {
             //while (is_doing_attack_stop_cor == true)
             {
-                Debug.Log("i: " + i);
                 StartCoroutine(StopNowAttackAnimation(i));
                 yield return null;
             }

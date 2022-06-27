@@ -112,6 +112,11 @@ public class SkillBookManager : MonoBehaviour
 
         for(int i = 0; i < skill_info_list.Length; i++)
         {
+            if (skill_scroll_view_content == null)
+            {
+                continue;
+            }
+
             skill_scroll_view_content.transform.GetChild(i).GetChild(0).GetChild(3).GetComponent<Button>().
                 interactable = (my_level >= skill_info_list[i].possible_level);
 
