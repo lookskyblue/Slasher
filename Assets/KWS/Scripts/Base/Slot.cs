@@ -97,7 +97,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     {
         if (pointer_event_data.button != PointerEventData.InputButton.Right) return;
         if (item == null) return;
-        
+
         StartCoroutine(CheckItem(item.item_type));
     }
 

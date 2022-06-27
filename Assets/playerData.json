@@ -1,0 +1,25 @@
+{
+    "stat_table": {
+        "str": 0,
+        "def": 0,
+        "hp": 0,
+        "mp": 0,
+        "hp_auto_recover_amount": 0,
+        "mp_auto_recover_amount": 0,
+        "max_exp": 0.0
+    },
+    "level": 30,
+    "exp": 0,
+    "gold": 123,
+    "current_position": {
+        "x": 65.16999816894531,
+        "y": 3.25,
+        "z": 0.29000043869018557
+    },
+    "current_rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    }
+}

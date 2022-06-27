@@ -4,33 +4,22 @@ using UnityEngine;
 
 public class EquipmentAppearanceChangeManager : MonoBehaviour
 {
-    [SerializeField]
-    UnitStats player_stats;
-
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-
-    [SerializeField]
-    private PlayerWeapon player_weapon;
+    [SerializeField] UnitStats player_stats;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private PlayerWeapon player_weapon;
 
     #region 무기 멤버 변수
     private Dictionary<string, Mesh> sword_mesh_dic = new Dictionary<string, Mesh>();
-    [SerializeField]
-    private Mesh[] sword_meshs;
-    [SerializeField]
-    private MeshFilter my_sword_mesh;
-    [SerializeField]
-    private GameObject my_sword_obj_group;
+    [SerializeField] private Mesh[] sword_meshs;
+    [SerializeField] private MeshFilter my_sword_mesh;
+    [SerializeField] private GameObject my_sword_obj_group;
     #endregion
 
     #region 방패 멤버 변수
     private Dictionary<string, Mesh> shield_mesh_dic = new Dictionary<string, Mesh>();
-    [SerializeField]
-    private GameObject my_shield_obj_group;
-    [SerializeField]
-    private MeshFilter my_shield_mesh;
-    [SerializeField]
-    private Mesh[] shield_meshs;
+    [SerializeField] private GameObject my_shield_obj_group;
+    [SerializeField] private MeshFilter my_shield_mesh;
+    [SerializeField] private Mesh[] shield_meshs;
     #endregion
 
     private void Start()

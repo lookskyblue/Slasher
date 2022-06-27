@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    [SerializeField] private GameObject player_prefab;
-    [SerializeField] private GameObject first_spawn_zone;
     [SerializeField] private GameObject player_group;
     [SerializeField] private RaidBoardManager raid_board_manager;
     [SerializeField] private DragAndDropContainer drag_and_drop_container;
@@ -17,7 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float resale_ratio;
 
     private Player player;
-    private Animator palyer_ani;
+    private DataManager data_manager;
+
     private bool is_using_store = false;
     private bool is_talking_with_npc = false;
     private bool is_destroy = false;
@@ -43,6 +42,12 @@ public class GameManager : MonoBehaviour
         if (instance == null) // 첫 씬일 때는 일단 생성. 
         {
             instance = this;
+
+            player = player_group.transform.GetChild(0).GetComponent<Player>();
+            data_manager = player.GetComponent<DataManager>();
+
+            SetPlayerToSpawnPoint(player_group);
+            DontDestroyOnLoad(player_group);
             DontDestroyOnLoad(gameObject);
         }
 
@@ -56,43 +61,32 @@ public class GameManager : MonoBehaviour
     {
         if (is_destroy == true) return;
 
-        Cursor.lockState = CursorLockMode.Confined;
-        //player = CreatePlayer();
-        SetPlayerToSpawnPoint();
-        DontDestroyOnLoad(player_group);
-        
-        player = player_group.transform.GetChild(0).GetComponent<Player>();
-        palyer_ani = player.GetComponent<Animator>();
+        SetPlayerData();
 
+        Cursor.lockState = CursorLockMode.Confined;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    GameObject CreatePlayer()
+
+    void SetPlayerData()
     {
-        return Instantiate(player_prefab);
+        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+
+        player.Init(player_data);
     }
 
     public void LoadScene(string next_scene_name) // 비동기로 할 것
     {
         SceneManager.LoadScene(next_scene_name);
-
-        PlayerInit();
-    }
-
-    void PlayerInit()
-    {
-        player.InitUnitStats();
-        Debug.Log("게임매니저. 플레이어 초기화");
-        player.ApplyMountedItemStats();
-        player.DrawGaugeUI();
-        palyer_ani.Play("Idle");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode load_scene_mode)
     {
-        SetPlayerToSpawnPoint();
+        SetPlayerToSpawnPoint(player_group);
+        player.SetIdleMotion();
+        player.FillUpStamina();
     }
 
-    void SetPlayerToSpawnPoint()
+    void SetPlayerToSpawnPoint(GameObject player_group)
     {
         GameObject player_spawn_position = GameObject.Find("PlayerSpawnPosition");
 
@@ -115,5 +109,26 @@ public class GameManager : MonoBehaviour
             is_doing_task = true;
 
         return is_doing_task;
+    }
+
+    public void ApplyStatsAccordingToLevel(int now_level)
+    {
+        Debug.Log("Apply Stats AccordingToLevel");
+
+        // Get New Data
+        StatsTable stats_table = data_manager.GetStatsTableMatchLevel(now_level);
+        int level = now_level;
+        int exp = 0;
+        int gold = InventoryManager.instance.Gold_On_Hand;
+
+        // Save
+        data_manager.UpdatePlayerDataInfo(stats_table, level, exp, gold);
+        
+        // Load
+        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+
+        // Apply To Game
+        player.ApplyPlayerDataToGame(player_data);
+        player.DrawUI();
     }
 }

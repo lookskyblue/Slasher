@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 public class SkillGetKeyInput : MonoBehaviour
 {
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-    [SerializeField]
-    private UnitStats player_stats;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private UnitStats player_stats;
+    [SerializeField] private PlayerAttack player_attack;
+
     private Dictionary<KeyCode, SkillInfo> skill_input_key_dic = new Dictionary<KeyCode, SkillInfo>();
     private Animator player_ani;
     private SkillInfo now_doing_skill = null;
-    [SerializeField]
-    private PlayerAttack player_attack;
 
     private void Start()
     {

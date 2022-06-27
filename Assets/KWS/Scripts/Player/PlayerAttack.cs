@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private UIActiveGetKeyInput ui_active_get_key_input;
+    [SerializeField ] private UIActiveGetKeyInput ui_active_get_key_input;
     [SerializeField] private float fire_gap_time;
     private PlayerMovement player_movement;
     private Animator player_animator;

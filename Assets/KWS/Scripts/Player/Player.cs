@@ -13,6 +13,7 @@ public class Player : Unit
     [SerializeField] private Text overhead_level_text;
     [SerializeField] private Text overhead_name_text;
     [SerializeField] private int auto_recovery_wait_time;
+
     private bool is_damaged = false;
     private bool is_destroy = false;
     private void Awake()
@@ -27,18 +28,57 @@ public class Player : Unit
             player = this;
         }
     }
-    private void Start()
+    public void ApplyPlayerDataToGame(PlayerData player_data)
     {
         if (is_destroy == true) return;
 
+        Debug.Log("ApplyPlayerDataInGame");
+
+        unit_stats.LevelUp = player_data.level;
+        unit_stats.Total_Hp = player_data.stat_table.hp;
+        unit_stats.Total_Mp = player_data.stat_table.mp;
+        unit_stats.Total_Str = player_data.stat_table.str;
+        unit_stats.Total_Def = player_data.stat_table.def;
+        unit_stats.Hp_Auto_Recovery_Amount = player_data.stat_table.hp_auto_recover_amount;
+        unit_stats.Mp_Auto_Recovery_Amount = player_data.stat_table.mp_auto_recover_amount;
+        unit_stats.MaxExp = player_data.stat_table.max_exp;
+        unit_stats.Total_Exp = player_data.exp;
+
+        InventoryManager.instance.Gold_On_Hand = player_data.gold;
+
+        //player.transform.position = player_data.current_position;
+        //player.transform.rotation = player_data.current_rotation;
+
+        initial_mp = unit_stats.Total_Mp;
+        unit_now_hp = unit_stats.Total_Hp;
+    }
+    public void Init(PlayerData player_data)
+    {
         base.Start();
-        ApplyMountedItemStats();
+        
+        ApplyPlayerDataToGame(player_data);
         AddCallback();
+        ApplyMountedItemStats(); // 나중에 장비에 체력도 추가한다면 이 함수가 ApplyPlayerDataInGame함수보다 먼저 호출되거나 해야함
+        DrawUI();
+        
+        StartCoroutine(AutoRecoverHpAndMp());
+    }
+
+    public void DrawUI()
+    {
         DrawGaugeUI();
         DrawLevelUI();
         DrawNameUI();
+    }
 
-        StartCoroutine(AutoRecoverHpAndMp());
+    public void SetIdleMotion() { unit_animation.Play("Idle"); }
+
+    public void FillUpStamina()
+    {
+        unit_now_hp = unit_stats.Total_Hp;
+        unit_stats.Total_Mp = initial_mp;
+
+        DrawGaugeUI();
     }
 
     IEnumerator AutoRecoverHpAndMp()
@@ -154,13 +194,12 @@ public class Player : Unit
                 Debug.Log("축하합니다. 레벨업 했습니다.");
 
                 unit_stats.LevelUp = unit_stats.GetLevel + 1;
-                unit_stats.Total_Exp = 0;
-                unit_stats.MaxExp = Mathf.Pow(((unit_stats.GetLevel - 1) * 50 / 49), 2.5f) * 10;
+                //unit_stats.Total_Exp = 0;
+                //unit_stats.MaxExp = Mathf.Pow(((unit_stats.GetLevel - 1) * 50 / 49), 2.5f) * 10;
 
-                //unit_stats.Default_Str = 2;
+                GameManager.instance.ApplyStatsAccordingToLevel(unit_stats.GetLevel);
 
                 // 사운드 및 파티클 이펙트
-                GrowUpStats();
                 DrawLevelUI();
                 DrawGaugeUI();
                 StartCoroutine(ShowLevelUpParticle());
@@ -194,18 +233,6 @@ public class Player : Unit
         return is_level_up;
     }
 
-    void GrowUpStats()
-    {
-        unit_stats.Default_Hp += 100;
-        unit_stats.Total_Hp = unit_stats.Default_Hp;
-
-        unit_stats.Default_Mp += 50;
-        unit_stats.Total_Mp = unit_stats.Default_Mp;
-
-        unit_now_hp = unit_stats.Total_Hp;
-        initial_mp = unit_stats.Total_Mp;
-    }
-
     void DrawExpUI()
     {
         float now_exp = unit_stats.Total_Exp;
@@ -234,7 +261,7 @@ public class Player : Unit
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            OnChangeExp(unit_stats.TestExp);
+            OnChangeExp(1);
         }
     }
 

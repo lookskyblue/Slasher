@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class UnitStats : ScriptableObject
 {
-    public float TestExp;
-
     private Action on_level_up;
     public Action On_Level_Up
     {
@@ -42,11 +40,10 @@ public class UnitStats : ScriptableObject
     [SerializeField] private int total_mp;
     [SerializeField] private int total_str;
     [SerializeField] private int total_def;
-    [SerializeField] private int total_gold;
     [SerializeField] private int hp_auto_recovery_amount;
     [SerializeField] private int mp_auto_recovery_amount;
-    public int Hp_Auto_Recovery_Amount { get { return hp_auto_recovery_amount; } }
-    public int Mp_Auto_Recovery_Amount { get { return mp_auto_recovery_amount; } }
+    public int Hp_Auto_Recovery_Amount { get { return hp_auto_recovery_amount; } set { hp_auto_recovery_amount = value; } }
+    public int Mp_Auto_Recovery_Amount { get { return mp_auto_recovery_amount; } set { mp_auto_recovery_amount = value; } }
     public int Default_Hp 
     { 
         get { return default_hp; }
@@ -78,12 +75,6 @@ public class UnitStats : ScriptableObject
             total_hp = Mathf.Clamp(total_hp, 0, maxiam_hp);
             on_stats_change?.Invoke();
         }
-    }
-
-    public int Total_Gold
-    {
-        get { return total_gold; }
-        set { total_gold = value; }
     }
 
     public float Total_Exp

@@ -18,12 +18,25 @@ public class Monster : Unit
     private void Start()
     {
         base.Start();
+        InitUnitStats();
 
         nav_mesh_agent = GetComponent<NavMeshAgent>();
         nav_mesh_agent.enabled = true;
 
         InstancingMaterial();
     }
+
+    public void InitUnitStats()
+    {
+        unit_stats.Total_Hp = unit_stats.Default_Hp;
+        unit_stats.Total_Mp = unit_stats.Default_Mp;
+        initial_mp = unit_stats.Total_Mp;
+        unit_stats.Total_Str = unit_stats.Default_Str;
+        unit_stats.Total_Def = unit_stats.Default_Def;
+
+        unit_now_hp = unit_stats.Total_Hp;
+    }
+
     public void Init(Action<bool> death_callback)
     {
         this.death_callback = death_callback;

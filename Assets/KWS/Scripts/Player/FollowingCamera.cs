@@ -4,23 +4,17 @@ using UnityEngine;
 
 public class FollowingCamera : MonoBehaviour
 {
-    [SerializeField]
-    private Transform target_transform; // 본인 캐릭터
-
-    [SerializeField]
-    private Transform anchor_transform; // 카메라의 기준점
-
-    [SerializeField]
-    private UIActiveGetKeyInput ui_active_get_key_input;
-
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-
+    [SerializeField] private Transform target_transform; // 본인 캐릭터
+    [SerializeField] private Transform anchor_transform; // 카메라의 기준점
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private UIActiveGetKeyInput ui_active_get_key_input;
     private bool is_using_skill_slot = false;
+    
     private void Start()
     {
         interaction_slot_event.UsingSkillSlot += UsingSkillSlot;
     }
+
     private void UsingSkillSlot(bool value)
     {
         is_using_skill_slot = value;

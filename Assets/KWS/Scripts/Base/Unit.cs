@@ -33,9 +33,6 @@ public class Unit : MonoBehaviour
     protected void Start()
     {
         unit_animation = GetComponent<Animator>();
-
-        InitUnitStats();
-
         origin_color = renderer.material.color;
     }
 
@@ -43,17 +40,6 @@ public class Unit : MonoBehaviour
     {
         unit_stats.On_Change_Mp += OnChangeMp;
         unit_stats.AcceptUsedPotion += AcceptUsedPotion;
-    }
-
-    public void InitUnitStats()
-    {
-        unit_stats.Total_Hp  = unit_stats.Default_Hp;
-        unit_stats.Total_Mp  = unit_stats.Default_Mp;
-        initial_mp = unit_stats.Total_Mp;
-        unit_stats.Total_Str = unit_stats.Default_Str;
-        unit_stats.Total_Def = unit_stats.Default_Def;
-
-        unit_now_hp = unit_stats.Total_Hp;
     }
 
     public virtual void ReceiveDamage(float damage, Vector3 hit_pos)

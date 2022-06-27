@@ -121,11 +121,8 @@ public class InventoryManager : MonoBehaviour
 
     void ApplyEachMountedItemStats(EquipmentSlot equipment_slot)
     {
-        Debug.Log("1 각 아이템 스탯 적용");
-
         if (equipment_slot != null && equipment_slot.Is_Mount == true)
         {
-            Debug.Log("2 각 아이템 낫 널이고 착용중");
             int str = 0;
             int def = 0;
 
