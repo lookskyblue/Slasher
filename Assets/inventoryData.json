@@ -1,0 +1,16 @@
+{
+    "item_data_list": [
+        {
+            "slot_idx": 0,
+            "item_id": 1005,
+            "item_cnt": 1,
+            "is_mounted": false
+        },
+        {
+            "slot_idx": 1,
+            "item_id": 1105,
+            "item_cnt": 1,
+            "is_mounted": false
+        }
+    ]
+}

@@ -1,16 +1,16 @@
 {
     "stat_table": {
-        "str": 0,
-        "def": 0,
-        "hp": 0,
-        "mp": 0,
-        "hp_auto_recover_amount": 0,
-        "mp_auto_recover_amount": 0,
-        "max_exp": 0.0
+        "str": 10,
+        "def": 10,
+        "hp": 200,
+        "mp": 200,
+        "hp_auto_recover_amount": 5,
+        "mp_auto_recover_amount": 5,
+        "max_exp": 10.0
     },
-    "level": 30,
-    "exp": 0,
-    "gold": 123,
+    "level": 2,
+    "exp": 6,
+    "gold": 4823000,
     "current_position": {
         "x": 65.16999816894531,
         "y": 3.25,

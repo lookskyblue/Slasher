@@ -29,4 +29,14 @@ public class ItemDB : ScriptableObject
 
         return item_list;
     }
+
+    public Item GetItem(int id)
+    {
+        for(int i = 0; i < item_db.Count; i++)
+        {
+            if (item_db[i].id == id) return item_db[i].DeepCopy();
+        }
+
+        return null;
+    }
 }

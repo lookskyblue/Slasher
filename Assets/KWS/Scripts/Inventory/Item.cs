@@ -15,6 +15,7 @@ public enum ItemType
 public class Item
 {
     public ItemType item_type;
+    public int id;
     public string item_key;
     public Sprite item_image;
     public bool is_stackable;
@@ -152,6 +153,7 @@ public class Item
         new_copy.is_cool_time = this.is_cool_time;
         new_copy.name = this.name;
         new_copy.price = this.price;
+        new_copy.id = this.id;
 
         return new_copy;
     }

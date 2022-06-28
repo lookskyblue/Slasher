@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -70,8 +71,10 @@ public class GameManager : MonoBehaviour
     void SetPlayerData()
     {
         PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+        InventoryData inventory_data = data_manager.LoadInventory();
 
         player.Init(player_data);
+        InventoryManager.instance.AddItem(inventory_data);
     }
 
     public void LoadScene(string next_scene_name) // 비동기로 할 것
@@ -130,5 +133,23 @@ public class GameManager : MonoBehaviour
         // Apply To Game
         player.ApplyPlayerDataToGame(player_data);
         player.DrawUI();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveNowPlayerData();
+    }
+
+    public void SaveNowPlayerData()
+    {
+        Debug.Log("현재 정보 저장");
+        // 어쩌피 처음 씬은 마을이므로 기본 스텟은 별도로 저장하지 않음. 레벨에 맞는 스텟만 저장
+
+        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+
+        player_data.gold = InventoryManager.instance.Gold_On_Hand;
+        player_data.exp = player.GetNowExp();
+
+        data_manager.SavePlayerDataToJson(player_data);
     }
 }

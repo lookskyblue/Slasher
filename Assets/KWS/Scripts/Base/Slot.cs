@@ -11,8 +11,15 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     [SerializeField] protected Image item_image;
     [SerializeField] protected Text item_cnt_text;
     [SerializeField] protected Text item_mount_state_text;
+    private int slot_idx;
     private bool is_dragging;
     protected Item item;
+
+    public int Slot_Idx
+    {
+        get { return slot_idx; }
+        set { slot_idx = value; }
+    }
 
     private int slot_num;
     public int Slot_Num
@@ -34,11 +41,16 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     IEnumerator RemoveSlotUICor()
     {
         yield return null;
+
         item = null;
         item_image.sprite = null;
         item_image.gameObject.SetActive(false);
+
         if (item_mount_state_text != null) item_mount_state_text.gameObject.SetActive(false);
+
         Is_Mount = false;
+
+        InventoryUI.instance.SaveInventory();
     }
 
     public virtual void UpdateSlotUI(Item item)
@@ -58,6 +70,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         }
 
         item_image.SetNativeSize();
+
+        InventoryUI.instance.SaveInventory();
     }
 
     IEnumerator UpdateSlotUICor(Item item)
@@ -91,6 +105,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         {
             InventoryManager.instance.ReportChangedItemCntToPotionSlot(item.item_key, cnt);
         }
+
+        InventoryUI.instance.SaveInventory();
     }
 
     public virtual void OnPointerUp(PointerEventData pointer_event_data)
@@ -111,9 +127,9 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
                 {
                     bool before_mount_state = Is_Mount;
 
-                    UnmountItem(item_type);
+                    UnmountEquipmentItem(item_type);
                     yield return null;
-                    MountItem(item_type, before_mount_state);
+                    MountEquipmentItem(item_type, before_mount_state);
 
                     break;
                 }
@@ -121,7 +137,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
             case ItemType.Potion:
                 if (Is_Mount == false) // 마영전도 소비템은 장착중일 때 우클릭 안 먹음.
                 {
-                    MountItem();
+                    MountPotionItem();
                 }
 
                 break;
@@ -144,17 +160,17 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         interaction_ui_event.Hide_Item_Info_UI();
     }
 
-    protected void UnmountItem(ItemType item_type) // 중요
+    protected void UnmountEquipmentItem(ItemType item_type) // 중요
     {
         InventoryManager.instance.UnmountItem(item_type);
     }
-    private void MountItem()
+    private void MountPotionItem() // 포션 착용 함수
     {
         Is_Mount = true;
         item_mount_state_text.gameObject.SetActive(Is_Mount);
         InventoryManager.instance.MountItem(item, Slot_Num); // 꽉찼다면 처음 슬롯부터 넣자.
     }
-    private void MountItem(ItemType item_type, bool before_mount_state) // 중요
+    void MountEquipmentItem(ItemType item_type, bool before_mount_state) // 장비 착용 함수
     {
         if (before_mount_state == true)
         {
@@ -164,6 +180,19 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         Is_Mount = true;
         item_mount_state_text.gameObject.SetActive(Is_Mount);
         InventoryManager.instance.MountItem(item_type, item, Slot_Num);
+    }
+
+    public void MountItem(ItemType item_type)
+    {
+        if(item_type == ItemType.Potion)
+        {
+            MountPotionItem();
+        }
+
+        if(item_type == ItemType.Sword || item_type == ItemType.Shield)
+        {
+            MountEquipmentItem(item_type, false);
+        }
     }
 
     public virtual void OnBeginDrag(PointerEventData event_data)

@@ -79,9 +79,11 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private PotionSlot[] potion_slots;
     [SerializeField] private int slot_cnt;
     [SerializeField] private UnitStats player_stats;
-    [SerializeField] private int gold_on_hand;
     [SerializeField] private InteractionUIEvent interaction_ui_event;
     [SerializeField] private string full_item_alert_text;
+    [SerializeField] private ItemDB item_db;
+    private int gold_on_hand;
+
     public int Gold_On_Hand
     {
         get { return gold_on_hand; }
@@ -107,7 +109,6 @@ public class InventoryManager : MonoBehaviour
 
         RoadGold();
     }
-
     void RoadGold()
     {
         on_changed_gold.Invoke(gold_on_hand);
@@ -171,6 +172,31 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
+    public void AddItem(InventoryData inventory_data)
+    {
+        List<ItemData> item_data_list = inventory_data.item_data_list;
+
+        for (int i = 0; i < item_data_list.Count; i++)
+        {
+            // ItemDB를 조회해서 아이템 고유 번호와 맞는 녀셕들을 가져온다.
+            Item item = item_db.GetItem(item_data_list[i].item_id);
+            item.item_cnt = item_data_list[i].item_cnt;
+            
+            int slot_idx = item_data_list[i].slot_idx;
+            bool is_mounted = item_data_list[i].is_mounted;
+
+            if(item == null)
+            {
+                Debug.LogError("Can not find item");
+
+                continue;
+            }
+
+            items.Add(item);
+            InventoryUI.instance.AddItem(item, slot_idx, is_mounted);
+        }
+    }
+
     public void ReportSlotNumToEquipmentSlotNum(ItemType item_type, int new_slot_num) // 중요
     {
         EquipmentSlot equipment_slot = GetSlotType(item_type);
@@ -191,7 +217,17 @@ public class InventoryManager : MonoBehaviour
 
     public void UnmountItem(ItemType item_type) // 중요
     {
-        StartCoroutine(UnmountItemCor(item_type));
+        //StartCoroutine(UnmountItemCor(item_type));
+
+        EquipmentSlot equipment_slot = GetSlotType(item_type);
+
+        if (equipment_slot != null && equipment_slot.Is_Mount != false)
+        {
+            int slot_num = equipment_slot.Slot_Num;
+            equipment_slot.RemoveSlotUI();
+
+            OnChangedMountState(slot_num);
+        }
     }
 
     IEnumerator UnmountItemCor(ItemType item_type)
@@ -219,7 +255,14 @@ public class InventoryManager : MonoBehaviour
 
     public void MountItem(ItemType item_type, Item item, int slot_num) // 중요
     {
-        StartCoroutine(MountItemCor(item_type, item, slot_num));
+        //StartCoroutine(MountItemCor(item_type, item, slot_num));
+
+        EquipmentSlot equipment_slot = GetSlotType(item_type);
+
+        if (equipment_slot != null)
+        {
+            equipment_slot.UpdateSlotUI(item, slot_num);
+        }
     }
 
     IEnumerator MountItemCor(ItemType item_type, Item item, int slot_num)

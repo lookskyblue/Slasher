@@ -22309,6 +22309,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1620572473}
     - target: {fileID: 3594840174284965618, guid: 66ef6307c841c82449a3c59a212e4c80, type: 3}
+      propertyPath: item_db
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fecf03dd111c594d8b17f529830f0a0, type: 2}
+    - target: {fileID: 3594840174284965618, guid: 66ef6307c841c82449a3c59a212e4c80, type: 3}
       propertyPath: sword_slot
       value: 
       objectReference: {fileID: 850929876}
@@ -35536,6 +35540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item:
     item_type: 0
+    id: 0
     item_key: 
     item_image: {fileID: 0}
     is_stackable: 0
@@ -63368,6 +63373,7 @@ MonoBehaviour:
   slots: []
   item_info_ui: {fileID: 997700406}
   gold_text: {fileID: 286096956}
+  data_manager: {fileID: 1620572473}
 --- !u!114 &1551746757
 MonoBehaviour:
   m_ObjectHideFlags: 0

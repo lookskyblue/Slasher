@@ -32,8 +32,6 @@ public class Player : Unit
     {
         if (is_destroy == true) return;
 
-        Debug.Log("ApplyPlayerDataInGame");
-
         unit_stats.LevelUp = player_data.level;
         unit_stats.Total_Hp = player_data.stat_table.hp;
         unit_stats.Total_Mp = player_data.stat_table.mp;
@@ -285,4 +283,6 @@ public class Player : Unit
         weapon.ActiveOffWeaponArea(0);
         unit_animation.Play("Dying");
     }
+
+    public int GetNowExp() { return (int)unit_stats.Total_Exp; }
 }

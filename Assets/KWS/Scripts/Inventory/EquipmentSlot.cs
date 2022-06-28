@@ -17,7 +17,18 @@ public class EquipmentSlot : Slot
     }
     public void RemoveSlotUI()
     {
-        StartCoroutine(RemoveSlotUICor());
+        //StartCoroutine(RemoveSlotUICor());
+
+        CallbackUnmountEquipment(item);
+
+        base.RemoveSlotUI();
+
+        item_image.sprite = defalut_equipment_image;
+
+        item_image.SetNativeSize();
+        item_image.gameObject.SetActive(true);
+
+        SetDefaultColor();
     }
 
     IEnumerator RemoveSlotUICor()
@@ -40,7 +51,22 @@ public class EquipmentSlot : Slot
 
     public void UpdateSlotUI(Item item, int slot_num)
     {
-        StartCoroutine(UpdateSlotUICor(item, slot_num));
+        //StartCoroutine(UpdateSlotUICor(item, slot_num));
+
+        base.UpdateSlotUI(item);
+
+        //yield return null;
+
+        this.item.str = item.str;
+        this.item.def = item.def;
+
+        Slot_Num = slot_num;
+        Is_Mount = true;
+
+        //yield return null;
+
+        SetNormalColor();
+        CallbackMountEquipment(item);
     }
     IEnumerator UpdateSlotUICor(Item item, int slot_num)
     {

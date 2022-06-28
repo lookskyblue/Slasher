@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_db:
   - item_type: 0
+    id: 1000
     item_key: SM_Wep_Sword_10
     item_image: {fileID: 21300000, guid: 27428f826bad840f9bdbc88d5dcbfa6c, type: 3}
     is_stackable: 0
@@ -27,6 +28,7 @@ MonoBehaviour:
     name: "\uC5F0\uC2B5\uC6A9 \uAC80"
     price: 1000
   - item_type: 0
+    id: 1001
     item_key: SM_Wep_Sword_01
     item_image: {fileID: 21300000, guid: f9cdd1844b02d4c81989b265d121a78a, type: 3}
     is_stackable: 0
@@ -40,6 +42,7 @@ MonoBehaviour:
     name: "\uCCA0\uAC80"
     price: 2500
   - item_type: 0
+    id: 1002
     item_key: SM_Wep_Sword_03
     item_image: {fileID: 21300000, guid: bb71197c3cd5f4dc09e7b129399d0048, type: 3}
     is_stackable: 0
@@ -53,6 +56,7 @@ MonoBehaviour:
     name: "\uBC14\uC774\uD0B9 \uC18C\uB4DC"
     price: 5000
   - item_type: 0
+    id: 1003
     item_key: SM_Wep_Sword_13
     item_image: {fileID: 21300000, guid: 69a11d8cb1f7e46718b2f15d0878ae0e, type: 3}
     is_stackable: 0
@@ -66,6 +70,7 @@ MonoBehaviour:
     name: "\uC0E4\uBE0C\uB974"
     price: 10000
   - item_type: 0
+    id: 1004
     item_key: SM_Wep_Sword_16
     item_image: {fileID: 21300000, guid: fcd3983f703124c5f9580c4d3b5a5823, type: 3}
     is_stackable: 0
@@ -79,6 +84,7 @@ MonoBehaviour:
     name: "\uAE00\uB85C\uB9AC \uC18C\uB4DC"
     price: 25000
   - item_type: 0
+    id: 1005
     item_key: SM_Wep_Crystal_DoubleSword_01
     item_image: {fileID: 21300000, guid: 920510d3994f1469f8f88fd76b9f7277, type: 3}
     is_stackable: 0
@@ -92,6 +98,7 @@ MonoBehaviour:
     name: "\uB808\uC9C0\uB098 \uC18C\uB4DC"
     price: 50000
   - item_type: 0
+    id: 1006
     item_key: SM_Wep_Ornate_Sword_01
     item_image: {fileID: 21300000, guid: 01c22b6d497e0484db647e3d384dfe67, type: 3}
     is_stackable: 0
@@ -105,6 +112,7 @@ MonoBehaviour:
     name: "\uB4DC\uB798\uACE4 \uC18C\uB4DC"
     price: 100000
   - item_type: 1
+    id: 1100
     item_key: SM_Wep_Shield_06
     item_image: {fileID: 21300000, guid: 85ecb2f1dc34e22468a7dc7ac5d23071, type: 3}
     is_stackable: 0
@@ -118,6 +126,7 @@ MonoBehaviour:
     name: "\uC5F0\uC2B5\uC6A9 \uBC29\uD328"
     price: 1000
   - item_type: 1
+    id: 1101
     item_key: SM_Wep_Shield_05
     item_image: {fileID: 21300000, guid: 7ac296aa739462b4a874bf49cb637f2c, type: 3}
     is_stackable: 0
@@ -131,6 +140,7 @@ MonoBehaviour:
     name: "\uB098\uBB34 \uBC29\uD328"
     price: 2500
   - item_type: 1
+    id: 1102
     item_key: SM_Wep_Shield_09
     item_image: {fileID: 21300000, guid: e03eed09328f2413d8a7cf2a8e5d1b94, type: 3}
     is_stackable: 0
@@ -144,6 +154,7 @@ MonoBehaviour:
     name: "\uD654\uAC15\uC554 \uBC29\uD328"
     price: 5000
   - item_type: 1
+    id: 1103
     item_key: SM_Wep_Shield_04
     item_image: {fileID: 21300000, guid: 6007e256ee90b4b0b92980878208f788, type: 3}
     is_stackable: 0
@@ -157,6 +168,7 @@ MonoBehaviour:
     name: "\uB77C\uC774\uC5B8 \uC2E4\uB4DC"
     price: 8500
   - item_type: 1
+    id: 1104
     item_key: SM_Wep_Shield_01
     item_image: {fileID: 21300000, guid: 93b24a9c34e5343cfa78e20fb833609a, type: 3}
     is_stackable: 0
@@ -170,6 +182,7 @@ MonoBehaviour:
     name: "\uB808\uC9C0\uB098 \uC2E4\uB4DC"
     price: 15000
   - item_type: 1
+    id: 1105
     item_key: SM_Wep_Shield_Ornate_01
     item_image: {fileID: 21300000, guid: 5ae8790598aa50a41a56581f5331198e, type: 3}
     is_stackable: 0
@@ -183,6 +196,7 @@ MonoBehaviour:
     name: "\uB4DC\uB798\uACE4 \uC2E4\uB4DC"
     price: 30000
   - item_type: 3
+    id: 1200
     item_key: HpPotion1
     item_image: {fileID: 21300000, guid: 117b17facff65dc42b1b57deb7c21551, type: 3}
     is_stackable: 1
@@ -196,6 +210,7 @@ MonoBehaviour:
     name: "\uC18C\uD615 \uCCB4\uB825 \uD3EC\uC158"
     price: 500
   - item_type: 3
+    id: 1201
     item_key: MpPotion1
     item_image: {fileID: 21300000, guid: b7f77607c82ea4142a2070c0e37e1756, type: 3}
     is_stackable: 1
@@ -209,6 +224,7 @@ MonoBehaviour:
     name: "\uC18C\uD615 \uB9C8\uB098 \uD3EC\uC158"
     price: 500
   - item_type: 3
+    id: 1202
     item_key: HpPotion2
     item_image: {fileID: 21300000, guid: 44dc65116207f4b46aa85443dae5ad96, type: 3}
     is_stackable: 1

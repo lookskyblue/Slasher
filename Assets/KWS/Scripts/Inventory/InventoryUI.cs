@@ -12,6 +12,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private InventorySlot[] slots;
     [SerializeField] private GameObject item_info_ui;
     [SerializeField] private Text gold_text;
+    [SerializeField] private DataManager data_manager;
     private void Awake()
     {
         if(instance == null)
@@ -38,8 +39,8 @@ public class InventoryUI : MonoBehaviour
     {
         for(int i  = 0; i < slots.Length; i++)
         {
+            slots[i].Slot_Idx = i;
             slots[i].Slot_Num = i;
-
             if (i < InventoryManager.instance.Slot_Cnt)
                 slots[i].GetComponent<Button>().interactable = true;
             else
@@ -141,4 +142,35 @@ public class InventoryUI : MonoBehaviour
     //}
 
     public void OnInventoryUI() { inventory_panel.SetActive(true); }
+
+    public void SaveInventory()
+    {
+        InventoryData inventory_data = new InventoryData();
+
+        for(int i = 0; i < slots.Length; i++)
+        {
+            Item item = slots[i].GetItem();
+
+            if(item != null)
+            {
+                ItemData item_data = new ItemData();
+
+                item_data.slot_idx = slots[i].Slot_Idx;
+                item_data.item_id = item.id;
+                item_data.item_cnt = item.item_cnt;
+                item_data.is_mounted = slots[i].Is_Mount;
+
+                inventory_data.item_data_list.Add(item_data);
+            }
+        }
+
+        data_manager.SaveInventory(inventory_data);
+    }
+
+    public void AddItem(Item item, int slot_idx, bool is_mounted)
+    {
+        slots[slot_idx].UpdateSlotUI(item);
+        if (is_mounted == true) slots[slot_idx].MountItem(item.item_type);
+        slots[slot_idx].SetNativeSize();
+    }
 }
