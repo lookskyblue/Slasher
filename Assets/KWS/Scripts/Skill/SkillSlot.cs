@@ -5,18 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class SkillSlot : SkillBookSlot
 {
-    [SerializeField]
-    private Sprite default_image;
-    [SerializeField]
-    private Image image;
-    [SerializeField]
-    private KeyCode key_code;
-    [SerializeField]
-    private Text key_code_text;
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
-    [SerializeField]
-    private Image cool_time_ui;
+    [SerializeField] private Sprite default_image;
+    [SerializeField] private Image image;
+    [SerializeField] private KeyCode key_code;
+    [SerializeField] private Text key_code_text;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private Image cool_time_ui;
     private void Start()
     {
         InitKeyCodeText();

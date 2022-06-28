@@ -84,4 +84,3 @@ public class UIActiveGetKeyInput : MonoBehaviour
         return false;
     }
 }
-

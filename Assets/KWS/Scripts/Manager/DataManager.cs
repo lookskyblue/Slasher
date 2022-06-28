@@ -8,26 +8,36 @@ public class DataManager : MonoBehaviour
     private StatsTableList stats_tables; // 레벨에 따른 플레이어 스탯 테이블
     private PlayerData player_data; // 현재 플레이어의 정보들을 가지는 데이터
     private InventoryData inventory_data;
+    private SkillDataList skill_data_list;
     private void Awake()
     {
-        // StatsTables
-        InitStatsTableList();
+        CheckStatsTable();
+        CheckPlayerData();
+        CheckInventoryData();
+        CheckSkillData();
+    }
+
+    void CheckStatsTable()
+    {
+        CreateStatsTableList();
         SaveStatsTableToJson();
         LoadStatsTableFromJson();
-
-        // PlayerData
+    }
+    void CheckPlayerData()
+    {
         if (IsExistPlayerData() == false)
         {
-            InitPlayerData();
+            CreatePlayerData();
             SavePlayerDataToJson(player_data);
         }
         else
         {
             player_data = LoadPlayerDataFromJson();
         }
-
-        // Inventory
-        if(IsExistInventoryData() == false)
+    }
+    void CheckInventoryData()
+    {
+        if (IsExistInventoryData() == false)
         {
             inventory_data = new InventoryData();
             SaveInventory(inventory_data);
@@ -37,6 +47,51 @@ public class DataManager : MonoBehaviour
         {
             inventory_data = LoadInventory();
         }
+    }
+    void CheckSkillData()
+    {
+        if(IsExistSkillData() == false)
+        {
+            SaveSkillData();
+        }
+
+        else
+        {
+            skill_data_list = LoadSkillData();
+        }
+    }
+
+    bool IsExistSkillData()
+    {
+        string path = Path.Combine(Application.dataPath, "skillData.json");
+
+        return File.Exists(path);
+    }
+
+    void SaveSkillData()
+    {
+        skill_data_list = new SkillDataList();
+
+        Debug.Log("저장");
+
+        string json = JsonUtility.ToJson(skill_data_list, true);
+        string path = Path.Combine(Application.dataPath + "skillData.json");
+
+        Debug.Log("JSON:" + json); 
+
+        File.WriteAllText(path, json);
+    }
+
+    SkillDataList LoadSkillData()
+    {
+        Debug.Log("로드");
+
+        string path = Path.Combine(Application.dataPath + "skillData.json");
+        string json = File.ReadAllText(path);
+
+        SkillDataList skill_data_list = JsonUtility.FromJson<SkillDataList>(json);
+
+        return skill_data_list;
     }
 
     bool IsExistInventoryData()
@@ -74,7 +129,7 @@ public class DataManager : MonoBehaviour
         stats_tables = JsonUtility.FromJson<StatsTableList>(json_data);
     }
 
-    void InitPlayerData()
+    void CreatePlayerData()
     {
         player_data = new PlayerData();
         player_data.stat_table = new StatsTable();
@@ -130,7 +185,7 @@ public class DataManager : MonoBehaviour
         
         SavePlayerDataToJson(player_data);
     }
-    void InitStatsTableList()
+    void CreateStatsTableList()
     {
         stats_tables = new StatsTableList();
 

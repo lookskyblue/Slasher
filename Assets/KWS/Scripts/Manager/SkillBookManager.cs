@@ -11,6 +11,7 @@ public class SkillInfo
 {
     public Sprite icon;
     public string name;
+    public int id;
     public int possible_level;
     public int taken_point;
     public int limit_point;
