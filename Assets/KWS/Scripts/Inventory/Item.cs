@@ -17,6 +17,7 @@ public class Item
     public ItemType item_type;
     public int id;
     public string item_key;
+    public int wearable_level;
     public Sprite item_image;
     public bool is_stackable;
     public int item_cnt;
@@ -141,6 +142,7 @@ public class Item
 
         new_copy.item_type = this.item_type;
         new_copy.item_key = this.item_key;
+        new_copy.wearable_level = this.wearable_level;
         new_copy.item_image = this.item_image;
         new_copy.is_stackable = this.is_stackable;
         new_copy.item_cnt = this.item_cnt;

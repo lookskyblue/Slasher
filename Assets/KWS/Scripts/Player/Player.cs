@@ -44,8 +44,7 @@ public class Player : Unit
 
         InventoryManager.instance.Gold_On_Hand = player_data.gold;
 
-        //player.transform.position = player_data.current_position;
-        //player.transform.rotation = player_data.current_rotation;
+        // 착용 장비 적용 해야함
 
         initial_mp = unit_stats.Total_Mp;
         unit_now_hp = unit_stats.Total_Hp;

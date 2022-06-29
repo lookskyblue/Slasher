@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PotionSlotIGetKeyInput : MonoBehaviour
 {
-    [SerializeField]
-    private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private Player player;
     private Dictionary<KeyCode, Action> input_key_dic = new Dictionary<KeyCode, Action>();
     private void Start()
     {
@@ -49,7 +49,7 @@ public class PotionSlotIGetKeyInput : MonoBehaviour
 
         foreach (KeyValuePair<KeyCode, Action> pair in input_key_dic)
         {
-            if (Input.GetKeyDown(pair.Key) == true)
+            if (Input.GetKeyDown(pair.Key) == true && player.IsDead() == false)
             {
                 pair.Value();
                 return;

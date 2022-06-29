@@ -6,7 +6,13 @@ public class InventorySlot : Slot
 {
     public override void RemoveSlotUI()
     {
-        StartCoroutine(RemoveSlotUICor());
+        //StartCoroutine(RemoveSlotUICor());
+
+        base.RemoveSlotUI();
+
+        item_cnt_text.text = null;
+        item_cnt_text.gameObject.SetActive(false);
+        item_mount_state_text.gameObject.SetActive(false);
     }
     IEnumerator RemoveSlotUICor()
     {

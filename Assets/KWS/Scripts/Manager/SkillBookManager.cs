@@ -62,20 +62,23 @@ public class SkillInfo
 public class SkillBookManager : MonoBehaviour
 {
     [SerializeField] private SkillInfo[] skill_info_list;
+    [SerializeField] private SkillSlot[] skill_slots;
     [SerializeField] private GameObject skill_prefab;
     [SerializeField] private GameObject skill_scroll_view_content;
     [SerializeField] private Text remaining_skill_point_text;
-    [SerializeField] private int remaining_skill_point;
     [SerializeField] private UnitStats player_stats;
     [SerializeField] private SkillDragAndDropContainer skill_drag_and_drop_container;
     [SerializeField] private Transform skill_slots_container;
     [SerializeField] private InteractionUIEvent interaction_ui_event;
+    [SerializeField] private DataManager data_manager;
 
+    private Dictionary<int, int> skill_idx_dic = new Dictionary<int, int>();
+    private Dictionary<int, SkillInfo> skill_info_dic = new Dictionary<int, SkillInfo>();
+    private int remaining_skill_point;
     private const int NOT_FOUND = -1;
     private void Awake()
     {
         CreateSkillList();
-        InitRemainingSkillPoint();
         player_stats.On_Level_Up += CheckSkillUpgradePossible;
         CheckSkillUpgradePossible();
     }
@@ -100,10 +103,14 @@ public class SkillBookManager : MonoBehaviour
             entry.callback.AddListener((eventData) => { PushSkillUpgradBtn(eventData, skill_idx); });
 
             skill_obj_background.GetChild(3).GetComponent<EventTrigger>().triggers.Add(entry);
+
+            skill_idx_dic.Add(skill_info_list[i].id, skill_idx);
+            skill_info_dic.Add(skill_info_list[i].id, skill_info_list[i]);
         }
     }
-    void InitRemainingSkillPoint()
+    void InitRemainingSkillPoint(int remaining_skill_point)
     {
+        this.remaining_skill_point = remaining_skill_point;
         remaining_skill_point_text.text = remaining_skill_point.ToString();
     }
 
@@ -144,6 +151,42 @@ public class SkillBookManager : MonoBehaviour
         skill_scroll_view_content.transform.GetChild(idx).GetComponent<SkillBookSlot>().UpdateSkillTakenPoint(updated_taken_point);
 
         CheckSkillMaster(idx);
+        SaveSkillData();
+    }
+
+    public void SaveSkillData()
+    {
+        SkillDataList skill_data = new SkillDataList();
+
+        for(int i = 0; i < skill_info_list.Length; i++)
+        {
+            if(0 < skill_info_list[i].taken_point)
+            {
+                SkillData data = new SkillData();
+                
+                data.id = skill_info_list[i].id;
+                data.taken_point = skill_info_list[i].taken_point;
+                data.slot_idx = 0;
+                data.is_mounted = false;
+
+                for (int j = 0; j < skill_slots.Length; j++)
+                {
+                    if (skill_slots[j].Is_Mounted == true && skill_slots[j].GetSkillId() == data.id)
+                    {
+                        data.slot_idx = skill_slots[j].GetSlotIdx();
+                        data.is_mounted = true;
+
+                        break;
+                    }
+                }
+                
+                skill_data.skill_data_list.Add(data);
+            }
+        }
+
+        skill_data.remaining_skill_point = remaining_skill_point;
+
+        data_manager.SaveData<SkillDataList>(skill_data, data_manager.Skill_Data_file_name);
     }
 
     void CheckSkillMaster(int idx)
@@ -218,6 +261,41 @@ public class SkillBookManager : MonoBehaviour
                 skill_slot.RemoveSlotUI();
 
                 return;
+            }
+        }
+    }
+    void PushSkillUpgradBtn(int idx)
+    {
+        if (skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(3).GetComponent<Button>().interactable == false) return;
+        
+        int updated_taken_point = ++skill_info_list[idx].taken_point;
+
+        skill_scroll_view_content.transform.GetChild(idx).GetChild(0).GetChild(2).GetComponent<Text>().text = (updated_taken_point).ToString();
+        skill_scroll_view_content.transform.GetChild(idx).GetComponent<SkillBookSlot>().UpdateSkillTakenPoint(updated_taken_point);
+
+        CheckSkillMaster(idx);
+    }
+    public void SetData(SkillDataList skill_data)
+    {
+        InitRemainingSkillPoint(skill_data.remaining_skill_point);
+
+        List<SkillData> skill_data_list = skill_data.skill_data_list;
+
+        for(int i = 0; i < skill_data_list.Count; i++)
+        {
+            int skill_id = skill_data_list[i].id;
+            int taken_point = skill_data_list[i].taken_point;
+            int skill_idx = skill_idx_dic[skill_id];
+
+            for(int j = 0; j < taken_point; j++)
+            {
+                PushSkillUpgradBtn(skill_idx);
+            }
+
+            if(skill_data_list[i].is_mounted == true)
+            {
+                int slot_idx = skill_data_list[i].slot_idx;
+                skill_slots[slot_idx].UpdateSlotUI(skill_info_dic[skill_id]);
             }
         }
     }

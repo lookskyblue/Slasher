@@ -6,4 +6,5 @@ using UnityEngine;
 public class SkillDataList
 {
     public List<SkillData> skill_data_list = new List<SkillData>();
+    public int remaining_skill_point;
 }

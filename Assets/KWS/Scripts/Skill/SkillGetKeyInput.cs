@@ -7,7 +7,7 @@ public class SkillGetKeyInput : MonoBehaviour
     [SerializeField] private InteractionSlotEvent interaction_slot_event;
     [SerializeField] private UnitStats player_stats;
     [SerializeField] private PlayerAttack player_attack;
-
+    [SerializeField] private Player player;
     private Dictionary<KeyCode, SkillInfo> skill_input_key_dic = new Dictionary<KeyCode, SkillInfo>();
     private Animator player_ani;
     private SkillInfo now_doing_skill = null;
@@ -80,7 +80,7 @@ public class SkillGetKeyInput : MonoBehaviour
 
         foreach (KeyValuePair<KeyCode, SkillInfo> pair in skill_input_key_dic)
         {
-            if (Input.GetKeyDown(pair.Key) == true)
+            if (Input.GetKeyDown(pair.Key) == true && player.IsDead() == false)
             {
                 DoSkill(pair.Value);
 

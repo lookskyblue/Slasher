@@ -371,7 +371,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-
     private void RemoveItemInList(string item_key)
     {
         for (int i = 0; i < items.Count; i++)

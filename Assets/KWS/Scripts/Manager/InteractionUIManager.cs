@@ -10,12 +10,13 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField] private GameObject get_field_item_text_ui;
     [SerializeField] private GameObject acquired_item_ui_group;
     [SerializeField] private Image acquired_item_image_ui;
-    [SerializeField] private GameObject raid_map_ui;
+    [SerializeField] private UnitStats player_stats;
 
     #region æ∆¿Ã≈€ ∏ÆΩ∫∆Æ
     [SerializeField] private GameObject item_info_ui_group;
     [SerializeField] private Image item_image;
     [SerializeField] private Text item_type_text;
+    [SerializeField] private Text item_wearable_level_text;
     [SerializeField] private Text item_name_text;
     [SerializeField] private Text item_str_text;
     [SerializeField] private Text item_def_text;
@@ -111,6 +112,9 @@ public class InteractionUIManager : MonoBehaviour
         else if (item.item_type == ItemType.Helmet) item_type_text.text = "«Ô∏‰";
 
         item_name_text.text = item.name;
+        item_wearable_level_text.text = item.wearable_level.ToString();
+        item_wearable_level_text.color = (player_stats.GetLevel < item.wearable_level) ? Color.red : Color.white;
+        
         item_str_text.text = item.str.ToString();
         item_def_text.text = item.def.ToString();
         item_hp_recovery_amount_text.text = item.hp_recovery_amount.ToString();

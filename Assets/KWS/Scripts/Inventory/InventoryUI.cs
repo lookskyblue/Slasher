@@ -145,13 +145,19 @@ public class InventoryUI : MonoBehaviour
 
     public void SaveInventory()
     {
+        StartCoroutine(SaveInventoryCor());
+    }
+    IEnumerator SaveInventoryCor()
+    {
+        yield return null;
+
         InventoryData inventory_data = new InventoryData();
 
-        for(int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             Item item = slots[i].GetItem();
 
-            if(item != null)
+            if (item != null)
             {
                 ItemData item_data = new ItemData();
 
@@ -164,7 +170,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
 
-        data_manager.SaveInventory(inventory_data);
+        data_manager.SaveData<InventoryData>(inventory_data, data_manager.Inventory_Data_File_Name);
     }
 
     public void AddItem(Item item, int slot_idx, bool is_mounted)

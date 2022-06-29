@@ -10,7 +10,4 @@ public class PlayerData
     public int level;
     public int exp;
     public int gold;
-
-    public Vector3 current_position;
-    public Quaternion current_rotation;
 }

@@ -11,6 +11,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     [SerializeField] protected Image item_image;
     [SerializeField] protected Text item_cnt_text;
     [SerializeField] protected Text item_mount_state_text;
+    [SerializeField] private UnitStats player_stats;
+    [SerializeField] private string wearable_level_alert;
     private int slot_idx;
     private bool is_dragging;
     protected Item item;
@@ -36,7 +38,16 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     }
     public virtual void RemoveSlotUI()
     {
-        StartCoroutine(RemoveSlotUICor());
+        //StartCoroutine(RemoveSlotUICor());
+        item = null;
+        item_image.sprite = null;
+        item_image.gameObject.SetActive(false);
+
+        if (item_mount_state_text != null) item_mount_state_text.gameObject.SetActive(false);
+
+        Is_Mount = false;
+
+        InventoryUI.instance.SaveInventory();
     }
     IEnumerator RemoveSlotUICor()
     {
@@ -113,11 +124,16 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     {
         if (pointer_event_data.button != PointerEventData.InputButton.Right) return;
         if (item == null) return;
+        if(player_stats.GetLevel < item.wearable_level)
+        {
+            interaction_ui_event.On_Change_Alert_Text_UI(wearable_level_alert);
+
+            return;
+        }
 
         StartCoroutine(CheckItem(item.item_type));
     }
 
-    //private void CheckItem(ItemType item_type) // 중요
     IEnumerator CheckItem(ItemType item_type) // 중요
     {
         switch (item_type)

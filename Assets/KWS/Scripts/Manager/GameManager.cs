@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject player_group;
     [SerializeField] private RaidBoardManager raid_board_manager;
     [SerializeField] private DragAndDropContainer drag_and_drop_container;
+    [SerializeField] private SkillBookManager skill_book_manager;
 
     [Tooltip("아이템을 되팔기 할 때의 정가에서 곱해지는 비율입니다.(0 ~ 1)")]
     [SerializeField] private float resale_ratio;
@@ -70,11 +71,14 @@ public class GameManager : MonoBehaviour
 
     void SetPlayerData()
     {
-        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
-        InventoryData inventory_data = data_manager.LoadInventory();
-
+        PlayerData player_data = data_manager.LoadData<PlayerData>(data_manager.Player_Data_File_Name);
         player.Init(player_data);
+
+        InventoryData inventory_data = data_manager.LoadData<InventoryData>(data_manager.Inventory_Data_File_Name);
         InventoryManager.instance.AddItem(inventory_data);
+        
+        SkillDataList skill_data = data_manager.LoadData<SkillDataList>(data_manager.Skill_Data_file_name);
+        skill_book_manager.SetData(skill_data);
     }
 
     public void LoadScene(string next_scene_name) // 비동기로 할 것
@@ -126,13 +130,21 @@ public class GameManager : MonoBehaviour
 
         // Save
         data_manager.UpdatePlayerDataInfo(stats_table, level, exp, gold);
-        
+
         // Load
-        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+        PlayerData player_data = data_manager.LoadData<PlayerData>(data_manager.Player_Data_File_Name);
 
         // Apply To Game
         player.ApplyPlayerDataToGame(player_data);
+        player.ApplyMountedItemStats();
         player.DrawUI();
+
+        // Load, Update, Save SkillData
+        SkillDataList skill_data = data_manager.LoadData<SkillDataList>(data_manager.Skill_Data_file_name);
+        
+        skill_data.remaining_skill_point++;
+        skill_book_manager.SetData(skill_data);
+        data_manager.SaveData<SkillDataList>(skill_data, data_manager.Skill_Data_file_name);
     }
 
     void OnApplicationQuit()
@@ -145,11 +157,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("현재 정보 저장");
         // 어쩌피 처음 씬은 마을이므로 기본 스텟은 별도로 저장하지 않음. 레벨에 맞는 스텟만 저장
 
-        PlayerData player_data = data_manager.LoadPlayerDataFromJson();
+        PlayerData player_data = data_manager.LoadData<PlayerData>(data_manager.Player_Data_File_Name);
 
         player_data.gold = InventoryManager.instance.Gold_On_Hand;
         player_data.exp = player.GetNowExp();
 
-        data_manager.SavePlayerDataToJson(player_data);
+        data_manager.SaveData<PlayerData>(player_data, data_manager.Player_Data_File_Name);
+    }
+
+    public void PushExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

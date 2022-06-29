@@ -5,12 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class SkillSlot : SkillBookSlot
 {
+    [SerializeField] private int slot_idx;
     [SerializeField] private Sprite default_image;
     [SerializeField] private Image image;
     [SerializeField] private KeyCode key_code;
     [SerializeField] private Text key_code_text;
     [SerializeField] private InteractionSlotEvent interaction_slot_event;
     [SerializeField] private Image cool_time_ui;
+    private bool is_mounted = false;
+    public bool Is_Mounted { get { return is_mounted; } set { is_mounted = value; } }
     private void Start()
     {
         InitKeyCodeText();
@@ -27,7 +30,11 @@ public class SkillSlot : SkillBookSlot
         this.skill_info.On_Use_Skill_Callback = OnSkillInputCallback;
 
         image.sprite = skill_info.icon;
+
+        Is_Mounted = true;
         interaction_slot_event.MountSkillSlot.Invoke(key_code, this.skill_info);
+
+        skill_book_manager.SaveSkillData();
     }
     public void RemoveSlotUI() 
     {
@@ -37,7 +44,10 @@ public class SkillSlot : SkillBookSlot
         skill_info = null;
         image.sprite = default_image;
 
+        Is_Mounted = false;
         interaction_slot_event.UnmountSkillSlot.Invoke(key_code);
+
+        skill_book_manager.SaveSkillData();
     }
     public void OnSkillInputCallback()
     {
@@ -133,6 +143,9 @@ public class SkillSlot : SkillBookSlot
 
         return skill_info.name;
     }
-
     public bool IsEmpty() { return skill_info == null; }
+
+    public int GetSlotIdx() { return slot_idx; }
+
+    public int GetSkillId() { return skill_info.id; }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,177 +6,110 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private StatsTableList stats_tables; // 레벨에 따른 플레이어 스탯 테이블
-    private PlayerData player_data; // 현재 플레이어의 정보들을 가지는 데이터
+    private readonly string stats_table_file_name = "statsTable.json";
+    private readonly string player_data_file_name = "playerData.json";
+    private readonly string inventory_data_file_name = "inventoryData.json";
+    private readonly string skill_data_file_name = "skillData.json";
+    public string Player_Data_File_Name { get { return player_data_file_name; } }
+    public string Inventory_Data_File_Name { get { return inventory_data_file_name; } }
+    public string Skill_Data_file_name { get { return skill_data_file_name; } }
+
+    private StatsTableList stats_tables;
+    private PlayerData player_data; 
     private InventoryData inventory_data;
-    private SkillDataList skill_data_list;
+    private SkillDataList skill_data;
+    private string persistent_data_path;
+
     private void Awake()
     {
-        CheckStatsTable();
-        CheckPlayerData();
-        CheckInventoryData();
-        CheckSkillData();
-    }
+        persistent_data_path = Application.persistentDataPath;
 
-    void CheckStatsTable()
-    {
-        CreateStatsTableList();
-        SaveStatsTableToJson();
-        LoadStatsTableFromJson();
+        CheckData<StatsTableList>(ref stats_tables, CreateStatsTableList, stats_table_file_name);
+        CheckData<PlayerData>(ref player_data, CreatePlayerData, player_data_file_name);
+        CheckData<InventoryData>(ref inventory_data, CreateInventoryData, inventory_data_file_name);
+        CheckData<SkillDataList>(ref skill_data, CreateSkillData, skill_data_file_name);
     }
-    void CheckPlayerData()
+    bool IsExistData(string file_name)
     {
-        if (IsExistPlayerData() == false)
-        {
-            CreatePlayerData();
-            SavePlayerDataToJson(player_data);
-        }
-        else
-        {
-            player_data = LoadPlayerDataFromJson();
-        }
-    }
-    void CheckInventoryData()
-    {
-        if (IsExistInventoryData() == false)
-        {
-            inventory_data = new InventoryData();
-            SaveInventory(inventory_data);
-        }
-
-        else
-        {
-            inventory_data = LoadInventory();
-        }
-    }
-    void CheckSkillData()
-    {
-        if(IsExistSkillData() == false)
-        {
-            SaveSkillData();
-        }
-
-        else
-        {
-            skill_data_list = LoadSkillData();
-        }
-    }
-
-    bool IsExistSkillData()
-    {
-        string path = Path.Combine(Application.dataPath, "skillData.json");
+        string path = Path.Combine(persistent_data_path, file_name);
 
         return File.Exists(path);
     }
-
-    void SaveSkillData()
+    public void SaveData<T>(T data, string file_name)
     {
-        skill_data_list = new SkillDataList();
+        string path = Path.Combine(persistent_data_path, file_name);
+        string json_data = JsonUtility.ToJson(data, true);
 
-        Debug.Log("저장");
-
-        string json = JsonUtility.ToJson(skill_data_list, true);
-        string path = Path.Combine(Application.dataPath + "skillData.json");
-
-        Debug.Log("JSON:" + json); 
-
-        File.WriteAllText(path, json);
+        File.WriteAllText(path, json_data);
     }
-
-    SkillDataList LoadSkillData()
+    public T LoadData<T>(string file_name)
     {
-        Debug.Log("로드");
-
-        string path = Path.Combine(Application.dataPath + "skillData.json");
-        string json = File.ReadAllText(path);
-
-        SkillDataList skill_data_list = JsonUtility.FromJson<SkillDataList>(json);
-
-        return skill_data_list;
-    }
-
-    bool IsExistInventoryData()
-    {
-        string path = Path.Combine(Application.dataPath, "inventoryData.json");
-
-        return File.Exists(path);
-    }
-    public void SaveInventory(InventoryData inventory_data)
-    {
-        string path = Path.Combine(Application.dataPath, "inventoryData.json");
-        string json = JsonUtility.ToJson(inventory_data, true);
-
-        File.WriteAllText(path, json);
-    }
-    public InventoryData LoadInventory()
-    {
-        string path = Path.Combine(Application.dataPath, "inventoryData.json");
-        string json = File.ReadAllText(path);
-
-        InventoryData inventory_data = JsonUtility.FromJson<InventoryData>(json);
-
-        return inventory_data;
-    }
-    bool IsExistPlayerData()
-    {
-        string path = Path.Combine(Application.dataPath, "playerData.json");
-
-        return File.Exists(path);
-    }
-    public void LoadStatsTableFromJson()
-    {
-        string path = Path.Combine(Application.dataPath, "statsTable.json");
+        string path = Path.Combine(persistent_data_path, file_name);
         string json_data = File.ReadAllText(path);
-        stats_tables = JsonUtility.FromJson<StatsTableList>(json_data);
-    }
 
+        return JsonUtility.FromJson<T>(json_data);
+    }
+    void CheckData<T>(ref T data, Action action, string file_name)
+    {
+        if (IsExistData(file_name) == false)
+        {
+            action.Invoke();
+            SaveData<T>(data, file_name);
+        }
+
+        else
+        {
+            data = LoadData<T>(file_name);
+        }
+    }
+    void CreateStatsTableList()
+    {
+        stats_tables = new StatsTableList();
+
+        int str_adjust_value = 0;
+        int def_adjust_value = 0;
+        int hp_adjust_value = 0;
+        int mp_adjust_value = 0;
+
+        for (int i = 0; i < 30; i++)
+        {
+            StatsTable stats_table = new StatsTable();
+
+            stats_table.str = 10 + str_adjust_value;
+            stats_table.def = 10 + def_adjust_value;
+            stats_table.hp = 200 + hp_adjust_value;
+            stats_table.mp = 200 + mp_adjust_value;
+            stats_table.hp_auto_recover_amount = 5;
+            stats_table.mp_auto_recover_amount = 5;
+            stats_table.max_exp = Mathf.Pow((i * 50 / 49), 2.5f) * 10;
+
+            stats_tables.stats_table_list.Add(stats_table);
+
+            str_adjust_value += 5;
+            def_adjust_value += 5;
+            hp_adjust_value += 50;
+            mp_adjust_value += 50;
+        }
+    }
     void CreatePlayerData()
     {
         player_data = new PlayerData();
-        player_data.stat_table = new StatsTable();
-
-        player_data.stat_table.str = 20;
-        player_data.stat_table.def = 20;
-        player_data.stat_table.hp = 200;
-        player_data.stat_table.mp = 200;
-        player_data.stat_table.hp_auto_recover_amount = 5;
-        player_data.stat_table.mp_auto_recover_amount = 5;
-        player_data.stat_table.mp_auto_recover_amount = 5;
+        player_data.stat_table = stats_tables.stats_table_list[0];
         player_data.stat_table.max_exp = 5;
 
         player_data.level = 1;
         player_data.exp = 0;
-        player_data.gold = 123;
-
-        player_data.current_position = ObjectPoolingManager.Instance.Player_Transform.position;
-        player_data.current_rotation = ObjectPoolingManager.Instance.Player_Transform.rotation;
+        player_data.gold = 100000;
     }
-
-    public void SavePlayerDataToJson(PlayerData player_data)
+    void CreateInventoryData()
     {
-        string json_data = JsonUtility.ToJson(player_data, true);
-        string path = Path.Combine(Application.dataPath, "playerData.json");
-        File.WriteAllText(path, json_data);
+        inventory_data = new InventoryData();
     }
-
-    public PlayerData LoadPlayerDataFromJson()
+    void CreateSkillData()
     {
-        string path = Path.Combine(Application.dataPath, "playerData.json");
-        string json_data = File.ReadAllText(path);
-
-        player_data = JsonUtility.FromJson<PlayerData>(json_data);
-
-        return player_data;
+        skill_data = new SkillDataList();
+        skill_data.remaining_skill_point = 5;
     }
-
-    public StatsTable GetStatsTableMatchLevel(int now_level)
-    {
-        StatsTable stats_table = stats_tables.stats_table_list[now_level - 1].DeepCopy();
-        //StatsTable stats_table = stats_tables.stats_table_list[now_level - 1];
-
-        return stats_table;
-    }
-
     public void UpdatePlayerDataInfo(StatsTable stats_table, int now_level, int now_exp, int now_gold)
     {
         player_data.stat_table = stats_table;
@@ -183,31 +117,12 @@ public class DataManager : MonoBehaviour
         player_data.exp = now_exp;
         player_data.gold = now_gold;
         
-        SavePlayerDataToJson(player_data);
+        SaveData<PlayerData>(player_data, player_data_file_name);
     }
-    void CreateStatsTableList()
+    public StatsTable GetStatsTableMatchLevel(int now_level)
     {
-        stats_tables = new StatsTableList();
+        StatsTable stats_table = stats_tables.stats_table_list[now_level - 1].DeepCopy();
 
-        for (int i = 0; i < 30; i++)
-        {
-            StatsTable stats_table = new StatsTable();
-
-            stats_table.str = 10;
-            stats_table.def = 10;
-            stats_table.hp = 200;
-            stats_table.mp = 200;
-            stats_table.hp_auto_recover_amount = 5;
-            stats_table.mp_auto_recover_amount = 5;
-            stats_table.max_exp = Mathf.Pow((i * 50 / 49), 2.5f) * 10;
-
-            stats_tables.stats_table_list.Add(stats_table);
-        }
-    }
-    void SaveStatsTableToJson()
-    {
-        string json_data = JsonUtility.ToJson(stats_tables, true);
-        string path = Path.Combine(Application.dataPath, "statsTable.json");
-        File.WriteAllText(path, json_data);
+        return stats_table;
     }
 }
