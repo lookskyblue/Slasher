@@ -15582,5 +15582,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleResultUIManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3861310421006632688, guid: 41b9d2f8c5c872d4ba827cef50574c02, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 41b9d2f8c5c872d4ba827cef50574c02, type: 3}

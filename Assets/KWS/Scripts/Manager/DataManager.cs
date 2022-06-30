@@ -19,7 +19,6 @@ public class DataManager : MonoBehaviour
     private InventoryData inventory_data;
     private SkillDataList skill_data;
     private string persistent_data_path;
-
     private void Awake()
     {
         persistent_data_path = Application.persistentDataPath;
@@ -99,7 +98,7 @@ public class DataManager : MonoBehaviour
 
         player_data.level = 1;
         player_data.exp = 0;
-        player_data.gold = 100000;
+        player_data.gold = 5000;
     }
     void CreateInventoryData()
     {

@@ -13,6 +13,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     [SerializeField] protected Text item_mount_state_text;
     [SerializeField] private UnitStats player_stats;
     [SerializeField] private string wearable_level_alert;
+    [SerializeField] private AudioClip slot_interaction_sound;
+    private AudioSource audio_source;
     private int slot_idx;
     private bool is_dragging;
     protected Item item;
@@ -35,6 +37,11 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
     {
         get { return is_mount; }
         set { is_mount = value; }
+    }
+
+    void Awake()
+    {
+        audio_source = GetComponent<AudioSource>();
     }
     public virtual void RemoveSlotUI()
     {
@@ -132,6 +139,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         }
 
         StartCoroutine(CheckItem(item.item_type));
+        audio_source.PlayOneShot(slot_interaction_sound);
     }
 
     IEnumerator CheckItem(ItemType item_type) // Áß¿ä
@@ -229,6 +237,8 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
         drag_and_drop_container.is_mount = Is_Mount;
 
         is_dragging = true;
+
+        audio_source.PlayOneShot(slot_interaction_sound);
     }
 
     public virtual void OnDrag(PointerEventData event_data)
@@ -334,5 +344,7 @@ public class Slot : MonoBehaviour, IPointerUpHandler, IBeginDragHandler,IDragHan
             drag_and_drop_container.is_mount = false;
             drag_and_drop_container.slot_num = -1;
         }
+
+        audio_source.PlayOneShot(slot_interaction_sound);
     }
 }

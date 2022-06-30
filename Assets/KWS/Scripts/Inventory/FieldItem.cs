@@ -28,11 +28,10 @@ public class FieldItem : MonoBehaviour
 
             interaction_event.Get_Field_Item_Text_UI(false);
             interaction_event.Show_Acquired_Item_UI(acquired_item);
-
+            
             ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("RandomItem", gameObject);
         }
     }
-
     void ExitFieldItemZone(Collider collider)
     {
         if (collider.CompareTag("Player") == false) return;

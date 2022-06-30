@@ -6,17 +6,37 @@ using UnityEngine.AI;
 
 public class Monster : Unit
 {
+    [System.Serializable]
+    struct AudioData
+    {
+        public string name;
+        public AudioClip sound_clip;
+    }
+
     [SerializeField] private float attack_delay;
     [SerializeField] private float rotate_fower;
     [SerializeField] private float player_find_range;
     [SerializeField] private List<int> attack_phase_list;
+    [SerializeField] private AudioData[] audio_data;
+    private Dictionary<string, AudioClip> audio_dic = new Dictionary<string, AudioClip>();
     private NavMeshAgent nav_mesh_agent;
     private Coroutine is_doing_attack_motion_cor = null;
+    private AudioSource audio_source;
 
     protected Action<bool> death_callback;
-
-    private void Start()
+    void Awake()
     {
+        audio_source = GetComponent<AudioSource>();
+
+        for(int i = 0; i < audio_data.Length; i++)
+        {
+            audio_dic.Add(audio_data[i].name, audio_data[i].sound_clip);
+        }
+    }
+    protected void Start()
+    {
+        Debug.Log("몬스터 스타트");
+
         base.Start();
         InitUnitStats();
 
@@ -54,7 +74,7 @@ public class Monster : Unit
         if (IsDead() == false)
             base.DamagedAnimation();
     }
-    protected override void Dye()
+    protected override void Die()
     {
         GetComponent<TriggerCallback>().collision_stay_event = null;
         nav_mesh_agent.enabled = false;
@@ -208,5 +228,17 @@ public class Monster : Unit
             total_time += Time.deltaTime;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), total_time);
         }
+    }
+
+    void PlaySound(string sound_name)
+    {
+        if(audio_dic.ContainsKey(sound_name) == false)
+        {
+            Debug.LogError("Does not contains sound name: " + sound_name);
+
+            return;
+        }
+
+        audio_source.PlayOneShot(audio_dic[sound_name]);
     }
 }

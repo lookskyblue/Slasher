@@ -11,6 +11,8 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField] private GameObject acquired_item_ui_group;
     [SerializeField] private Image acquired_item_image_ui;
     [SerializeField] private UnitStats player_stats;
+    [SerializeField] private AudioClip alert_sound;
+    [SerializeField] private AudioClip get_item_popup_sound;
 
     #region 아이템 리스트
     [SerializeField] private GameObject item_info_ui_group;
@@ -39,8 +41,14 @@ public class InteractionUIManager : MonoBehaviour
     [SerializeField] private Text skill_damage_text;
     #endregion
 
+    private AudioSource audio_source;
     private Coroutine is_doing_alert_text_cor = null;
     private float resale_ratio;
+
+    void Awake()
+    {
+        audio_source = GetComponent<AudioSource>();
+    }
     private void Start()
     {
         interaction_event.Get_Field_Item_Text_UI = PopUpFieldItemGetTextUI;
@@ -70,6 +78,7 @@ public class InteractionUIManager : MonoBehaviour
 
     IEnumerator PopUpAcquiredItemUI()
     {
+        audio_source.PlayOneShot(get_item_popup_sound);
         acquired_item_ui_group.SetActive(true);
         yield return new WaitForSeconds(2f);
         acquired_item_ui_group.SetActive(false);
@@ -186,6 +195,7 @@ public class InteractionUIManager : MonoBehaviour
     }
     IEnumerator PopupAlertUI(string alert_text)
     {
+        audio_source.PlayOneShot(alert_sound);
         alert_dialog_ui.SetActive(false);
 
         alert_dialog_ui.transform.GetChild(0).GetComponent<Text>().text = alert_text;

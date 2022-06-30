@@ -19,8 +19,16 @@ public class BattleResultUIManager : MonoBehaviour
     [SerializeField] private Text gold_text;
     [SerializeField] private Text exp_text;
     [SerializeField] private float wait_time_to_show_for_battle_result;
+    [SerializeField] private AudioClip battle_fail_sound;
+    [SerializeField] private AudioClip battle_success_sound;
+    private AudioSource auido_source;
     private float compensation_gold = 0;
     private float compensation_exp = 0;
+
+    void Awake()
+    {
+        auido_source = GetComponent<AudioSource>();
+    }
     public void ShowBattleResult(BattleResult battle_result, int gold = 0, int exp = 0)
     {
         compensation_gold = gold;
@@ -32,8 +40,16 @@ public class BattleResultUIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(wait_time_to_show_for_battle_result);
 
-        if (BattleResult.battle_success == battle_result) battle_result_text.text = "Battle Success";
-        else if (BattleResult.battle_failed == battle_result) battle_result_text.text = "Battle Failed";
+        if (BattleResult.battle_success == battle_result)
+        {
+            auido_source.PlayOneShot(battle_success_sound);
+            battle_result_text.text = "Battle Success";
+        }
+        else if (BattleResult.battle_failed == battle_result)
+        {
+            auido_source.PlayOneShot(battle_fail_sound);
+            battle_result_text.text = "Battle Failed"; 
+        }
         
         battle_result_ui.SetActive(true);
         gold_text.text = gold == 0 ? "0" : GetThousandCommaText(gold);

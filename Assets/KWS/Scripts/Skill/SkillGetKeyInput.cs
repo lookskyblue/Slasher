@@ -77,6 +77,7 @@ public class SkillGetKeyInput : MonoBehaviour
     void CheckKeyInput()
     {
         if (skill_input_key_dic.Count == 0) return;
+        if (GameManager.instance.Is_Doing_Raid == false) return;
 
         foreach (KeyValuePair<KeyCode, SkillInfo> pair in skill_input_key_dic)
         {

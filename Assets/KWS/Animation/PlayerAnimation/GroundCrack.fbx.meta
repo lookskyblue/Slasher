@@ -59,6 +59,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.4976827
+        functionName: PlaySound
+        data: GroundCrack
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.5926966
         functionName: ShowSkillParticle
         data: 
@@ -80,22 +87,15 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.98876405
-        functionName: StopSkillAnimation
+      - time: 0.7910863
+        functionName: StopSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5487465
-        functionName: PlaySound
-        data: GroundCrack
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7910863
-        functionName: StopSound
+      - time: 0.98876405
+        functionName: StopSkillAnimation
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

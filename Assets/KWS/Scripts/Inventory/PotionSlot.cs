@@ -12,8 +12,14 @@ public class PotionSlot : Slot
     [SerializeField] private KeyCode key_code;
     [SerializeField] private int potion_slot_num;
     [SerializeField] private byte color_alpha;
+    [SerializeField] private AudioClip consume_potion_sound;
     private Color32 default_color;
+    private AudioSource audio_source;
 
+    new void Awake()
+    {
+        audio_source = GetComponent<AudioSource>();
+    }
     private void Start()
     {
         default_color = new Color32(255, 255, 255, 255);
@@ -47,11 +53,13 @@ public class PotionSlot : Slot
 
     void ItemUse()
     {
-        if (item.Use() == 0) return; // 아이템 사용
+        if (item.Use(() => { audio_source.PlayOneShot(consume_potion_sound); }) == 0) return; // 아이템 사용
 
         StartCoroutine(UpdateCoolTimeUI());
         UpdateItemCnt(item.item_cnt);
         InventoryManager.instance.ReportChangedItemCntToInventorySlot(item.item_key);
+
+        //audio_source.PlayOneShot(consume_potion_sound);
     }
 
     IEnumerator UpdateCoolTimeUI()

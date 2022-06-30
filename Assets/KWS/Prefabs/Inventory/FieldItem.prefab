@@ -58,7 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dee4990f61e9b3443960d8677a15b7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  full_item_alert_text: "\uC778\uBCA4\uD1A0\uB9AC\uAC00 \uAC00\uB4DD\uCC3C\uC2B5\uB2C8\uB2E4."
   item_db: {fileID: 11400000, guid: 8fecf03dd111c594d8b17f529830f0a0, type: 2}
   interaction_event: {fileID: 11400000, guid: 58790d41b59e6264d9296cca2a7c2df2, type: 2}
 --- !u!65 &6857720039982438439

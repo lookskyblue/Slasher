@@ -22,11 +22,12 @@ public class GameManager : MonoBehaviour
     private bool is_using_store = false;
     private bool is_talking_with_npc = false;
     private bool is_destroy = false;
+    private bool is_doing_raid = true;
+    public bool Is_Doing_Raid { get { return is_doing_raid; } }
     public RaidBoardManager GetRaidBoardManager { get { return raid_board_manager; } }
     public DragAndDropContainer GetDragAndDropContainer { get { return drag_and_drop_container; } }
     public float GetResaleRatio { get { return resale_ratio; } }
     public MonoBehaviour BorrowMono { get { return this; } }
-
     public bool Is_Using_Store 
     {
         get { return is_using_store; } 
@@ -89,6 +90,8 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode load_scene_mode)
     {
+        is_doing_raid = scene.name.Equals("Town") ? false : true;
+
         BGMManager.instance.PlayBgm(scene.name);
 
         SetPlayerToSpawnPoint(player_group);

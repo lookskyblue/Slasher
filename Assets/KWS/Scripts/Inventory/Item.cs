@@ -44,7 +44,7 @@ public class Item
     {
         get { return remaining_cool_time; }
     }
-    public int Use()
+    public int Use(Action sound_action)
     {
         if (item_type != ItemType.Potion)
         {
@@ -72,6 +72,8 @@ public class Item
         unit_stats.AcceptUsedPotion(hp_recovery_amount, mp_recovery_amount);
 
         ActiveOnUsingPotionEffect();
+
+        sound_action.Invoke();
 
         return DecreaseItemCnt();
     }

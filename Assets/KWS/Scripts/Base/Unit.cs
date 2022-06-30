@@ -53,7 +53,7 @@ public class Unit : MonoBehaviour
         LoseHp(damage);
         DrawBarUI(unit_hp_ui_group, unit_hp_ui, unit_now_hp, unit_stats.Total_Hp);
         if (IsDead() == true)
-            Dye();
+            Die();
     }
 
     void ApplyDefense(ref float damage)
@@ -140,7 +140,7 @@ public class Unit : MonoBehaviour
             yield return null;
         }
     }
-    protected virtual void Dye() { }
+    protected virtual void Die() { }
     
     private void AcceptUsedPotion(int hp, int mp)
     {

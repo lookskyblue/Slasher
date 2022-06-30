@@ -18,6 +18,8 @@ public class StoreUI : MonoBehaviour, IDropHandler
     [SerializeField] private string purchase_not_enough_money_alert;
     [SerializeField] private string already_mounted_item_alert;
     [SerializeField] private string Insufficient_sales_quantity_alert;
+    [SerializeField] private AudioClip gold_sound;
+    private AudioSource audio_source;
     private Item tmp_item;
     private float resale_ratio;
     private int slot_num;
@@ -29,6 +31,11 @@ public class StoreUI : MonoBehaviour, IDropHandler
     [SerializeField] private Button purchase_button;
     [SerializeField] private Text button_text;
     #endregion
+
+    void Awake()
+    {
+        audio_source = GetComponent<AudioSource>();
+    }
     private void Start()
     {
         PushCloseStore();
@@ -112,7 +119,8 @@ public class StoreUI : MonoBehaviour, IDropHandler
         if (InventoryManager.instance.AddItem(tmp_item, item_cnt) == false) return;
         InventoryManager.instance.Gold_On_Hand -= (tmp_item.price * item_cnt);
 
-        //Debug.Log("구매한 아이템명: " + tmp_item.name + ", 수량: " + item_cnt);
+        audio_source.PlayOneShot(gold_sound);
+
         PushPurchasingCancelButton();
     }
     bool IsValidInputField()
@@ -183,6 +191,8 @@ public class StoreUI : MonoBehaviour, IDropHandler
         InventoryManager.instance.RemoveItem(tmp_item, slot_num, item_cnt);
         int resale_price = ((int)(tmp_item.price * resale_ratio)) * item_cnt;
         InventoryManager.instance.Gold_On_Hand += resale_price; // 더해야함
+
+        audio_source.PlayOneShot(gold_sound);
 
         PushPurchasingCancelButton();
     }

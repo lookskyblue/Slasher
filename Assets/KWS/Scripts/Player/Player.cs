@@ -260,7 +260,7 @@ public class Player : Unit
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            OnChangeExp(1);
+            OnChangeExp(100);
         }
     }
 
@@ -279,7 +279,7 @@ public class Player : Unit
         ObjectPoolingManager.Instance.ReturnObjectToPoolingQueue("LevelUp", obj);
     }
 
-    protected override void Dye()
+    protected override void Die()
     {
         weapon.ActiveOffWeaponArea(0);
         unit_animation.Play("Dying");

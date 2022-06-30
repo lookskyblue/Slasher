@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField ] private UIActiveGetKeyInput ui_active_get_key_input;
     [SerializeField] private float fire_gap_time;
     [SerializeField] private AudioClipInfo[] audio_clip_info;
+    [SerializeField] private FollowingCamera following_camera;
     private Dictionary<string, AudioClip> sound_dic = new Dictionary<string, AudioClip>();
     private AudioSource audio_source;
 
@@ -84,6 +85,7 @@ public class PlayerAttack : MonoBehaviour
             if (is_mouse_inside_in_skill_slot == true) return;
             if (IsDoingAnotherAnimation() == true) return;
             if (GameManager.instance.IsDoingOtherTask() == true) return;
+
             else // UI 밖 클릭
             {
                 //1. UI가 하나라도 켜져있을 경우 UI다 끄고 리턴.
@@ -92,9 +94,9 @@ public class PlayerAttack : MonoBehaviour
                     return;
                 }
             }
+            
+            //if (GameManager.instance.Is_Town == true) return;
 
-            //2. UI가 아무것도 안 켜져있을 경우 어택.
-            //Attack();
             Attack2();
         }
     }
@@ -245,6 +247,16 @@ public class PlayerAttack : MonoBehaviour
         }
 
         audio_source.PlayOneShot(sound_dic[sound_name]);
+    }
+
+    void ReportShakeCamera()
+    {
+        following_camera.ShakeCamera();
+    }
+
+    void ReportCameraZoomInAndOut()
+    {
+        following_camera.ZoomInAndOut();
     }
 }
 
