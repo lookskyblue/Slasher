@@ -75,7 +75,8 @@ public class RaidBoardManager : MonoBehaviour
         }
 
         raid_map_ui.SetActive(false);
-        SceneManager.LoadScene(raid_info.Raid_Name);
+        //SceneManager.LoadScene(raid_info.Raid_Name);
+        GameManager.instance.LoadScene(raid_info.Raid_Name);
     }
 
     public void PushCancelSelectedRaidButton()

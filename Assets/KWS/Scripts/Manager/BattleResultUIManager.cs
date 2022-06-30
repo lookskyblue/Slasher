@@ -22,8 +22,8 @@ public class BattleResultUIManager : MonoBehaviour
     [SerializeField] private AudioClip battle_fail_sound;
     [SerializeField] private AudioClip battle_success_sound;
     private AudioSource auido_source;
-    private float compensation_gold = 0;
-    private float compensation_exp = 0;
+    private int compensation_gold = 0;
+    private int compensation_exp = 0;
 
     void Awake()
     {

@@ -6,8 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
-
+    struct Compensation
+    {
+        public int exp;
+        public int gold;
+    }
+    
     [SerializeField] private GameObject player_group;
     [SerializeField] private RaidBoardManager raid_board_manager;
     [SerializeField] private DragAndDropContainer drag_and_drop_container;
@@ -18,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     private Player player;
     private DataManager data_manager;
+    private Queue<Compensation> compensation_queue = new Queue<Compensation>();
+    public static GameManager instance = null;
 
     private bool is_using_store = false;
     private bool is_talking_with_npc = false;
@@ -67,7 +73,8 @@ public class GameManager : MonoBehaviour
         SetPlayerData();
         BGMManager.instance.PlayBgm(SceneManager.GetActiveScene().name);
         Cursor.lockState = CursorLockMode.Confined;
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void SetPlayerData()
@@ -81,24 +88,33 @@ public class GameManager : MonoBehaviour
         SkillDataList skill_data = data_manager.LoadData<SkillDataList>(data_manager.Skill_Data_file_name);
         skill_book_manager.SetData(skill_data);
     }
-
     public void LoadScene(string next_scene_name) // 비동기로 할 것
     {
         BGMManager.instance.StopBgm();
-        SceneManager.LoadScene(next_scene_name);
+        //SceneManager.LoadScene(next_scene_name);
+        SceneLoader.Instance.LoadScene(next_scene_name);
     }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode load_scene_mode)
+    public void ReportEndOfSceneLoad(Scene scene)
     {
         is_doing_raid = scene.name.Equals("Town") ? false : true;
 
         BGMManager.instance.PlayBgm(scene.name);
 
         SetPlayerToSpawnPoint(player_group);
+        CheckCompensation();
         player.SetIdleMotion();
         player.FillUpStamina();
     }
+    void CheckCompensation()
+    {
+        while(compensation_queue.Count != 0)
+        {
+            Compensation comp = compensation_queue.Dequeue();
 
+            player.OnChangeExp(comp.exp);
+            InventoryManager.instance.Gold_On_Hand += comp.gold;
+        }
+    }
     void SetPlayerToSpawnPoint(GameObject player_group)
     {
         GameObject player_spawn_position = GameObject.Find("PlayerSpawnPosition");
@@ -107,12 +123,15 @@ public class GameManager : MonoBehaviour
         player_group.transform.GetChild(0).rotation = player_spawn_position.transform.rotation;
         player_group.transform.GetChild(1).rotation = player_group.transform.GetChild(0).rotation;
     }
-
-    public void SendCompensation(float gold = 0, float exp = 0)
+    public void SendCompensation(int gold = 0, int exp = 0)
     {
         Debug.Log("보상을 받음 골드: " + gold + ", 경험치: " + exp);
 
-        player.OnChangeExp(exp);
+        Compensation compensation;
+        compensation.gold = gold;
+        compensation.exp = exp;
+
+        compensation_queue.Enqueue(compensation);
     }
     public bool IsDoingOtherTask()
     {
@@ -151,12 +170,10 @@ public class GameManager : MonoBehaviour
         skill_book_manager.SetData(skill_data);
         data_manager.SaveData<SkillDataList>(skill_data, data_manager.Skill_Data_file_name);
     }
-
     void OnApplicationQuit()
     {
         SaveNowPlayerData();
     }
-
     public void SaveNowPlayerData()
     {
         Debug.Log("현재 정보 저장");
@@ -169,7 +186,6 @@ public class GameManager : MonoBehaviour
 
         data_manager.SaveData<PlayerData>(player_data, data_manager.Player_Data_File_Name);
     }
-
     public void PushExitGame()
     {
 #if UNITY_EDITOR
