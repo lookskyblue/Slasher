@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotate_power;
     [SerializeField] private float turn_power;
     [SerializeField] private PlayerAttack player_attack;
+    [SerializeField] private AudioSource audio_source;
+    [SerializeField] private AudioClip footstep_sound;
     private Animator player_animator;
     private Vector3 move_input;
     private Coroutine is_turning = null;
@@ -113,5 +115,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         is_turning = null;
+    }
+    void PlayStepSound()
+    {
+        audio_source.PlayOneShot(footstep_sound);
+    }
+
+    void StopSound()
+    {
+        //audio_source.PlayOneShot();
     }
 }

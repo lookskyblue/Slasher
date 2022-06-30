@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         if (is_destroy == true) return;
 
         SetPlayerData();
-
+        BGMManager.instance.PlayBgm(SceneManager.GetActiveScene().name);
         Cursor.lockState = CursorLockMode.Confined;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -83,11 +83,14 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string next_scene_name) // 비동기로 할 것
     {
+        BGMManager.instance.StopBgm();
         SceneManager.LoadScene(next_scene_name);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode load_scene_mode)
     {
+        BGMManager.instance.PlayBgm(scene.name);
+
         SetPlayerToSpawnPoint(player_group);
         player.SetIdleMotion();
         player.FillUpStamina();
@@ -117,7 +120,6 @@ public class GameManager : MonoBehaviour
 
         return is_doing_task;
     }
-
     public void ApplyStatsAccordingToLevel(int now_level)
     {
         Debug.Log("Apply Stats AccordingToLevel");

@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [System.Serializable]
+    public struct AudioClipInfo
+    {
+        public string name;
+        public AudioClip audio_clip;
+    }
     [SerializeField ] private UIActiveGetKeyInput ui_active_get_key_input;
     [SerializeField] private float fire_gap_time;
+    [SerializeField] private AudioClipInfo[] audio_clip_info;
+    private Dictionary<string, AudioClip> sound_dic = new Dictionary<string, AudioClip>();
+    private AudioSource audio_source;
+
     private PlayerMovement player_movement;
     private Animator player_animator;
     private float last_clicked_time = 0f;
@@ -13,11 +23,21 @@ public class PlayerAttack : MonoBehaviour
     private int attack_click_cnt = 0;
     private bool is_mouse_inside_in_skill_slot = false;
     private bool is_doing_attack_stop_cor;
+
     public bool Is_Doing_Attack_Stop_Cor { get { return is_doing_attack_stop_cor; } }
     private void Awake()
     {
+        audio_source = GetComponent<AudioSource>();
         player_animator = GetComponent<Animator>();
         player_movement = GetComponent<PlayerMovement>();
+    }
+
+    void Start()
+    {
+        for(int i = 0; i < audio_clip_info.Length; i++)
+        {
+            sound_dic.Add(audio_clip_info[i].name, audio_clip_info[i].audio_clip);
+        }
     }
 
     public void IsMouseInsideInSkillSlots(bool value)
@@ -144,7 +164,6 @@ public class PlayerAttack : MonoBehaviour
 
         //       is_attack_phase_reset = false;
     }
-
     IEnumerator AllowNextAttack(int next_attack_phase)
     {
         float total_time = 0f;
@@ -214,6 +233,18 @@ public class PlayerAttack : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+    void PlaySound(string sound_name)
+    {
+        if(sound_dic.ContainsKey(sound_name) == false)
+        {
+            Debug.LogError("Does not contain sound name: " + sound_name);
+
+            return;
+        }
+
+        audio_source.PlayOneShot(sound_dic[sound_name]);
     }
 }
 

@@ -13,7 +13,8 @@ public class Player : Unit
     [SerializeField] private Text overhead_level_text;
     [SerializeField] private Text overhead_name_text;
     [SerializeField] private int auto_recovery_wait_time;
-
+    [SerializeField] private AudioClip level_up_sound;
+    [SerializeField] private AudioSource audio_source;
     private bool is_damaged = false;
     private bool is_destroy = false;
     private void Awake()
@@ -52,7 +53,7 @@ public class Player : Unit
     public void Init(PlayerData player_data)
     {
         base.Start();
-        
+
         ApplyPlayerDataToGame(player_data);
         AddCallback();
         ApplyMountedItemStats(); // 나중에 장비에 체력도 추가한다면 이 함수가 ApplyPlayerDataInGame함수보다 먼저 호출되거나 해야함
@@ -200,6 +201,7 @@ public class Player : Unit
                 DrawLevelUI();
                 DrawGaugeUI();
                 StartCoroutine(ShowLevelUpParticle());
+                PlayLevelUpSound();
 
                 acquired_exp = left_exp;
             }
@@ -284,4 +286,9 @@ public class Player : Unit
     }
 
     public int GetNowExp() { return (int)unit_stats.Total_Exp; }
+
+    void PlayLevelUpSound()
+    {
+        audio_source.PlayOneShot(level_up_sound);
+    }
 }
