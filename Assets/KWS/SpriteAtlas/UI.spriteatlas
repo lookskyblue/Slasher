@@ -40,7 +40,7 @@ SpriteAtlas:
     - {fileID: 102900000, guid: b67ffcaf2d17c3a4fb609fe7f813e0f1, type: 3}
     - {fileID: 102900000, guid: b22167482cec72340ae908e4b5819195, type: 3}
     - {fileID: 102900000, guid: c5f2f6351a14e2a4fb0225a83a4c7ade, type: 3}
-    totalSpriteSurfaceArea: 2440745
+    totalSpriteSurfaceArea: 2440841
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -79,6 +79,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cc88774bb7a15804c933592ffe64897a, type: 3}
   - {fileID: 21300000, guid: 6c32a0ab54e5fc5418d49f604ff4d2ba, type: 3}
   - {fileID: 21300000, guid: 4d3e6e7c9d6be3f4abb3ba4f72781b0c, type: 3}
+  - {fileID: 21300000, guid: 2903e88c8fcd18e4296d04c2ed2d62b9, type: 3}
   - {fileID: 21300000, guid: f70dc1fcdad7b64489837ca2253e3b6f, type: 3}
   - {fileID: 21300000, guid: 6b70023db8725f94391b668bd9b44358, type: 3}
   - {fileID: 21300000, guid: a05dea5d693451644b76e889f006a0a8, type: 3}
@@ -123,6 +124,7 @@ SpriteAtlas:
   - common_btn_blue
   - shop_img_gold_2
   - common_btn_green
+  - play_guage_boss_bar_red
   - play_continue_bg
   - pass_reward_bg_normal
   - common_btn_brown
