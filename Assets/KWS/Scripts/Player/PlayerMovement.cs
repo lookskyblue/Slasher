@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void Move()
     {
         if (player.IsDead() == true) return;
-
+        if (GameManager.instance.Is_Doing_Loading_Page == true) return;
         if (player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack0") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack1") == true ||
             player_animator.GetCurrentAnimatorStateInfo(0).IsName("attack2") == true ||

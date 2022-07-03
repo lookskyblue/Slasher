@@ -258,7 +258,7 @@ public class Player : Unit
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.F5))
         {
             OnChangeExp(100);
         }

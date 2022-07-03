@@ -85,6 +85,7 @@ public class PlayerAttack : MonoBehaviour
             if (is_mouse_inside_in_skill_slot == true) return;
             if (IsDoingAnotherAnimation() == true) return;
             if (GameManager.instance.IsDoingOtherTask() == true) return;
+            if (GameManager.instance.Is_Doing_Loading_Page == true) return;
 
             else // UI ¹Û Å¬¸¯
             {

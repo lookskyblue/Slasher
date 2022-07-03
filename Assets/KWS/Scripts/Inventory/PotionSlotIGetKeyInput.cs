@@ -47,6 +47,7 @@ public class PotionSlotIGetKeyInput : MonoBehaviour
     {
         if (input_key_dic.Count == 0) return;
         if (GameManager.instance.Is_Doing_Raid == false) return;
+        if (GameManager.instance.Is_Doing_Loading_Page == true) return;
 
         foreach (KeyValuePair<KeyCode, Action> pair in input_key_dic)
         {

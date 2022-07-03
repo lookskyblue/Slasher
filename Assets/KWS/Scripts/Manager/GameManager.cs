@@ -29,7 +29,9 @@ public class GameManager : MonoBehaviour
     private bool is_talking_with_npc = false;
     private bool is_destroy = false;
     private bool is_doing_raid = true;
+    private bool is_doing_loading_page = false;
     public bool Is_Doing_Raid { get { return is_doing_raid; } }
+    public bool Is_Doing_Loading_Page { get { return is_doing_loading_page; } }
     public RaidBoardManager GetRaidBoardManager { get { return raid_board_manager; } }
     public DragAndDropContainer GetDragAndDropContainer { get { return drag_and_drop_container; } }
     public float GetResaleRatio { get { return resale_ratio; } }
@@ -90,6 +92,8 @@ public class GameManager : MonoBehaviour
     }
     public void LoadScene(string next_scene_name) // 비동기로 할 것
     {
+        is_doing_loading_page = true;
+
         BGMManager.instance.StopBgm();
         //SceneManager.LoadScene(next_scene_name);
         SceneLoader.Instance.LoadScene(next_scene_name);
@@ -104,6 +108,8 @@ public class GameManager : MonoBehaviour
         CheckCompensation();
         player.SetIdleMotion();
         player.FillUpStamina();
+
+        is_doing_loading_page = false;
     }
     void CheckCompensation()
     {
