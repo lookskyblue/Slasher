@@ -184,6 +184,8 @@ public class StoreUI : MonoBehaviour, IDropHandler
         // 실수량과 비교
         if(tmp_item.item_cnt < item_cnt)
         {
+            Debug.Log("tmp_item.item_cnt: " + tmp_item.item_cnt + ", item_cnt: " + item_cnt);
+
             interaction_ui_event.On_Change_Alert_Text_UI(Insufficient_sales_quantity_alert);
 
             return;
