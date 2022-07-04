@@ -73,12 +73,4 @@ public class BattleResultUIManager : MonoBehaviour
         GameManager.instance.LoadScene("Town");
         GameManager.instance.SendCompensation(compensation_gold, compensation_exp);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PushGoToTownButton();
-        }
-    }
 }

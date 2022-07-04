@@ -89,9 +89,9 @@ public class SceneLoader : MonoBehaviour
         {
             yield return null;
 
-            total_time += (Time.deltaTime * 0.4f);
+            total_time += (Time.deltaTime * 0.2f);
             
-            float prog = op.progress * 0.4f;
+            float prog = op.progress;
 
             prog = Mathf.Lerp(prog, op.progress, total_time);
 
@@ -116,7 +116,6 @@ public class SceneLoader : MonoBehaviour
                 }
             }
         }
-        op.allowSceneActivation = true;
     }
     void SettingGameInfoText()
     {
