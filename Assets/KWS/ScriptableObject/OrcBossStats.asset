@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3abb7e08f020024cba88814ec51c654, type: 3}
   m_Name: OrcBossStats
   m_EditorClassIdentifier: 
-  TestExp: 0
   level: 0
   max_exp: 200
   exp: 0
@@ -20,12 +19,13 @@ MonoBehaviour:
   maxiam_mp: 3000
   maxiam_str: 1000
   maxiam_def: 1000
-  default_hp: 500
+  default_hp: 250
   default_mp: 0
-  default_str: 35
-  default_def: 35
-  total_hp: 600
-  total_mp: 150
-  total_str: 20
-  total_def: 20
-  total_gold: 0
+  default_str: 30
+  default_def: 10
+  total_hp: 250
+  total_mp: 0
+  total_str: 30
+  total_def: 10
+  hp_auto_recovery_amount: 0
+  mp_auto_recovery_amount: 0

@@ -59,7 +59,7 @@ public class Unit : MonoBehaviour
     void ApplyDefense(ref float damage)
     {
         damage = (damage - unit_stats.Total_Def);
-        if (damage <= 0) damage = 0;
+        if (damage <= 0) damage = 1;
     }
 
     public virtual void DamagedAnimation()

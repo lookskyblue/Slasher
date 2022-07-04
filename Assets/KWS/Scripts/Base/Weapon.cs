@@ -42,11 +42,18 @@ namespace KWSWeapon
         private void SwingOff(int idx)
         {
             melee_area[idx].enabled = false;
+            StartCoroutine(TrailOffCor(idx));
+        }
+
+        IEnumerator TrailOffCor(int idx)
+        {
+            yield return new WaitForSeconds(0.2f);
+
             trail_effect[idx].enabled = false;
 
             float tmp = trail_effect[idx].time;
-            
-            trail_effect[idx].time = 0;
+
+            trail_effect[idx].time = 0.5f;
             trail_effect[idx].time = tmp;
         }
     }

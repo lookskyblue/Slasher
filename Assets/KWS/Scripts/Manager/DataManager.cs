@@ -98,7 +98,7 @@ public class DataManager : MonoBehaviour
 
         player_data.level = 1;
         player_data.exp = 0;
-        player_data.gold = 70000;
+        player_data.gold = 3000;
     }
     void CreateInventoryData()
     {

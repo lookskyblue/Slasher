@@ -82,6 +82,10 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (ui_active_get_key_input.CheckClickOutOfUIs(Input.mousePosition) == false) return;
+            else
+            {
+                if (GameManager.instance.Is_Using_Store == false && GameManager.instance.Is_Watching_Battle_UI == false) GameManager.instance.ChangeMouseState(CursorLockMode.Locked);
+            }
             if (is_mouse_inside_in_skill_slot == true) return;
             if (IsDoingAnotherAnimation() == true) return;
             if (GameManager.instance.IsDoingOtherTask() == true) return;

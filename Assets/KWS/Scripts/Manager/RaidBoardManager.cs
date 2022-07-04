@@ -30,6 +30,8 @@ public class RaidBoardManager : MonoBehaviour
         popup_ui.SetActive(false);
 
         ClearRaidInfo();
+
+        GameManager.instance.ChangeMouseState(CursorLockMode.Confined);
     }
     void OnCloseRaidMapUI(Collider collider)
     {

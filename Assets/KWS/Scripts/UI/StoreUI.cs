@@ -62,6 +62,7 @@ public class StoreUI : MonoBehaviour, IDropHandler
     public void OpenStore()
     {
         GameManager.instance.Is_Using_Store = true;
+        GameManager.instance.ChangeMouseState(CursorLockMode.Confined);
         store_ui.SetActive(true);
     }
     public void PushCloseStore()

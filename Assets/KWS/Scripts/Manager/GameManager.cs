@@ -30,8 +30,11 @@ public class GameManager : MonoBehaviour
     private bool is_destroy = false;
     private bool is_doing_raid = true;
     private bool is_doing_loading_page = false;
+    private bool is_watching_battle_ui = false;
+
     public bool Is_Doing_Raid { get { return is_doing_raid; } }
     public bool Is_Doing_Loading_Page { get { return is_doing_loading_page; } }
+    public bool Is_Watching_Battle_UI { get; set; }
     public RaidBoardManager GetRaidBoardManager { get { return raid_board_manager; } }
     public DragAndDropContainer GetDragAndDropContainer { get { return drag_and_drop_container; } }
     public float GetResaleRatio { get { return resale_ratio; } }
@@ -74,9 +77,8 @@ public class GameManager : MonoBehaviour
 
         SetPlayerData();
         BGMManager.instance.PlayBgm(SceneManager.GetActiveScene().name);
-        Cursor.lockState = CursorLockMode.Confined;
-        
-        //SceneManager.sceneLoaded += OnSceneLoaded;
+
+        ChangeMouseState(CursorLockMode.Locked);
     }
 
     void SetPlayerData()
@@ -199,5 +201,10 @@ public class GameManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void ChangeMouseState(CursorLockMode state)
+    {
+        Cursor.lockState = state;
     }
 }

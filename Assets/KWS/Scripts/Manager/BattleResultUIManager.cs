@@ -52,6 +52,10 @@ public class BattleResultUIManager : MonoBehaviour
         }
         
         battle_result_ui.SetActive(true);
+
+        GameManager.instance.Is_Watching_Battle_UI = true;
+        GameManager.instance.ChangeMouseState(CursorLockMode.Confined);
+
         gold_text.text = gold == 0 ? "0" : GetThousandCommaText(gold);
         exp_text.text = exp == 0 ? "0" : GetThousandCommaText(exp);
         canvas_group.alpha = 0;
@@ -71,6 +75,7 @@ public class BattleResultUIManager : MonoBehaviour
     public void PushGoToTownButton()
     {
         GameManager.instance.SendCompensation(compensation_gold, compensation_exp);
+        GameManager.instance.Is_Watching_Battle_UI = false;
         GameManager.instance.LoadScene("Town");
     }
 }
