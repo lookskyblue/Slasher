@@ -89,17 +89,13 @@ public class SceneLoader : MonoBehaviour
         {
             yield return null;
 
-            total_time += (Time.deltaTime * 0.2f);
+            total_time += Time.unscaledDeltaTime;
             
-            float prog = op.progress;
-
-            prog = Mathf.Lerp(prog, op.progress, total_time);
-
-            if(prog < 0.9f)
+            if(op.progress < 0.9f)
             {
-                progress_bar.fillAmount = Mathf.Lerp(progress_bar.fillAmount, prog, total_time);
+                progress_bar.fillAmount = Mathf.Lerp(progress_bar.fillAmount, op.progress, total_time);
                 
-                if(progress_bar.fillAmount >= prog)
+                if(progress_bar.fillAmount >= op.progress)
                 {
                     total_time = 0f;
                 }
@@ -111,11 +107,15 @@ public class SceneLoader : MonoBehaviour
 
                 if(progress_bar.fillAmount == 1f)
                 {
+                    yield return new WaitForSeconds(2f);
                     op.allowSceneActivation = true;
                     yield break;
                 }
             }
         }
+
+        yield return new WaitForSeconds(2f);
+        op.allowSceneActivation = true;
     }
     void SettingGameInfoText()
     {

@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         is_doing_loading_page = true;
 
         BGMManager.instance.StopBgm();
-        //SceneManager.LoadScene(next_scene_name);
+        ObjectPoolingManager.Instance.WithdrawAllObject();
         SceneLoader.Instance.LoadScene(next_scene_name);
     }
     public void ReportEndOfSceneLoad(Scene scene)

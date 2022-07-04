@@ -14,11 +14,18 @@ public class ObjectPoolingManager : MonoBehaviour
         public int amount;
     }
 
+    public struct ObjectInfoForWithdraw
+    {
+        public GameObject obj;
+        public string key;
+    }
+
     public ObjectInfo[] object_infos;
     private Dictionary<string, Queue<GameObject>> object_pooling_dic = new Dictionary<string, Queue<GameObject>>();
     private Dictionary<string, GameObject> object_dic = new Dictionary<string, GameObject>();
-    
-    [SerializeField ]private Transform player_transform;
+    private Dictionary<GameObject, ObjectInfoForWithdraw> all_object_dic = new Dictionary<GameObject, ObjectInfoForWithdraw>();
+
+    [SerializeField]private Transform player_transform;
     public Transform Player_Transform { get { return player_transform; } }
 
     private static ObjectPoolingManager instance = null;
@@ -74,6 +81,11 @@ public class ObjectPoolingManager : MonoBehaviour
         {
             InitDamageTextTransform(ref obj);
         }
+
+        if(all_object_dic.ContainsKey(obj) == true)
+        {
+            all_object_dic.Remove(obj);
+        }
     }
     public GameObject GetObjectFromPoolingQueue(string key)
     {
@@ -99,6 +111,16 @@ public class ObjectPoolingManager : MonoBehaviour
 
         obj.SetActive(true);
 
+        if(all_object_dic.ContainsKey(obj) == false)
+        {
+            ObjectInfoForWithdraw obj_info_for_withdraw;
+
+            obj_info_for_withdraw.key = key;
+            obj_info_for_withdraw.obj = obj;
+
+            all_object_dic.Add(obj, obj_info_for_withdraw);
+        }
+
         return obj;
     }
 
@@ -109,5 +131,17 @@ public class ObjectPoolingManager : MonoBehaviour
         obj.transform.localPosition = prefab.transform.position;
         obj.transform.localRotation = prefab.transform.rotation;
         obj.transform.localScale = prefab.transform.localScale;
+    }
+
+    public void WithdrawAllObject()
+    {
+        List<GameObject> obj_list = new List<GameObject>(all_object_dic.Keys);
+
+        for (int i = 0; i < obj_list.Count; i++)
+        {
+            ReturnObjectToPoolingQueue(all_object_dic[obj_list[i]].key, all_object_dic[obj_list[i]].obj);
+        }
+
+        all_object_dic.Clear();
     }
 }

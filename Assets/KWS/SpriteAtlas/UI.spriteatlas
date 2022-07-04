@@ -32,15 +32,15 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 85f1651365a93024794406294581a768, type: 3}
-    - {fileID: 102900000, guid: 2362225bda543924d9cca1c404acbb4a, type: 3}
+    - {fileID: 102900000, guid: c5f2f6351a14e2a4fb0225a83a4c7ade, type: 3}
     - {fileID: 102900000, guid: b75566f458da3674e871f76a1737b833, type: 3}
     - {fileID: 102900000, guid: 0362c241def433643913730a2419af64, type: 3}
     - {fileID: 102900000, guid: 258e32b38920bdf46adaa87a67ae12fc, type: 3}
     - {fileID: 102900000, guid: f0b7878e1c8a2144fb20c849bcb39aaf, type: 3}
     - {fileID: 102900000, guid: b67ffcaf2d17c3a4fb609fe7f813e0f1, type: 3}
+    - {fileID: 102900000, guid: 2362225bda543924d9cca1c404acbb4a, type: 3}
     - {fileID: 102900000, guid: b22167482cec72340ae908e4b5819195, type: 3}
-    - {fileID: 102900000, guid: c5f2f6351a14e2a4fb0225a83a4c7ade, type: 3}
-    totalSpriteSurfaceArea: 2440841
+    totalSpriteSurfaceArea: 2449508
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -86,6 +86,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a11f0bddea738dc49a7b1daf146aeb45, type: 3}
   - {fileID: 21300000, guid: 1496636ebecb66c4b902585d62dddc60, type: 3}
   - {fileID: 21300000, guid: cfe99a6e6a6d5ba4483a91a5e32b0b68, type: 3}
+  - {fileID: 21300000, guid: 078e10def5c44354c91fb6d2ec38d54d, type: 3}
   - {fileID: 21300000, guid: 7121a90f2b61b504e8269ebc46920e6b, type: 3}
   - {fileID: 21300000, guid: 64d9ba3fa4531ce47957b0d4dc83106a, type: 3}
   - {fileID: 21300000, guid: 9ee7cc4fe5df4ab4399a1c6f93773b83, type: 3}
@@ -131,6 +132,7 @@ SpriteAtlas:
   - title_btn_start
   - reward_daily_frame_default
   - common_btn_mint
+  - play_user_skill_prg_bar_yellow
   - levelup_badge_wing_right
   - common_btn_yellow
   - play_character_frame_blue

@@ -23,9 +23,7 @@ public class RaidManager : MonoBehaviour
 
     [SerializeField] private int compensation_exp;
     [SerializeField] private int compensation_gold;
-
-    [SerializeField]
-    private BattleResultUIManager battle_result_ui_manager;
+    [SerializeField] private BattleResultUIManager battle_result_ui_manager;
     private void Start()
     {
         spawn_info_idx = 0;

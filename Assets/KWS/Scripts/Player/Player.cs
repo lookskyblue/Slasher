@@ -15,6 +15,8 @@ public class Player : Unit
     [SerializeField] private int auto_recovery_wait_time;
     [SerializeField] private AudioClip level_up_sound;
     [SerializeField] private AudioSource audio_source;
+    [SerializeField] private string user_name;
+
     private bool is_damaged = false;
     private bool is_destroy = false;
     private void Awake()
@@ -248,7 +250,7 @@ public class Player : Unit
 
     void DrawNameUI()
     {
-        overhead_name_text.text = "캐라니스";
+        overhead_name_text.text = user_name;
     }
 
     void DrawLevelUI()

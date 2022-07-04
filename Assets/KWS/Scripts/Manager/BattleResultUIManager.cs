@@ -70,7 +70,7 @@ public class BattleResultUIManager : MonoBehaviour
     
     public void PushGoToTownButton()
     {
-        GameManager.instance.LoadScene("Town");
         GameManager.instance.SendCompensation(compensation_gold, compensation_exp);
+        GameManager.instance.LoadScene("Town");
     }
 }
