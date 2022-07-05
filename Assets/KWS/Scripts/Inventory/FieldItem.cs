@@ -23,7 +23,8 @@ public class FieldItem : MonoBehaviour
 
         if (Input.GetKey(KeyCode.E))
         {
-            if (acquired_item == null) acquired_item = GetRandomItem();
+            acquired_item = GetRandomItem();
+
             if(InventoryManager.instance.AddItem(acquired_item, acquired_item.item_cnt) == false) return;
 
             interaction_event.Get_Field_Item_Text_UI(false);

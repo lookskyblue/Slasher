@@ -22,6 +22,7 @@ public class Monster : Unit
     private NavMeshAgent nav_mesh_agent;
     private Coroutine is_doing_attack_motion_cor = null;
     private AudioSource audio_source;
+    private System.Random rand;
 
     protected Action<bool> death_callback;
     void Awake()
@@ -35,8 +36,6 @@ public class Monster : Unit
     }
     protected void Start()
     {
-        Debug.Log("몬스터 스타트");
-
         base.Start();
         InitUnitStats();
 
@@ -44,6 +43,8 @@ public class Monster : Unit
         nav_mesh_agent.enabled = true;
 
         InstancingMaterial();
+
+        rand = new System.Random();
     }
 
     public void InitUnitStats()
@@ -89,7 +90,7 @@ public class Monster : Unit
 
     void DropItem()
     {
-        if (UnityEngine.Random.Range(0, 2) == 0) return;
+        if (rand.Next(0, 2) == 0) return; // 1일 때 아이템 드랍. 1/2 확률
 
         ObjectPoolingManager.Instance.GetObjectFromPoolingQueue("RandomItem").transform.position = transform.position;
     }

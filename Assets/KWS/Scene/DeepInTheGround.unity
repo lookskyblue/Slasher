@@ -337,7 +337,7 @@ MonoBehaviour:
     monster_spawn_position:
     - {fileID: 529537894}
   compensation_exp: 1500
-  compensation_gold: 1500
+  compensation_gold: 80000
   battle_result_ui_manager: {fileID: 1732536665}
 --- !u!4 &896016097
 Transform:

@@ -10,7 +10,6 @@ public class Boss : Monster
     
     new void Start()
     {
-        Debug.Log("보스 스타트");
         base.Start();
         boss_name_text.text = boss_name;
     }

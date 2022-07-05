@@ -5,9 +5,12 @@ using UnityEngine;
 public class SkillGetKeyInput : MonoBehaviour
 {
     [SerializeField] private InteractionSlotEvent interaction_slot_event;
+    [SerializeField] private InteractionUIEvent interaction_ui_event;
     [SerializeField] private UnitStats player_stats;
     [SerializeField] private PlayerAttack player_attack;
     [SerializeField] private Player player;
+    [SerializeField] private string lack_of_mana_alert;
+    [SerializeField] private string cooltime_alert;
     private Dictionary<KeyCode, SkillInfo> skill_input_key_dic = new Dictionary<KeyCode, SkillInfo>();
     private Animator player_ani;
     private SkillInfo now_doing_skill = null;
@@ -107,6 +110,7 @@ public class SkillGetKeyInput : MonoBehaviour
         if(skill_info.Is_Cool_Time == true)
         {
             Debug.Log("Still Cool Time");
+            interaction_ui_event.On_Change_Alert_Text_UI(cooltime_alert);
 
             return;
         }
@@ -128,6 +132,7 @@ public class SkillGetKeyInput : MonoBehaviour
         if(player_stats.Total_Mp < skill_info.mp_cost)
         {
             Debug.Log("Lack of mana");
+            interaction_ui_event.On_Change_Alert_Text_UI(lack_of_mana_alert);
 
             return false;
         }

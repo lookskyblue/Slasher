@@ -12324,24 +12324,10 @@ MonoBehaviour:
     - {fileID: 1664811495}
     - {fileID: 1635282426}
     - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
-    - {fileID: 630678427}
   - monster_prefab: {fileID: 8948474656213499685, guid: 09d1c4dd88b3fae408a6c48f6622362f, type: 3}
     monster_spawn_position:
     - {fileID: 399488280}
     - {fileID: 1855138780}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
-    - {fileID: 1811084995}
     - {fileID: 1811084995}
   - monster_prefab: {fileID: 8948474656213499685, guid: d0258b4eb7c5e1548999a72a8671ff53, type: 3}
     monster_spawn_position:

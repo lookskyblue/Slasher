@@ -21,8 +21,8 @@ MonoBehaviour:
   maxiam_def: 1000
   default_hp: 100
   default_mp: 0
-  default_str: 20
-  default_def: 5
+  default_str: 25
+  default_def: 3
   total_hp: 100
   total_mp: 0
   total_str: 50

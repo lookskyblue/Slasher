@@ -77,6 +77,11 @@ public class UIActiveGetKeyInput : MonoBehaviour
                 {
                     obj.SetActive(!obj.activeSelf);
 
+                    if(obj.activeSelf == true)
+                    {
+                        GameManager.instance.ChangeMouseState(CursorLockMode.Confined);
+                    }
+
                     break;
                 }
             }

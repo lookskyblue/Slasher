@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private bool is_using_store = false;
     private bool is_talking_with_npc = false;
     private bool is_destroy = false;
-    private bool is_doing_raid = true;
+    private bool is_doing_raid = false;
     private bool is_doing_loading_page = false;
     private bool is_watching_battle_ui = false;
 

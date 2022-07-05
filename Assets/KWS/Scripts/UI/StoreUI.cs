@@ -154,6 +154,7 @@ public class StoreUI : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData event_data)
     {
         if (drag_and_drop_container.item == null) return;
+
         if (drag_and_drop_container.is_mount == true)
         {
             interaction_ui_event.On_Change_Alert_Text_UI(already_mounted_item_alert);
@@ -169,6 +170,7 @@ public class StoreUI : MonoBehaviour, IDropHandler
 
     public void PushSellButton()
     {
+
         if (tmp_item.is_stackable == true)
         {
             if (IsValidInputField() == false)
@@ -184,8 +186,6 @@ public class StoreUI : MonoBehaviour, IDropHandler
         // 실수량과 비교
         if(tmp_item.item_cnt < item_cnt)
         {
-            Debug.Log("tmp_item.item_cnt: " + tmp_item.item_cnt + ", item_cnt: " + item_cnt);
-
             interaction_ui_event.On_Change_Alert_Text_UI(Insufficient_sales_quantity_alert);
 
             return;

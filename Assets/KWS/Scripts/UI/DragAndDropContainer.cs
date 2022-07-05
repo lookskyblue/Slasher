@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public class DragAndDropContainer : MonoBehaviour
 {
-    [HideInInspector] public Item item = null;
+    [HideInInspector] private Item Item;
+    public Item item 
+    {
+        get { return Item; }
+        set { Item = value; }
+    }
+
     public Image item_image;
     public int slot_num = -1;
     public bool is_mount = false;
