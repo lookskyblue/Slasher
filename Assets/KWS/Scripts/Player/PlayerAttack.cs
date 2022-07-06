@@ -100,7 +100,7 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
             
-            //if (GameManager.instance.Is_Town == true) return;
+            if (GameManager.instance.Is_Doing_Raid == false) return;
 
             Attack2();
         }
